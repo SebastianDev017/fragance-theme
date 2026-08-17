@@ -1,0 +1,60 @@
+<!doctype html>
+<!--
+  Banco de pruebas de la cinta.
+
+  Lo que hay que comprobar es la geometría del bucle: la lista se imprime dos
+  veces y la animación desplaza el 50%, así que el salto sólo es invisible si
+  las dos copias miden EXACTAMENTE lo mismo. Si una midiera distinto, cada
+  vuelta daría un tirón.
+
+  Usa el CSS real del tema (assets/dropscents.css) con el mismo marcado que
+  escribe sections/ticker.liquid.
+-->
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>QA · cinta</title>
+  <link rel="stylesheet" href="../assets/dropscents.css">
+</head>
+<body>
+  <section class="ticker ticker--tinta" id="cinta"
+    style="--ticker-dur: 30s; --ticker-inclina: 0deg; --ticker-tam: 26px;">
+    <div class="ticker__pista">
+      <ul class="ticker__grupo">
+        <li class="ticker__item"><span>Decants desde 5 ml</span></li>
+        <li class="ticker__sep" aria-hidden="true"><span class="ticker__gota"></span></li>
+        <li class="ticker__item"><span>Envíos a toda Venezuela</span></li>
+        <li class="ticker__sep" aria-hidden="true"><span class="ticker__gota"></span></li>
+        <li class="ticker__item is-destacado"><span>Te descontamos el decant del frasco</span></li>
+        <li class="ticker__sep" aria-hidden="true"><span class="ticker__gota"></span></li>
+      </ul>
+      <ul class="ticker__grupo" aria-hidden="true">
+        <li class="ticker__item"><span>Decants desde 5 ml</span></li>
+        <li class="ticker__sep" aria-hidden="true"><span class="ticker__gota"></span></li>
+        <li class="ticker__item"><span>Envíos a toda Venezuela</span></li>
+        <li class="ticker__sep" aria-hidden="true"><span class="ticker__gota"></span></li>
+        <li class="ticker__item is-destacado"><span>Te descontamos el decant del frasco</span></li>
+        <li class="ticker__sep" aria-hidden="true"><span class="ticker__gota"></span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="ticker ticker--gradiente" id="cinta2"
+    style="--ticker-dur: 20s; --ticker-inclina: -3deg; --ticker-tam: 40px;">
+    <div class="ticker__pista ticker__pista--rev">
+      <ul class="ticker__grupo">
+        <li class="ticker__item"><span>Dior</span></li>
+        <li class="ticker__sep" aria-hidden="true"><span class="ticker__gota"></span></li>
+        <li class="ticker__item"><span>Chanel</span></li>
+        <li class="ticker__sep" aria-hidden="true"><span class="ticker__gota"></span></li>
+      </ul>
+      <ul class="ticker__grupo" aria-hidden="true">
+        <li class="ticker__item"><span>Dior</span></li>
+        <li class="ticker__sep" aria-hidden="true"><span class="ticker__gota"></span></li>
+        <li class="ticker__item"><span>Chanel</span></li>
+        <li class="ticker__sep" aria-hidden="true"><span class="ticker__gota"></span></li>
+      </ul>
+    </div>
+  </section>
+</body>
+</html>
