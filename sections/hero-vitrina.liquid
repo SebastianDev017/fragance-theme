@@ -61,7 +61,7 @@
       {%- capture eyebrow_html -%}
         <span class="dot" aria-hidden="true"></span> {{ section.settings.eyebrow }}
       {%- endcapture -%}
-      <div data-hero-in>
+      <div class="vitrina__fila" data-hero-in>
         {% render 'texto-partido', etiqueta: 'p', clase: 'eyebrow vitrina__eyebrow', contenido: eyebrow_html %}
       </div>
     {%- endif -%}
@@ -70,12 +70,12 @@
       <span class="vitrina__l">{{ t1 }}</span>
       {%- if t2 != blank %}<span class="vitrina__l">{{ t2 }}</span>{% endif -%}
     {%- endcapture -%}
-    <div data-hero-in class="vitrina__h1-wrap">
+    <div class="vitrina__fila" data-hero-in>
       {% render 'texto-partido', etiqueta: 'h1', clase: 'vitrina__h1', contenido: titulo_html %}
     </div>
 
     {%- if sub != blank -%}
-      <div data-hero-in>
+      <div class="vitrina__fila" data-hero-in>
         {% render 'texto-partido', etiqueta: 'p', clase: 'vitrina__sub', contenido: sub %}
       </div>
     {%- endif -%}

@@ -5,11 +5,14 @@
   corte: la de la izquierda va en claro (sobre la foto) y la de la derecha en
   tinta (sobre el panel claro).
 
-  Lo importante es que las DOS copias midan lo mismo que la sección, no que el
-  contenedor de texto. Si midieran el ancho del texto, el recorte caería a un
-  porcentaje distinto que el del fondo y la línea se vería desalineada en
-  cuanto el corte dejara de estar en el 50%. De eso se encarga el
-  `margin-inline` negativo del CSS.
+  Lo importante es que las DOS copias midan lo mismo que la SECCIÓN, no que el
+  texto. Si midieran el ancho del texto, el recorte caería a un porcentaje
+  distinto que el del fondo y la línea se vería desalineada. De eso se encargan
+  el `width: 100%` y el `margin-inline` negativo del CSS.
+
+  Y por eso el ancho de lectura va en `.partido__medida`, por dentro: limita
+  las líneas (igual en las dos copias, así que cortan en el mismo sitio) sin
+  tocar la caja de la que depende el recorte.
 
   Sólo una de las dos copias la leen los lectores de pantalla.
 
@@ -21,6 +24,10 @@
 {%- assign etiqueta = etiqueta | default: 'p' -%}
 
 <{{ etiqueta }} class="partido {{ clase }}">
-  <span class="partido__capa partido__capa--claro" aria-hidden="true">{{ contenido }}</span>
-  <span class="partido__capa partido__capa--tinta">{{ contenido }}</span>
+  <span class="partido__capa partido__capa--claro" aria-hidden="true">
+    <span class="partido__medida">{{ contenido }}</span>
+  </span>
+  <span class="partido__capa partido__capa--tinta">
+    <span class="partido__medida">{{ contenido }}</span>
+  </span>
 </{{ etiqueta }}>

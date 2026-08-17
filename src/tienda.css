@@ -367,12 +367,17 @@
    el `margin-inline` negativo las estira hasta el borde y el `padding-inline`
    devuelve el texto a su sitio. Así el `clip-path` en porcentaje cae en el
    mismo punto que el panel del fondo con cualquier valor de --corte. */
-.partido { position: relative; margin: 0; }
+/* `width: 100%` no es decorativo: es lo que hace que el 50% del recorte sea el
+   mismo 50% que el del panel del fondo. Sin él la caja se encoge al texto. */
+.partido { position: relative; margin: 0; width: 100%; }
 .partido__capa {
   display: block;
   margin-inline: calc(-1 * var(--edge));
   padding-inline: var(--edge);
 }
+/* El ancho de lectura, por dentro: corta las líneas igual en las dos copias y
+   deja intacta la caja de la que depende el recorte. */
+.partido__medida { display: block; max-width: var(--medida, none); margin-inline: auto; }
 .partido__capa--claro {
   position: absolute; inset: 0;
   clip-path: inset(0 calc(100% - var(--corte, 50%)) 0 0);
@@ -385,7 +390,10 @@
   .partido__capa--tinta { visibility: hidden; }
 }
 
-.vitrina__h1-wrap { width: 100%; }
+/* Las filas del hero ocupan el ancho completo aunque su texto sea corto: es de
+   donde el recorte saca su 100%. */
+.vitrina__fila { width: 100%; }
+.vitrina__h1 { --medida: 20ch; }
 .vitrina__h1 .partido__capa {
   font-family: var(--font-d); font-weight: 700;
   font-size: clamp(2.2rem, min(6.8vw, 9.4vh), 5.6rem);
@@ -399,12 +407,8 @@
 .vitrina__eyebrow .partido__capa--claro { color: rgba(255,255,255,.88); }
 .vitrina__eyebrow .partido__capa--tinta { color: var(--ink-2); }
 
-.vitrina__sub .partido__capa {
-  max-width: none; font-size: clamp(1rem, 1.3vw, 1.12rem);
-}
-/* el ancho de lectura lo pone el contenedor, no la capa: si lo pusiera la
-   capa, las dos copias se cortarían en sitios distintos */
-.vitrina__sub { max-width: min(52ch, 100%); }
+.vitrina__sub { --medida: 52ch; }
+.vitrina__sub .partido__capa { font-size: clamp(1rem, 1.3vw, 1.12rem); }
 .vitrina__sub .partido__capa--claro { color: rgba(255,255,255,.88); }
 .vitrina__sub .partido__capa--tinta { color: var(--ink-2); }
 
