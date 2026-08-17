@@ -191,6 +191,9 @@
   --ticker-tam: 26px;
   position: relative; overflow: hidden;
   padding-block: clamp(.8rem, 2.4vw, 1.4rem);
+  /* Inclinada, la banda se encoge por las esquinas y deja dos cunas blancas en
+     los bordes: por eso se dibuja mas ancha que la pagina. */
+  width: 108%; margin-inline: -4%;
   transform: rotate(var(--ticker-inclina, 0deg));
   margin-block: clamp(1.5rem, 5vh, 4rem);
 }
@@ -225,10 +228,14 @@
   padding-inline: clamp(1rem, 3vw, 2.4rem);
   font-size: calc(var(--ticker-tam) * .7); opacity: .45;
 }
+/* La gota va con `mask`, no con `clip-path`: el path lleva coordenadas en px
+   absolutos (15x18) y no escala, asi que a 26 px de cinta se quedaba en un
+   triangulo. La mascara si se ajusta con `contain`. */
 .ticker__gota {
-  width: calc(var(--ticker-tam) * .34); height: calc(var(--ticker-tam) * .42);
+  width: calc(var(--ticker-tam) * .38); height: calc(var(--ticker-tam) * .46);
   background: currentColor; opacity: .5;
-  clip-path: path('M7.5 0C11 5 15 9 15 12.2A7.5 7.5 0 0 1 0 12.2C0 9 4 5 7.5 0Z');
+  -webkit-mask: center / contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15 18'%3E%3Cpath d='M7.5 0C11 5 15 9 15 12.2A7.5 7.5 0 0 1 0 12.2C0 9 4 5 7.5 0Z'/%3E%3C/svg%3E");
+  mask: center / contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15 18'%3E%3Cpath d='M7.5 0C11 5 15 9 15 12.2A7.5 7.5 0 0 1 0 12.2C0 9 4 5 7.5 0Z'/%3E%3C/svg%3E");
 }
 .ticker--gradiente .ticker__gota, .ticker--claro .ticker__gota { background: var(--punch); opacity: .8; }
 
