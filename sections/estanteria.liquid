@@ -6,10 +6,10 @@
 {%- liquid
   comment
     Un ajuste de tipo `collection` devuelve el OBJETO, no el handle: hacer
-    collections[ajuste] da basura. Y `products_count` de una coleccion vacia o
-    sin elegir es nil, asi que hay que forzarlo a numero antes de comparar
-    (Liquid evalua las condiciones de derecha a izquierda, asi que un
-    `if coleccion != blank and coleccion.products_count > 0` reventaria igual).
+    collections[ajuste] da basura. Y `products_count` de una colección vacía o
+    sin elegir es nil, así que hay que forzarlo a número antes de comparar
+    (Liquid evalúa las condiciones de derecha a izquierda, así que un
+    `if coleccion != blank and coleccion.products_count > 0` reventaría igual).
   endcomment
   assign coleccion = section.settings.coleccion
   assign cuantos = coleccion.products_count | default: 0 | plus: 0
@@ -42,8 +42,8 @@
     {%- endif -%}
   {%- else -%}
     {%- comment -%}
-      Sin coleccion (o vacia) la seccion muestra tarjetas de marcador: se
-      entiende que falta contenido, no que el tema este roto.
+      Sin colección (o vacía) la sección muestra tarjetas de marcador: se
+      entiende que falta contenido, no que el tema esté roto.
     {%- endcomment -%}
     <div class="shelf shelf--vacia">
       {%- for i in (1..4) -%}
@@ -52,7 +52,7 @@
           <div class="card__body">
             <p class="card__brand">Marca</p>
             <h3 class="card__name">Nombre de la fragancia</h3>
-            <p class="card__fam">Aqui va la frase corta que describe como huele.</p>
+            <p class="card__fam">Aquí va la frase corta que describe cómo huele.</p>
             <p class="card__notes">Nota · Nota · Nota</p>
             <div class="card__foot">
               <p class="card__price">Decant 5 ml<b>&mdash;</b></p>
@@ -64,9 +64,9 @@
     </div>
     <p class="aviso-vacio">
       {%- if coleccion == blank -%}
-        Elige una coleccion en los ajustes de esta seccion.
+        Elige una colección en los ajustes de esta sección.
       {%- else -%}
-        La coleccion <strong>{{ coleccion.title }}</strong> todavia no tiene productos.
+        La coleccion <strong>{{ coleccion.title }}</strong> todavía no tiene productos.
       {%- endif -%}
     </p>
   {%- endif -%}

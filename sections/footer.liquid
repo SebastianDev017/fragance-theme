@@ -6,7 +6,7 @@
 
   <p class="foot__line">{{ section.settings.linea }}</p>
 
-  <nav class="foot__links" aria-label="Pie de pagina">
+  <nav class="foot__links" aria-label="Pie de página">
     {%- if settings.instagram != blank -%}
       <a href="{{ settings.instagram }}" target="_blank" rel="noopener">Instagram</a>
     {%- endif -%}
@@ -22,11 +22,11 @@
 
 {% schema %}
 {
-  "name": "Pie de pagina",
+  "name": "Pie de página",
   "settings": [
     { "type": "text", "id": "wordmark", "label": "Nombre de la marca", "default": "DropScents" },
-    { "type": "text", "id": "linea", "label": "Linea legal", "default": "Decants y frascos originales. Envios a toda Venezuela. Precios en dolares; pagos en bolivares por el chat." },
-    { "type": "link_list", "id": "menu", "label": "Menu" }
+    { "type": "text", "id": "linea", "label": "Línea legal", "default": "Decants y frascos originales. Envíos a toda Venezuela. Precios en dólares; pagos en bolívares por el chat." },
+    { "type": "link_list", "id": "menu", "label": "Menú" }
   ]
 }
 {% endschema %}

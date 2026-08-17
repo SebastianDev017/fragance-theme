@@ -10,7 +10,7 @@
 {%- liquid
   comment
     Ver la nota de estanteria.liquid: el ajuste es el objeto, y products_count
-    hay que forzarlo a numero antes de compararlo.
+    hay que forzarlo a número antes de compararlo.
   endcomment
   assign coleccion = section.settings.coleccion
   assign cuantos = coleccion.products_count | default: 0 | plus: 0

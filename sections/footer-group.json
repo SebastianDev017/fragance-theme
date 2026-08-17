@@ -1,6 +1,6 @@
 {
   "type": "footer",
-  "name": "Pie de pagina",
+  "name": "Pie de página",
   "sections": {
     "footer": { "type": "footer", "settings": {} }
   },

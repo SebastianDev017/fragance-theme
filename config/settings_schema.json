@@ -11,7 +11,7 @@
     "name": "Marca",
     "settings": [
       { "type": "image_picker", "id": "favicon", "label": "Favicon" },
-      { "type": "url", "id": "instagram", "label": "Instagram", "info": "Tambien es el respaldo del boton de chat mientras no haya app instalada." }
+      { "type": "url", "id": "instagram", "label": "Instagram", "info": "También es el respaldo del botón de chat mientras no haya app instalada." }
     ]
   },
   {
@@ -19,7 +19,7 @@
     "settings": [
       {
         "type": "paragraph",
-        "content": "Todos los botones de chat del tema llaman a la misma funcion. Para conectar tu app, define window.DropScentsChat = () => tuPlugin.abrir(). Si no hay ninguna, el tema prueba las APIs de Crisp, Tawk, Tidio, Intercom, Zendesk y Shopify Inbox, y si no encuentra ninguna muestra un aviso con el Instagram."
+        "content": "Todos los botones de chat del tema llaman a la misma función. Para conectar tu app, define window.DropScentsChat = () => tuPlugin.abrir(). Si no hay ninguna, el tema prueba las APIs de Crisp, Tawk, Tidio, Intercom, Zendesk y Shopify Inbox, y si no encuentra ninguna muestra un aviso con el Instagram."
       }
     ]
   }
