@@ -11,7 +11,7 @@
 {%- endcomment -%}
 
 {%- liquid
-  assign coleccion = collections[section.settings.coleccion]
+  assign coleccion = section.settings.coleccion
   assign desde = 0
   for producto in coleccion.products
     for v in producto.variants

@@ -418,6 +418,27 @@ img { max-width: 100%; display: block; }
 .card__full { font-size: .72rem; color: var(--ink-3); font-variant-numeric: tabular-nums; text-align: right; }
 .card__full b { color: var(--ink-2); font-weight: 600; }
 
+/* ---------- estados vacíos ----------
+   Una sección sin contenido tiene que leerse como «falta llenar esto», no
+   como «esto está roto»: se mantiene la forma, se apaga el color y se dice
+   en una línea qué falta. */
+.card--vacia .card__brand,
+.card--vacia .card__name,
+.card--vacia .card__fam,
+.card--vacia .card__notes { color: var(--ink-3); }
+.card--vacia .card__price b,
+.card--vacia .card__full b { color: var(--ink-3); }
+.card--vacia { border-style: dashed; border-color: var(--line); box-shadow: none; }
+.chip--vacio { color: var(--ink-3); border-style: dashed; }
+.compare--vacia { opacity: .55; }
+.compare--vacia .compare__col--us { box-shadow: var(--shadow-s); }
+
+.aviso-vacio {
+  padding-inline: var(--edge); margin-top: 1.6rem;
+  font-size: .88rem; color: var(--ink-2);
+}
+.aviso-vacio strong { font-weight: 600; color: var(--ink); }
+
 /* ===========================================================================
    HABLEMOS CLARO
    =========================================================================== */

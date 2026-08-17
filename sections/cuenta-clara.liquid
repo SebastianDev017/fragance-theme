@@ -7,7 +7,14 @@
   data-*, y src/ui.js sólo los lee y los anima.
 {%- endcomment -%}
 
-{%- assign coleccion = collections[section.settings.coleccion] -%}
+{%- liquid
+  comment
+    Ver la nota de estanteria.liquid: el ajuste es el objeto, y products_count
+    hay que forzarlo a numero antes de compararlo.
+  endcomment
+  assign coleccion = section.settings.coleccion
+  assign cuantos = coleccion.products_count | default: 0 | plus: 0
+-%}
 
 <section class="cuenta" id="{{ section.settings.ancla | default: 'cuenta' }}">
   <header class="sec-head">
@@ -20,7 +27,7 @@
     {%- endif -%}
   </header>
 
-  {%- if coleccion.products_count > 0 -%}
+  {%- if cuantos > 0 -%}
     <div class="picker" role="group" aria-label="Elige una fragancia">
       {%- for producto in coleccion.products limit: section.settings.limite -%}
         {%- liquid
