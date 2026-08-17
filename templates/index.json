@@ -269,16 +269,156 @@
         "nota": "",
         "ancla": "cierre"
       }
+    },
+    "ticker": {
+      "type": "ticker",
+      "settings": {
+        "estilo": "tinta",
+        "tamano": 22,
+        "velocidad": 4,
+        "separador": "gota"
+      },
+      "blocks": {
+        "t1": {
+          "type": "frase",
+          "settings": {
+            "texto": "Decants desde 5 ml",
+            "icono": "gota"
+          }
+        },
+        "t2": {
+          "type": "frase",
+          "settings": {
+            "texto": "Envíos a toda Venezuela",
+            "icono": "camion"
+          }
+        },
+        "t3": {
+          "type": "frase",
+          "settings": {
+            "texto": "100% originales",
+            "icono": "escudo"
+          }
+        },
+        "t4": {
+          "type": "frase",
+          "settings": {
+            "texto": "Te descontamos el decant del frasco",
+            "destacado": true
+          }
+        },
+        "t5": {
+          "type": "frase",
+          "settings": {
+            "texto": "Pagas en dólares o en bolívares",
+            "icono": "chat"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4",
+        "t5"
+      ]
+    },
+    "carrusel": {
+      "type": "catalogo-carrusel",
+      "settings": {
+        "coleccion": "frontpage",
+        "por_vista": 4,
+        "por_vista_movil": 1,
+        "limite": 12,
+        "ratio": "1/1",
+        "sangrar": true,
+        "barra": true,
+        "eyebrow": "Pasa y mira",
+        "ancla": "carrusel"
+      }
+    },
+    "marcas": {
+      "type": "ticker",
+      "settings": {
+        "estilo": "linea",
+        "tamano": 34,
+        "velocidad": 2,
+        "separador": "gota",
+        "direccion": "derecha"
+      },
+      "blocks": {
+        "m1": {
+          "type": "frase",
+          "settings": {
+            "texto": "Dior"
+          }
+        },
+        "m2": {
+          "type": "frase",
+          "settings": {
+            "texto": "Chanel"
+          }
+        },
+        "m3": {
+          "type": "frase",
+          "settings": {
+            "texto": "Versace"
+          }
+        },
+        "m4": {
+          "type": "frase",
+          "settings": {
+            "texto": "Jean Paul Gaultier"
+          }
+        },
+        "m5": {
+          "type": "frase",
+          "settings": {
+            "texto": "Carolina Herrera"
+          }
+        },
+        "m6": {
+          "type": "frase",
+          "settings": {
+            "texto": "Yves Saint Laurent"
+          }
+        },
+        "m7": {
+          "type": "frase",
+          "settings": {
+            "texto": "Lancôme"
+          }
+        },
+        "m8": {
+          "type": "frase",
+          "settings": {
+            "texto": "Giorgio Armani"
+          }
+        }
+      },
+      "block_order": [
+        "m1",
+        "m2",
+        "m3",
+        "m4",
+        "m5",
+        "m6",
+        "m7",
+        "m8"
+      ]
     }
   },
   "order": [
     "hero",
     "hero_vitrina_9U6jXM",
+    "ticker",
     "ritual",
+    "carrusel",
     "cuenta",
     "estanteria",
     "claro",
     "voces",
+    "marcas",
     "cierre"
   ]
 }

@@ -111,6 +111,9 @@ export function conectarChat() {
     const b = e.target.closest('[data-chat]');
     if (!b) return;
     e.preventDefault();
+    /* El chat se abre por encima de todo: si el menu lateral sigue puesto,
+       el panel de Chatty queda debajo y parece que el boton no hizo nada. */
+    $('#menu-lateral:not([hidden]) [data-drawer-cerrar]')?.click();
     abrirChat();
   });
 }
