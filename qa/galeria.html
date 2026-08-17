@@ -1,0 +1,64 @@
+<!doctype html>
+<!--
+  Banco de pruebas de la galería de la tarjeta.
+
+  Ningún producto de la tienda tiene dos fotos todavía, así que las flechas no
+  se pueden comprobar en vivo. Esta página carga el bundle REAL del tema
+  (assets/dropscents.js y .css, los mismos que sirve Shopify) contra dos
+  tarjetas escritas a mano: una con tres fotos y otra con una sola.
+
+  Lo que tiene que pasar:
+    · la tarjeta de tres fotos enseña flechas y puntos, y pasa de una a otra
+    · la de una sola foto no enseña flechas
+    · pulsar una flecha NO navega al producto
+-->
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>QA · galería de la tarjeta</title>
+  <link rel="stylesheet" href="../assets/dropscents.css">
+  <style>
+    body { padding: 3rem; }
+    .shelf { --cols: 2; --cols-movil: 1; max-width: 720px; margin: 0 auto; }
+  </style>
+</head>
+<body>
+  <div class="shelf">
+    <article class="card" id="tres" style="--card-ratio: 1/1;">
+      <div class="card__shot card__shot--galeria" data-galeria data-total="3">
+        <a class="card__shot-link" href="/destino-prohibido" tabindex="-1" aria-hidden="true">
+          <img class="card__slide is-on" data-i="0" alt="uno" width="10" height="10"
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Crect width='10' height='10' fill='%23E8356F'/%3E%3C/svg%3E">
+          <img class="card__slide" data-i="1" alt="dos" width="10" height="10"
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Crect width='10' height='10' fill='%232B0F33'/%3E%3C/svg%3E">
+          <img class="card__slide" data-i="2" alt="tres" width="10" height="10"
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Crect width='10' height='10' fill='%234E7BD8'/%3E%3C/svg%3E">
+        </a>
+        <button class="card__nav card__nav--prev" type="button" data-galeria-paso="-1" aria-label="Anterior">‹</button>
+        <button class="card__nav card__nav--next" type="button" data-galeria-paso="1" aria-label="Siguiente">›</button>
+        <div class="card__puntos" aria-hidden="true">
+          <span class="card__punto is-on"></span><span class="card__punto"></span><span class="card__punto"></span>
+        </div>
+      </div>
+      <div class="card__body">
+        <h3 class="card__name"><a href="/destino-prohibido">Con tres fotos</a></h3>
+      </div>
+    </article>
+
+    <article class="card" id="una" style="--card-ratio: 1/1;">
+      <div class="card__shot">
+        <a class="card__shot-link" href="#" tabindex="-1" aria-hidden="true">
+          <img class="card__slide is-on" data-i="0" alt="sola" width="10" height="10"
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Crect width='10' height='10' fill='%23866193'/%3E%3C/svg%3E">
+        </a>
+      </div>
+      <div class="card__body">
+        <h3 class="card__name"><a href="#">Con una sola</a></h3>
+      </div>
+    </article>
+  </div>
+
+  <script>window.DropScentsAssets = {}; window.DropScentsTextos = {};</script>
+  <script type="module" src="../assets/dropscents.js"></script>
+</body>
+</html>

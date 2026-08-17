@@ -152,6 +152,8 @@ vite.config.ts.timestamp-*
 # Capturas de QA: 31 MB de PNG que no aportan al tema.
 # Se quedan en local; el README explica que contienen.
 qa/
+# ...menos el banco de pruebas de la galeria, que es codigo y si se versiona.
+!qa/galeria.html
 
 # OJO: assets/ NO se ignora. Ahi viven los bundles compilados y las fuentes,
 # y Shopify los necesita en el repositorio para desplegar el tema.
