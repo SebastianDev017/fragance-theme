@@ -51,25 +51,33 @@
   <div class="vitrina__panel" aria-hidden="true"></div>
 
   <div class="vitrina__ui">
+    {%- comment -%}
+      Todo el texto se parte por la misma línea, no sólo el titular: si el
+      antetítulo o el subtítulo fueran de un solo color, la mitad que cae
+      sobre la foto oscura no se leería.
+    {%- endcomment -%}
+
     {%- if section.settings.eyebrow != blank -%}
-      <p class="eyebrow vitrina__eyebrow" data-hero-in>
+      {%- capture eyebrow_html -%}
         <span class="dot" aria-hidden="true"></span> {{ section.settings.eyebrow }}
-      </p>
+      {%- endcapture -%}
+      <div data-hero-in>
+        {% render 'texto-partido', etiqueta: 'p', clase: 'eyebrow vitrina__eyebrow', contenido: eyebrow_html %}
+      </div>
     {%- endif -%}
 
-    <h1 class="vitrina__h1" data-hero-in>
-      <span class="vitrina__capa vitrina__capa--claro" aria-hidden="true">
-        <span class="vitrina__l">{{ t1 }}</span>
-        {%- if t2 != blank %}<span class="vitrina__l">{{ t2 }}</span>{% endif -%}
-      </span>
-      <span class="vitrina__capa vitrina__capa--tinta">
-        <span class="vitrina__l">{{ t1 }}</span>
-        {%- if t2 != blank %}<span class="vitrina__l">{{ t2 }}</span>{% endif -%}
-      </span>
-    </h1>
+    {%- capture titulo_html -%}
+      <span class="vitrina__l">{{ t1 }}</span>
+      {%- if t2 != blank %}<span class="vitrina__l">{{ t2 }}</span>{% endif -%}
+    {%- endcapture -%}
+    <div data-hero-in class="vitrina__h1-wrap">
+      {% render 'texto-partido', etiqueta: 'h1', clase: 'vitrina__h1', contenido: titulo_html %}
+    </div>
 
     {%- if sub != blank -%}
-      <p class="vitrina__sub" data-hero-in>{{ sub }}</p>
+      <div data-hero-in>
+        {% render 'texto-partido', etiqueta: 'p', clase: 'vitrina__sub', contenido: sub %}
+      </div>
     {%- endif -%}
 
     <div class="vitrina__cta" data-hero-in>

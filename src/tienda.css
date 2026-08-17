@@ -354,44 +354,76 @@
 
 .vitrina__ui {
   position: relative; z-index: 2;
-  padding: clamp(6rem, 12vh, 9rem) var(--edge) clamp(2rem, 6vh, 4rem);
-  display: grid; justify-items: center; text-align: center; gap: 1.1rem;
+  padding: clamp(5.5rem, 11vh, 8rem) var(--edge) clamp(1.5rem, 4vh, 3rem);
+  display: grid; justify-items: center; text-align: center; gap: 1rem;
+  width: 100%;
 }
 
 .vitrina__eyebrow { color: var(--ink-2); margin: 0; }
 @media (max-width: 899px) { .vitrina__eyebrow { color: #E9DCEF; } }
 
-/* Las dos copias del titular, una encima de la otra y recortadas por la misma
-   línea. La segunda es la que leen los lectores de pantalla. */
-.vitrina__h1 { position: relative; margin: 0; width: 100%; }
-.vitrina__capa {
-  display: grid; gap: .1em;
-  font-family: var(--font-d); font-weight: 700;
-  font-size: clamp(2.4rem, min(7.4vw, 11vh), 6.6rem);
-  line-height: .92; letter-spacing: -.045em; text-transform: uppercase;
+/* ---------- texto partido en dos colores ----------
+   Las dos copias miden lo que la SECCIÓN, no lo que el contenedor de texto:
+   el `margin-inline` negativo las estira hasta el borde y el `padding-inline`
+   devuelve el texto a su sitio. Así el `clip-path` en porcentaje cae en el
+   mismo punto que el panel del fondo con cualquier valor de --corte. */
+.partido { position: relative; margin: 0; }
+.partido__capa {
+  display: block;
+  margin-inline: calc(-1 * var(--edge));
+  padding-inline: var(--edge);
 }
-.vitrina__capa--claro {
-  position: absolute; inset: 0; color: #FFFFFF;
+.partido__capa--claro {
+  position: absolute; inset: 0;
   clip-path: inset(0 calc(100% - var(--corte, 50%)) 0 0);
 }
-.vitrina__capa--tinta {
-  color: var(--ink);
-  clip-path: inset(0 0 0 var(--corte, 50%));
-}
-.vitrina__l { display: block; }
+.partido__capa--tinta { clip-path: inset(0 0 0 var(--corte, 50%)); }
+
 @media (max-width: 899px) {
-  /* Sin partición: el titular entero en claro sobre la foto. */
-  .vitrina__capa--claro { clip-path: none; }
-  .vitrina__capa--tinta { visibility: hidden; }
+  /* El fondo ya no se parte en vertical: todo el texto va en claro. */
+  .partido__capa--claro { clip-path: none; }
+  .partido__capa--tinta { visibility: hidden; }
 }
 
-.vitrina__sub {
-  max-width: 46ch; color: var(--ink-2); font-size: clamp(1rem, 1.3vw, 1.12rem);
+.vitrina__h1-wrap { width: 100%; }
+.vitrina__h1 .partido__capa {
+  font-family: var(--font-d); font-weight: 700;
+  font-size: clamp(2.2rem, min(6.8vw, 9.4vh), 5.6rem);
+  line-height: .92; letter-spacing: -.045em; text-transform: uppercase;
 }
-@media (max-width: 899px) { .vitrina__sub { color: #E9DCEF; } }
+.vitrina__h1 .partido__capa--claro { color: #FFFFFF; }
+.vitrina__h1 .partido__capa--tinta { color: var(--ink); }
+.vitrina__l { display: block; }
+
+.vitrina__eyebrow { display: block; margin-bottom: 0; }
+.vitrina__eyebrow .partido__capa--claro { color: rgba(255,255,255,.88); }
+.vitrina__eyebrow .partido__capa--tinta { color: var(--ink-2); }
+
+.vitrina__sub .partido__capa {
+  max-width: none; font-size: clamp(1rem, 1.3vw, 1.12rem);
+}
+/* el ancho de lectura lo pone el contenedor, no la capa: si lo pusiera la
+   capa, las dos copias se cortarían en sitios distintos */
+.vitrina__sub { max-width: min(52ch, 100%); }
+.vitrina__sub .partido__capa--claro { color: rgba(255,255,255,.88); }
+.vitrina__sub .partido__capa--tinta { color: var(--ink-2); }
+
 .vitrina__cta { display: flex; flex-wrap: wrap; gap: .8rem; justify-content: center; }
+/* Los botones caen a un lado o a otro según el corte, así que tienen que
+   leerse sobre los dos fondos: el fantasma va sólido y el de tinta lleva un
+   filete claro que lo despega de la foto. */
+.vitrina__cta .btn--ghost { background: rgba(255,255,255,.92); border-color: rgba(255,255,255,.92); color: var(--ink); }
+.vitrina__cta .btn--ghost:hover { background: #fff; border-color: #fff; }
+.vitrina__cta .btn--ink { box-shadow: 0 0 0 1px rgba(255,255,255,.35), var(--shadow-m); }
 
 .vitrina__tira { position: relative; z-index: 2; padding-bottom: clamp(1.5rem, 4vh, 3rem); }
+/* Es una TIRA: las tarjetas van a tamaño fijo pequeño. Repartir el ancho
+   entre `--porvista` las dejaba a 317 px y empujaban el hero fuera de la
+   pantalla. */
+.carrusel--mini .carrusel__slide { flex: 0 0 clamp(122px, 14vw, 168px); }
+.carrusel--mini .carrusel__pista { padding-bottom: .6rem; }
+.carrusel--mini .mini__nombre { font-size: .8rem; }
+.carrusel--mini .mini__precio { font-size: .76rem; }
 .vitrina__tira-tit {
   padding-inline: var(--edge); text-align: center;
   font-size: .74rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
