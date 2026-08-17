@@ -1,0 +1,151 @@
+{%- comment -%}
+  El catálogo, en carrusel.
+
+  Mismo contenido y mismas tarjetas que la sección «Catálogo»; lo que cambia
+  es que aquí se arrastra en horizontal en vez de apilarse en rejilla.
+
+  El desplazamiento es `scroll-snap` nativo: con el dedo, con la rueda o con
+  las flechas del teclado funciona igual, y si el JavaScript no llega la lista
+  sigue siendo scrolleable. Las flechas sólo añaden comodidad.
+{%- endcomment -%}
+
+{%- liquid
+  assign coleccion = section.settings.coleccion
+  assign cuantos = coleccion.products_count | default: 0 | plus: 0
+  assign limite = section.settings.limite | default: 12
+  assign porver = section.settings.por_vista | default: 4
+  assign porver_movil = section.settings.por_vista_movil | default: 1
+
+  assign titulo = section.settings.titulo
+  if titulo == blank
+    assign titulo = 'secciones.carrusel.titulo' | t
+  endif
+-%}
+
+<section class="carrusel-sec" id="{{ section.settings.ancla | default: 'carrusel' }}"
+  style="--porvista: {{ porver }}; --porvista-movil: {{ porver_movil }};">
+
+  <header class="sec-head sec-head--row">
+    <div>
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="eyebrow"><span class="dot" aria-hidden="true"></span> {{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      <h2 class="h2">{{ titulo }}</h2>
+    </div>
+    {%- if section.settings.texto != blank -%}
+      <p class="sec-head__p">{{ section.settings.texto }}</p>
+    {%- endif -%}
+  </header>
+
+  {%- if cuantos > 0 -%}
+    <div class="carrusel{% if section.settings.sangrar %} carrusel--sangra{% endif %}" data-carrusel>
+      <ul class="carrusel__pista" data-carrusel-pista
+        tabindex="0" role="region"
+        aria-label="{{ 'secciones.carrusel.aria' | t }}">
+        {%- for producto in coleccion.products limit: limite -%}
+          <li class="carrusel__slide">
+            {% render 'card-fragancia', producto: producto, ratio: section.settings.ratio, tam: '(min-width: 750px) 30vw, 80vw' %}
+          </li>
+        {%- endfor -%}
+      </ul>
+
+      <div class="carrusel__mandos">
+        <button class="carrusel__flecha" type="button" data-carrusel-paso="-1"
+          aria-label="{{ 'general.accesibilidad.anterior' | t }}">
+          {% render 'icono', tipo: 'izquierda', tam: 20, grosor: 2 %}
+        </button>
+        <button class="carrusel__flecha" type="button" data-carrusel-paso="1"
+          aria-label="{{ 'general.accesibilidad.siguiente' | t }}">
+          {% render 'icono', tipo: 'derecha', tam: 20, grosor: 2 %}
+        </button>
+      </div>
+
+      {%- if section.settings.barra -%}
+        <div class="carrusel__barra" aria-hidden="true"><span data-carrusel-progreso></span></div>
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.ver_todo != blank -%}
+      <p class="estanteria__mas">
+        <a class="btn btn--ghost" href="{{ coleccion.url }}">
+          {{ section.settings.ver_todo }}
+          {% render 'icono', tipo: 'flecha', tam: 17 %}
+        </a>
+      </p>
+    {%- endif -%}
+  {%- else -%}
+    <div class="carrusel carrusel--vacia" aria-hidden="true">
+      <ul class="carrusel__pista">
+        {%- for i in (1..4) -%}
+          <li class="carrusel__slide">{% render 'card-vacia', ratio: section.settings.ratio %}</li>
+        {%- endfor -%}
+      </ul>
+    </div>
+    <p class="aviso-vacio">
+      {%- if coleccion == blank -%}
+        {{ 'general.vacio.elige_coleccion' | t }}
+      {%- else -%}
+        {{ 'general.vacio.coleccion_sin_productos' | t: titulo: coleccion.title }}
+      {%- endif -%}
+    </p>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "t:secciones.carrusel.nombre",
+  "tag": "div",
+  "settings": [
+    { "type": "collection", "id": "coleccion", "label": "t:comun.coleccion" },
+    { "type": "header", "content": "t:secciones.carrusel.ajustes" },
+    { "type": "range", "id": "limite", "min": 4, "max": 24, "step": 1, "label": "t:secciones.carrusel.limite", "default": 12 },
+    { "type": "range", "id": "por_vista", "min": 2, "max": 6, "step": 1, "label": "t:secciones.carrusel.por_vista", "default": 4 },
+    { "type": "range", "id": "por_vista_movil", "min": 1, "max": 3, "step": 1, "label": "t:secciones.carrusel.por_vista_movil", "default": 1 },
+    { "type": "checkbox", "id": "sangrar", "label": "t:secciones.carrusel.sangrar", "info": "t:secciones.carrusel.sangrar_info", "default": true },
+    { "type": "checkbox", "id": "barra", "label": "t:secciones.carrusel.barra", "default": true },
+    {
+      "type": "select",
+      "id": "ratio",
+      "label": "t:comun.ratio",
+      "info": "t:comun.ratio_info",
+      "default": "1/1",
+      "options": [
+        { "value": "1/1", "label": "t:comun.ratios.cuadrada" },
+        { "value": "4/5", "label": "t:comun.ratios.vertical" },
+        { "value": "3/4", "label": "t:comun.ratios.retrato" },
+        { "value": "5/4", "label": "t:comun.ratios.horizontal" },
+        { "value": "16/9", "label": "t:comun.ratios.panoramica" }
+      ]
+    },
+    { "type": "header", "content": "t:comun.textos" },
+    { "type": "paragraph", "content": "t:comun.vacio_traduce" },
+    { "type": "text", "id": "eyebrow", "label": "t:comun.antetitulo", "default": "Pasa y mira" },
+    { "type": "text", "id": "titulo", "label": "t:comun.titular" },
+    { "type": "textarea", "id": "texto", "label": "t:comun.texto" },
+    { "type": "text", "id": "ver_todo", "label": "t:secciones.estanteria.ver_todo" },
+    { "type": "text", "id": "ancla", "label": "t:comun.ancla", "default": "carrusel" }
+  ],
+  "presets": [
+    {
+      "name": "t:secciones.carrusel.presets.vitrina",
+      "settings": { "por_vista": 4, "por_vista_movil": 1, "limite": 12, "ratio": "1/1", "sangrar": true, "eyebrow": "Pasa y mira" }
+    },
+    {
+      "name": "t:secciones.carrusel.presets.novedades",
+      "settings": { "por_vista": 3, "por_vista_movil": 1, "limite": 9, "ratio": "4/5", "sangrar": false, "eyebrow": "Recién llegados", "ver_todo": "Ver todo lo nuevo" }
+    },
+    {
+      "name": "t:secciones.carrusel.presets.tira",
+      "settings": { "por_vista": 6, "por_vista_movil": 2, "limite": 18, "ratio": "1/1", "sangrar": true, "barra": false, "eyebrow": "Todo el catálogo" }
+    },
+    {
+      "name": "t:secciones.carrusel.presets.relacionados",
+      "settings": { "por_vista": 4, "por_vista_movil": 2, "limite": 8, "ratio": "3/4", "sangrar": false, "eyebrow": "También te puede gustar" }
+    },
+    {
+      "name": "t:secciones.carrusel.presets.escaparate",
+      "settings": { "por_vista": 2, "por_vista_movil": 1, "limite": 6, "ratio": "5/4", "sangrar": true, "eyebrow": "En grande" }
+    }
+  ]
+}
+{% endschema %}

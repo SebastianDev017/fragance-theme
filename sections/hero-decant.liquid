@@ -12,6 +12,26 @@
 
 {%- liquid
   assign coleccion = section.settings.coleccion
+
+  comment
+    Copia: si el ajuste está vacío, entra el texto traducido del idioma
+    activo. Así el mismo tema habla español o inglés sin que el comerciante
+    tenga que escribir nada dos veces.
+  endcomment
+  assign t1 = section.settings.titulo_1
+  if t1 == blank
+    assign t1 = 'secciones.hero.titulo_1' | t
+  endif
+  assign t2 = section.settings.titulo_2
+  if t2 == blank
+    assign t2 = 'secciones.hero.titulo_2' | t
+  endif
+  assign t3 = section.settings.titulo_3
+  assign sub = section.settings.subtitulo
+  if sub == blank
+    assign sub = 'secciones.hero.subtitulo' | t
+  endif
+
   assign desde = 0
   for producto in coleccion.products
     for v in producto.variants
@@ -41,20 +61,20 @@
       {%- endif -%}
 
       <h1 class="hero__h1">
-        <span class="line" data-hero-in>{{ section.settings.titulo_1 }}</span>
-        <span class="line line--2" data-hero-in>{{ section.settings.titulo_2 }}</span>
-        {%- if section.settings.titulo_3 != blank -%}
-          <span class="line line--2" data-hero-in>{{ section.settings.titulo_3 }}</span>
+        <span class="line" data-hero-in>{{ t1 }}</span>
+        <span class="line line--2" data-hero-in>{{ t2 }}</span>
+        {%- if t3 != blank -%}
+          <span class="line line--2" data-hero-in>{{ t3 }}</span>
         {%- endif -%}
       </h1>
 
-      <p class="hero__sub" data-hero-in>{{ section.settings.subtitulo }}</p>
+      <p class="hero__sub" data-hero-in>{{ sub }}</p>
 
       <div class="hero__cta" data-hero-in>
         <a class="btn btn--ink btn--lg" href="{{ section.settings.cta_url | default: '#estanteria' }}">
           {{ section.settings.cta_texto }}
           {%- if desde > 0 %} <span>{{ desde | money }}</span>{% endif -%}
-          {% render 'icon-arrow' %}
+          {% render 'icono', tipo: 'flecha' %}
         </a>
         {%- if section.settings.cta2_texto != blank -%}
           <a class="btn btn--ghost btn--lg" href="{{ section.settings.cta2_url | default: '#ritual' }}">
@@ -91,34 +111,54 @@
 
 {% schema %}
 {
-  "name": "Hero — decant 3D",
+  "name": "t:secciones.hero.nombre",
   "tag": "div",
   "settings": [
-    {
-      "type": "paragraph",
-      "content": "La animación 3D usa la colección para calcular el precio 'desde'. Necesita productos con una variante que se llame 'Decant 5 ml'."
-    },
-    { "type": "collection", "id": "coleccion", "label": "Colección del catálogo" },
-    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Decants y frascos originales · Toda Venezuela" },
-    { "type": "text", "id": "titulo_1", "label": "Titular, línea 1", "default": "Pruébalo en 5 ml." },
-    { "type": "text", "id": "titulo_2", "label": "Titular, línea 2", "default": "Cómpralo cuando" },
-    { "type": "text", "id": "titulo_3", "label": "Titular, línea 3", "default": "estés seguro." },
-    { "type": "textarea", "id": "subtitulo", "label": "Subtítulo", "default": "Los perfumes que ya conoces, en decant para vivirlos una semana en tu piel. Y si es el tuyo, el frasco completo al mismo precio que en Amazon — solo que aquí, y en dos días." },
-    { "type": "text", "id": "cta_texto", "label": "Botón principal", "default": "Ver decants desde" },
-    { "type": "url", "id": "cta_url", "label": "Enlace del botón principal" },
-    { "type": "text", "id": "cta2_texto", "label": "Botón secundario", "default": "Cómo funciona" },
-    { "type": "url", "id": "cta2_url", "label": "Enlace del botón secundario" },
-    { "type": "text", "id": "nota", "label": "Nota de pago", "default": "Precios en dólares. ¿Prefieres pagar en bolívares?" },
-    { "type": "text", "id": "nota_enlace", "label": "Nota — texto del enlace al chat", "default": "Escríbenos por el chat" },
-    { "type": "text", "id": "nota_cola", "label": "Nota — final", "default": "y te pasamos el monto a la tasa del día." },
-    { "type": "header", "content": "Remate (aparece al llenarse el frasco)" },
-    { "type": "text", "id": "final_eyebrow", "label": "Antetítulo", "default": "Y entonces sí" },
-    { "type": "text", "id": "final_titulo", "label": "Titular", "default": "Ya sabes que es el tuyo." },
-    { "type": "textarea", "id": "final_texto", "label": "Texto", "default": "El frasco completo, sellado, al mismo precio que en Amazon — menos lo que pagaste por el decant." },
-    { "type": "text", "id": "final_cta", "label": "Botón", "default": "Ver la cuenta completa" },
-    { "type": "url", "id": "final_url", "label": "Enlace del botón" },
-    { "type": "text", "id": "scroll_texto", "label": "Pista de scroll", "default": "baja y sirve" }
+    { "type": "paragraph", "content": "t:secciones.hero.ayuda" },
+    { "type": "collection", "id": "coleccion", "label": "t:comun.coleccion" },
+    { "type": "header", "content": "t:comun.textos" },
+    { "type": "paragraph", "content": "t:comun.vacio_traduce" },
+    { "type": "text", "id": "eyebrow", "label": "t:comun.antetitulo", "default": "Decants y frascos originales · Toda Venezuela" },
+    { "type": "text", "id": "titulo_1", "label": "t:comun.titular_1" },
+    { "type": "text", "id": "titulo_2", "label": "t:comun.titular_2" },
+    { "type": "text", "id": "titulo_3", "label": "t:comun.titular_3" },
+    { "type": "textarea", "id": "subtitulo", "label": "t:comun.subtitulo" },
+    { "type": "text", "id": "cta_texto", "label": "t:comun.boton", "default": "Ver decants desde" },
+    { "type": "url", "id": "cta_url", "label": "t:comun.boton_enlace" },
+    { "type": "text", "id": "cta2_texto", "label": "t:comun.boton_2", "default": "Cómo funciona" },
+    { "type": "url", "id": "cta2_url", "label": "t:comun.boton_2_enlace" },
+    { "type": "text", "id": "nota", "label": "t:comun.nota", "default": "Precios en dólares. ¿Prefieres pagar en bolívares?" },
+    { "type": "text", "id": "nota_enlace", "label": "t:secciones.hero.nota_enlace", "default": "Escríbenos por el chat" },
+    { "type": "text", "id": "nota_cola", "label": "t:secciones.hero.nota_cola", "default": "y te pasamos el monto a la tasa del día." },
+    { "type": "header", "content": "t:secciones.hero.remate" },
+    { "type": "text", "id": "final_eyebrow", "label": "t:comun.antetitulo", "default": "Y entonces sí" },
+    { "type": "text", "id": "final_titulo", "label": "t:comun.titular", "default": "Ya sabes que es el tuyo." },
+    { "type": "textarea", "id": "final_texto", "label": "t:comun.texto", "default": "El frasco completo, sellado, al mismo precio que en Amazon — menos lo que pagaste por el decant." },
+    { "type": "text", "id": "final_cta", "label": "t:comun.boton", "default": "Ver la cuenta completa" },
+    { "type": "url", "id": "final_url", "label": "t:comun.boton_enlace" },
+    { "type": "text", "id": "scroll_texto", "label": "t:secciones.hero.scroll", "default": "baja y sirve" }
   ],
-  "presets": [{ "name": "Hero — decant 3D" }]
+  "presets": [
+    {
+      "name": "t:secciones.hero.presets.decant",
+      "settings": { "cta_texto": "Ver decants desde", "cta2_texto": "Cómo funciona" }
+    },
+    {
+      "name": "t:secciones.hero.presets.directo",
+      "settings": { "eyebrow": "", "cta_texto": "Ver el catálogo", "cta2_texto": "", "nota": "", "scroll_texto": "" }
+    },
+    {
+      "name": "t:secciones.hero.presets.bolivares",
+      "settings": { "eyebrow": "Pagas en dólares o en bolívares", "cta_texto": "Ver decants desde", "cta2_texto": "Coordinar por el chat", "nota": "¿Prefieres pagar en bolívares a tasa BCV?" }
+    },
+    {
+      "name": "t:secciones.hero.presets.envio",
+      "settings": { "eyebrow": "Envío gratis desde $20 · Toda Venezuela", "cta_texto": "Pedir el mío", "cta2_texto": "Cómo funciona", "nota": "Caracas en 24 a 48 h. Interior por Zoom o MRW." }
+    },
+    {
+      "name": "t:secciones.hero.presets.sin_remate",
+      "settings": { "final_eyebrow": "", "final_titulo": "", "final_texto": "", "final_cta": "", "scroll_texto": "" }
+    }
+  ]
 }
 {% endschema %}

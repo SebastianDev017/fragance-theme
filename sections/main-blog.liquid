@@ -1,0 +1,55 @@
+{%- comment -%} Listado del blog. {%- endcomment -%}
+
+<section class="blog">
+  <header class="sec-head">
+    <p class="eyebrow"><span class="dot" aria-hidden="true"></span> {{ 'blogs.eyebrow' | t }}</p>
+    <h1 class="h2">{{ blog.title }}</h1>
+  </header>
+
+  {%- paginate blog.articles by 12 -%}
+    {%- if blog.articles.size > 0 -%}
+      <div class="blog__lista">
+        {%- for articulo in blog.articles -%}
+          <article class="post">
+            {%- if articulo.image -%}
+              <a class="post__foto" href="{{ articulo.url }}" tabindex="-1" aria-hidden="true">
+                <img src="{{ articulo.image | image_url: width: 800 }}" alt=""
+                  width="{{ articulo.image.width }}" height="{{ articulo.image.height }}"
+                  loading="lazy" decoding="async">
+              </a>
+            {%- endif -%}
+            <div class="post__txt">
+              <p class="post__fecha">{{ articulo.published_at | date: format: 'date' }}</p>
+              <h2 class="post__tit"><a href="{{ articulo.url }}">{{ articulo.title }}</a></h2>
+              <p class="post__ex">{{ articulo.excerpt_or_content | strip_html | truncate: 150 }}</p>
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+
+      {%- if paginate.pages > 1 -%}
+        <nav class="paginacion" aria-label="{{ 'general.paginacion' | t }}">
+          {%- for parte in paginate.parts -%}
+            {%- if parte.is_link -%}
+              <a href="{{ parte.url }}">{{ parte.title }}</a>
+            {%- else -%}
+              <span {% if parte.title == paginate.current_page %}aria-current="page" class="is-actual"{% endif %}>{{ parte.title }}</span>
+            {%- endif -%}
+          {%- endfor -%}
+        </nav>
+      {%- endif -%}
+    {%- else -%}
+      <div class="vacio-pagina">
+        <p class="vacio-pagina__t">{{ 'blogs.vacio' | t }}</p>
+      </div>
+    {%- endif -%}
+  {%- endpaginate -%}
+</section>
+
+{% schema %}
+{
+  "name": "t:secciones.blog.nombre",
+  "tag": "section",
+  "settings": []
+}
+{% endschema %}

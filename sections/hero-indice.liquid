@@ -1,0 +1,225 @@
+{%- comment -%}
+  Hero «el índice».
+
+  En vez de una foto grande y una frase, el hero ES el catálogo: una lista
+  numerada de fragancias, en tipografía grande, y al pasar por encima de cada
+  línea aparece el frasco correspondiente.
+
+  Por qué funciona aquí: la promesa de la tienda es «pruébalo antes de
+  comprarlo», así que lo primero que conviene enseñar es CUÁNTAS puedes
+  probar, no una foto de estudio. Y como todo sale de la colección, el hero se
+  actualiza solo cada vez que entra una fragancia nueva.
+
+  Las imágenes se imprimen TODAS de una vez y sólo se enciende la que toca:
+  cambiar el `src` al pasar el ratón daría un parpadeo blanco en la primera
+  pasada, que es exactamente el momento en el que hay que verse bien.
+
+  Sin ratón (móvil, teclado, lector de pantalla) la lista sigue siendo una
+  lista de enlaces con su miniatura: no hay nada que dependa del hover.
+{%- endcomment -%}
+
+{%- liquid
+  assign coleccion = section.settings.coleccion
+  assign cuantos = coleccion.products_count | default: 0 | plus: 0
+  assign limite = section.settings.limite | default: 6
+
+  assign titulo = section.settings.titulo
+  if titulo == blank
+    assign titulo = 'secciones.indice.titulo' | t
+  endif
+  assign sub = section.settings.subtitulo
+  if sub == blank
+    assign sub = 'secciones.indice.subtitulo' | t
+  endif
+
+  comment
+    El precio «desde» sale del decant más barato de la colección: si mañana
+    entra una fragancia más barata, el botón se actualiza solo.
+  endcomment
+  assign desde = 0
+  for producto in coleccion.products limit: limite
+    for v in producto.variants
+      if v.title contains 'Decant' and v.available
+        if desde == 0 or v.price < desde
+          assign desde = v.price
+        endif
+      endif
+    endfor
+  endfor
+-%}
+
+<section class="indice indice--{{ section.settings.altura }}" data-indice>
+  <div class="indice__lead">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="eyebrow" data-hero-in>
+        <span class="dot" aria-hidden="true"></span> {{ section.settings.eyebrow }}
+      </p>
+    {%- endif -%}
+
+    <h1 class="indice__h1" data-hero-in>{{ titulo }}</h1>
+
+    {%- if sub != blank -%}
+      <p class="indice__sub" data-hero-in>{{ sub }}</p>
+    {%- endif -%}
+
+    <div class="indice__cta" data-hero-in>
+      {%- if section.settings.cta_texto != blank -%}
+        <a class="btn btn--ink btn--lg" href="{{ section.settings.cta_url | default: '#estanteria' }}">
+          {{ section.settings.cta_texto }}
+          {%- if desde > 0 %} <span>{{ desde | money }}</span>{% endif -%}
+          {% render 'icono', tipo: 'flecha' %}
+        </a>
+      {%- endif -%}
+      {%- if section.settings.cta2_texto != blank -%}
+        <button class="btn btn--ghost btn--lg" type="button" data-chat>
+          {% render 'icono', tipo: 'chat', tam: 16 %}
+          {{ section.settings.cta2_texto }}
+        </button>
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.nota != blank -%}
+      <p class="indice__nota" data-hero-in>{{ section.settings.nota }}</p>
+    {%- endif -%}
+  </div>
+
+  <div class="indice__lista-wrap" data-hero-in>
+    {%- comment -%} el visor flotante: sólo con ratón, por eso va aria-hidden {%- endcomment -%}
+    {%- if cuantos > 0 -%}
+      <div class="indice__vista" data-indice-vista aria-hidden="true">
+        {%- for producto in coleccion.products limit: limite -%}
+          {%- if producto.featured_image -%}
+            <img class="indice__vista-img" data-i="{{ forloop.index0 }}"
+              src="{{ producto.featured_image | image_url: width: 700 }}"
+              alt="" width="{{ producto.featured_image.width }}"
+              height="{{ producto.featured_image.height }}" loading="lazy" decoding="async">
+          {%- else -%}
+            <span class="indice__vista-img card__sinfoto" data-i="{{ forloop.index0 }}"></span>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      <ol class="indice__lista">
+        {%- for producto in coleccion.products limit: limite -%}
+          {%- liquid
+            assign v_entrada = null
+            for v in producto.variants
+              if v.title contains 'Decant 5'
+                assign v_entrada = v
+                break
+              endif
+            endfor
+            unless v_entrada
+              assign v_entrada = producto.selected_or_first_available_variant
+            endunless
+          -%}
+          <li class="indice__fila">
+            <a href="{{ producto.url }}" data-indice-fila data-i="{{ forloop.index0 }}">
+              <span class="indice__n">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+
+              <span class="indice__mini" aria-hidden="true">
+                {%- if producto.featured_image -%}
+                  <img src="{{ producto.featured_image | image_url: width: 160 }}" alt=""
+                    width="80" height="80" loading="lazy" decoding="async">
+                {%- endif -%}
+              </span>
+
+              <span class="indice__txt">
+                {%- if producto.vendor != blank -%}
+                  <span class="indice__marca">{{ producto.vendor }}</span>
+                {%- endif -%}
+                <span class="indice__nombre">{{ producto.title }}</span>
+              </span>
+
+              {%- if v_entrada -%}
+                <span class="indice__precio">
+                  <small>{{ 'productos.desde' | t }}</small>
+                  {{ v_entrada.price | money }}
+                </span>
+              {%- endif -%}
+
+              {% render 'icono', tipo: 'flecha', tam: 20 %}
+            </a>
+          </li>
+        {%- endfor -%}
+      </ol>
+
+      {%- if section.settings.pie != blank -%}
+        <p class="indice__pie">
+          <a href="{{ coleccion.url }}">{{ section.settings.pie }}</a>
+        </p>
+      {%- endif -%}
+    {%- else -%}
+      <ol class="indice__lista indice__lista--vacia" aria-hidden="true">
+        {%- for i in (1..5) -%}
+          <li class="indice__fila">
+            <span>
+              <span class="indice__n">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+              <span class="indice__mini"></span>
+              <span class="indice__txt">
+                <span class="indice__marca">{{ 'general.vacio.marca' | t }}</span>
+                <span class="indice__nombre">{{ 'general.vacio.nombre' | t }}</span>
+              </span>
+              <span class="indice__precio">&mdash;</span>
+            </span>
+          </li>
+        {%- endfor -%}
+      </ol>
+      <p class="aviso-vacio aviso-vacio--suelto">{{ 'general.vacio.elige_coleccion' | t }}</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:secciones.indice.nombre",
+  "tag": "div",
+  "settings": [
+    { "type": "collection", "id": "coleccion", "label": "t:comun.coleccion" },
+    { "type": "range", "id": "limite", "min": 3, "max": 10, "step": 1, "label": "t:secciones.indice.limite", "default": 6 },
+    {
+      "type": "select",
+      "id": "altura",
+      "label": "t:comun.altura",
+      "default": "pantalla",
+      "options": [
+        { "value": "auto", "label": "t:comun.alturas.auto" },
+        { "value": "alta", "label": "t:comun.alturas.alta" },
+        { "value": "pantalla", "label": "t:comun.alturas.pantalla" }
+      ]
+    },
+    { "type": "header", "content": "t:comun.textos" },
+    { "type": "paragraph", "content": "t:comun.vacio_traduce" },
+    { "type": "text", "id": "eyebrow", "label": "t:comun.antetitulo", "default": "El índice" },
+    { "type": "text", "id": "titulo", "label": "t:comun.titular" },
+    { "type": "textarea", "id": "subtitulo", "label": "t:comun.subtitulo" },
+    { "type": "text", "id": "cta_texto", "label": "t:comun.boton", "default": "Ver decants desde" },
+    { "type": "url", "id": "cta_url", "label": "t:comun.boton_enlace" },
+    { "type": "text", "id": "cta2_texto", "label": "t:comun.boton_2_chat_texto", "default": "No sé cuál elegir" },
+    { "type": "text", "id": "nota", "label": "t:comun.nota", "default": "Precios en dólares. Envío gratis desde $20." },
+    { "type": "text", "id": "pie", "label": "t:secciones.indice.pie", "default": "Ver el catálogo completo" }
+  ],
+  "presets": [
+    {
+      "name": "t:secciones.indice.presets.indice",
+      "settings": { "limite": 6, "altura": "pantalla" }
+    },
+    {
+      "name": "t:secciones.indice.presets.corto",
+      "settings": { "limite": 4, "altura": "alta", "eyebrow": "Los cuatro de siempre", "cta2_texto": "" }
+    },
+    {
+      "name": "t:secciones.indice.presets.carta",
+      "settings": { "limite": 10, "altura": "auto", "eyebrow": "La carta completa", "pie": "Ver el catálogo completo", "cta_texto": "" }
+    },
+    {
+      "name": "t:secciones.indice.presets.asesoria",
+      "settings": { "limite": 5, "altura": "pantalla", "eyebrow": "¿Por dónde empiezo?", "cta_texto": "Ver decants desde", "cta2_texto": "Que me recomienden uno" }
+    },
+    {
+      "name": "t:secciones.indice.presets.lista",
+      "settings": { "limite": 8, "altura": "auto", "eyebrow": "Todo lo que tenemos", "nota": "", "pie": "" }
+    }
+  ]
+}
+{% endschema %}

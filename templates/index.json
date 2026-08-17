@@ -1,237 +1,119 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "hero": {
-      "type": "hero-decant",
+      "type": "hero-indice",
       "settings": {
-        "coleccion": "catalogo",
-        "eyebrow": "Decants y frascos originales · Toda Venezuela",
-        "titulo_1": "Pruébalo en 5 ml.",
-        "titulo_2": "Cómpralo cuando",
-        "titulo_3": "estés seguro.",
-        "subtitulo": "Los perfumes que ya conoces, en decant para vivirlos una semana en tu piel. Y si es el tuyo, el frasco completo al mismo precio que en Amazon — solo que aquí, y en dos días.",
-        "cta_texto": "Ver decants desde",
-        "cta_url": "",
-        "cta2_texto": "Cómo funciona",
-        "cta2_url": "",
-        "nota": "Precios en dólares. ¿Prefieres pagar en bolívares?",
-        "nota_enlace": "Escríbenos por el chat",
-        "nota_cola": "y te pasamos el monto a la tasa del día.",
-        "final_eyebrow": "Y entonces sí",
-        "final_titulo": "Ya sabes que es el tuyo.",
-        "final_texto": "El frasco completo, sellado, al mismo precio que en Amazon — menos lo que pagaste por el decant.",
-        "final_cta": "Ver la cuenta completa",
-        "final_url": "",
-        "scroll_texto": "baja y sirve"
+        "coleccion": "frontpage",
+        "limite": 6,
+        "altura": "pantalla"
       }
+    },
+    "ticker": {
+      "type": "ticker",
+      "settings": { "estilo": "tinta", "tamano": 22, "velocidad": 4, "separador": "gota" },
+      "blocks": {
+        "t1": { "type": "frase", "settings": { "texto": "Decants desde 5 ml", "icono": "gota" } },
+        "t2": { "type": "frase", "settings": { "texto": "Envíos a toda Venezuela", "icono": "camion" } },
+        "t3": { "type": "frase", "settings": { "texto": "100% originales", "icono": "escudo" } },
+        "t4": { "type": "frase", "settings": { "texto": "Te descontamos el decant del frasco", "destacado": true } },
+        "t5": { "type": "frase", "settings": { "texto": "Pagas en dólares o en bolívares", "icono": "chat" } }
+      },
+      "block_order": ["t1", "t2", "t3", "t4", "t5"]
     },
     "ritual": {
       "type": "ritual",
+      "settings": { "disposicion": "escalera", "alinear": "offset" },
       "blocks": {
-        "p1": {
-          "type": "paso",
-          "settings": {
-            "numero": "01",
-            "titulo": "Te llevas el decant",
-            "texto": "5 o 10 ml del original, en atomizador de vidrio. Alcanza para 30 o 60 días de uso real. Sin compromiso, sin discurso de vendedor."
-          }
-        },
-        "p2": {
-          "type": "paso",
-          "settings": {
-            "numero": "02",
-            "titulo": "Lo vives una semana",
-            "texto": "Cómo abre, cómo seca, cuánto te dura, qué te dicen en la calle. Eso es lo único que decide si una fragancia es tuya o no."
-          }
-        },
-        "p3": {
-          "type": "paso",
-          "settings": {
-            "numero": "03",
-            "titulo": "Ahora sí, el frasco",
-            "texto": "Si es el tuyo, te llevas el frasco completo sellado y te descontamos lo que pagaste por el decant. Probar no te costó nada."
-          }
-        }
+        "p1": { "type": "paso", "settings": {} },
+        "p2": { "type": "paso", "settings": {} },
+        "p3": { "type": "paso", "settings": {} }
       },
-      "block_order": [
-        "p1",
-        "p2",
-        "p3"
-      ],
+      "block_order": ["p1", "p2", "p3"]
+    },
+    "carrusel": {
+      "type": "catalogo-carrusel",
       "settings": {
-        "eyebrow": "El ritual",
-        "titulo": "Nadie se casa en la primera cita.",
-        "texto": "Un perfume no se decide en el papelito de la tienda. Se decide a las seis horas, cuando ya se mezcló contigo y alguien te pregunta qué te pusiste.",
-        "ancla": "ritual"
+        "coleccion": "frontpage",
+        "por_vista": 4,
+        "por_vista_movil": 1,
+        "limite": 12,
+        "ratio": "1/1",
+        "sangrar": true,
+        "barra": true,
+        "eyebrow": "Pasa y mira",
+        "ancla": "carrusel"
       }
     },
     "cuenta": {
       "type": "cuenta-clara",
-      "settings": {
-        "coleccion": "frontpage",
-        "limite": 6,
-        "courier": 24,
-        "eyebrow": "La cuenta clara",
-        "titulo": "El frasco cuesta lo mismo. Lo que te ahorras es todo lo demás.",
-        "texto": "No inventamos precios de boutique. Ponemos el mismo número que verías en Amazon. Elige una y mira la cuenta completa.",
-        "col_aqui": "Aquí",
-        "tag_aqui": "Entrega en 48 h",
-        "fila_envio": "Envío a toda Venezuela",
-        "valor_envio": "Gratis desde $20",
-        "valor_pago": "Dólares — o bolívares por el chat",
-        "valor_entrega": "24 a 48 h en Caracas",
-        "cta": "Pedir esta fragancia",
-        "col_afuera": "Pidiéndolo afuera",
-        "tag_afuera": "2 a 4 semanas",
-        "fine": "Todos los precios están en dólares y son los del frasco en Amazon el día de hoy; lo que cambia es el envío, la espera y que aquí no esperas tres semanas. Enviamos a toda Venezuela, y el envío va por nuestra cuenta desde $20 pagando en dólares o desde $30 pagando en bolívares a tasa BCV. Si vas a pagar en bolívares,",
-        "fine_enlace": "escríbenos por el chat",
-        "fine_cola": "y te pasamos el monto a la tasa del día.",
-        "ancla": "cuenta"
-      }
+      "settings": { "coleccion": "frontpage", "courier": 24 }
     },
     "estanteria": {
       "type": "estanteria",
       "settings": {
         "coleccion": "frontpage",
-        "limite": 4,
+        "columnas": 4,
+        "filas": 2,
+        "columnas_movil": 1,
+        "ratio": "1/1",
         "eyebrow": "La estantería",
-        "titulo": "Los que siempre nos piden.",
-        "texto": "Nada raro, nada de nicho imposible de conseguir. Los que reconoces cuando pasan por al lado — y algunos que deberías conocer.",
-        "ver_todo": "Ver el catálogo completo",
-        "ancla": "estanteria"
+        "texto": "Nada raro, nada de nicho imposible de conseguir. Los que reconoces cuando pasan por al lado — y algunos que deberías conocer."
       }
     },
     "claro": {
       "type": "hablemos-claro",
+      "settings": { "disposicion": "ancha", "primera_abierta": true },
       "blocks": {
-        "q1": {
-          "type": "pregunta",
-          "settings": {
-            "pregunta": "¿Es original de verdad?",
-            "respuesta": "Sí. Compramos el frasco sellado y de ahí sale el decant. Si quieres, te lo llenamos delante de ti o te mandamos el video del llenado con tu nombre en la etiqueta. No trabajamos réplicas ni «inspirados en»."
-          }
-        },
-        "q2": {
-          "type": "pregunta",
-          "settings": {
-            "pregunta": "¿Y si al final no me gusta?",
-            "respuesta": "Entonces te ahorraste comprar un frasco completo que iba a quedarse lleno en tu repisa. Ese es justamente el punto del decant. Escríbenos y te ayudamos a buscar otro que sí te vaya."
-          }
-        },
-        "q3": {
-          "type": "pregunta",
-          "settings": {
-            "pregunta": "¿Cómo pago?",
-            "respuesta": "Los precios de la página están en dólares y los pagas por la tienda como cualquier compra. Si prefieres pagar en bolívares, escríbenos por el chat: te pasamos el monto a la tasa del día y coordinamos pago móvil o transferencia."
-          }
-        },
-        "q4": {
-          "type": "pregunta",
-          "settings": {
-            "pregunta": "¿Cuándo me llega? ¿Envían a todo el país?",
-            "respuesta": "Enviamos a toda Venezuela. En Caracas, 24 a 48 horas; al interior, por Zoom o MRW en 2 a 3 días hábiles. El envío va por nuestra cuenta en pedidos desde $20 si pagas en dólares, o desde $30 si pagas en bolívares a tasa BCV."
-          }
-        },
-        "q5": {
-          "type": "pregunta",
-          "settings": {
-            "pregunta": "¿El descuento del decant es de verdad?",
-            "respuesta": "De verdad. Lo que pagaste por el decant se te descuenta del frasco completo de esa misma fragancia, durante los 60 días siguientes. Solo mándanos tu comprobante por el chat."
-          }
-        }
+        "q1": { "type": "pregunta", "settings": {} },
+        "q2": { "type": "pregunta", "settings": {} },
+        "q3": { "type": "pregunta", "settings": {} },
+        "q4": { "type": "pregunta", "settings": {} },
+        "q5": { "type": "pregunta", "settings": {} }
       },
-      "block_order": [
-        "q1",
-        "q2",
-        "q3",
-        "q4",
-        "q5"
-      ],
-      "settings": {
-        "eyebrow": "Hablemos claro",
-        "titulo": "Lo que preguntarías si estuvieras aquí.",
-        "ancla": "claro"
-      }
+      "block_order": ["q1", "q2", "q3", "q4", "q5"]
     },
     "voces": {
       "type": "voces",
+      "settings": { "ancho": "angosto", "alinear": "centro" },
       "blocks": {
-        "b1": {
-          "type": "recibido",
-          "settings": {
-            "texto": "Marico el Sauvage me duró todo el día, ya voy a comprar el frasco",
-            "hora": "10:42"
-          }
-        },
-        "b2": {
-          "type": "enviado",
-          "settings": {
-            "texto": "Jajaja te lo dije. Te descuento el decant del frasco.",
-            "hora": "10:44"
-          }
-        },
-        "b3": {
-          "type": "recibido",
-          "settings": {
-            "texto": "Compré 3 decants para probar y me quedé con el Bleu. Los otros dos se los regalé a mi hermano jaja",
-            "hora": "18:07"
-          }
-        },
-        "b4": {
-          "type": "recibido",
-          "settings": {
-            "texto": "Lo que más me gustó fue no gastar 130 dólares en algo que no sabía si me iba a gustar. Llegó al día siguiente en Chacao.",
-            "hora": "21:15"
-          }
-        },
-        "b5": {
-          "type": "enviado",
-          "settings": {
-            "texto": "Ese es el punto",
-            "hora": "21:16"
-          }
-        }
+        "b1": { "type": "recibido", "settings": { "hora": "10:42" } },
+        "b2": { "type": "enviado", "settings": { "hora": "10:44" } },
+        "b3": { "type": "recibido", "settings": { "hora": "18:07" } },
+        "b4": { "type": "recibido", "settings": { "hora": "21:15" } },
+        "b5": { "type": "enviado", "settings": { "hora": "21:16" } }
       },
-      "block_order": [
-        "b1",
-        "b2",
-        "b3",
-        "b4",
-        "b5"
-      ],
-      "settings": {
-        "eyebrow": "Lo que nos escriben",
-        "titulo": "Sin filtro.",
-        "ancla": "voces"
-      }
+      "block_order": ["b1", "b2", "b3", "b4", "b5"]
+    },
+    "marcas": {
+      "type": "ticker",
+      "settings": { "estilo": "linea", "tamano": 34, "velocidad": 2, "separador": "gota", "direccion": "derecha" },
+      "blocks": {
+        "m1": { "type": "frase", "settings": { "texto": "Dior" } },
+        "m2": { "type": "frase", "settings": { "texto": "Chanel" } },
+        "m3": { "type": "frase", "settings": { "texto": "Versace" } },
+        "m4": { "type": "frase", "settings": { "texto": "Jean Paul Gaultier" } },
+        "m5": { "type": "frase", "settings": { "texto": "Carolina Herrera" } },
+        "m6": { "type": "frase", "settings": { "texto": "Yves Saint Laurent" } },
+        "m7": { "type": "frase", "settings": { "texto": "Lancôme" } },
+        "m8": { "type": "frase", "settings": { "texto": "Paco Rabanne" } }
+      },
+      "block_order": ["m1", "m2", "m3", "m4", "m5", "m6", "m7", "m8"]
     },
     "cierre": {
       "type": "cierre",
-      "settings": {
-        "titulo": "¿Empezamos por uno?",
-        "texto": "Dinos qué usas ahora o qué te gusta oler, y te decimos cuál decant pedir primero. Sin vendedor encima, sin discurso.",
-        "cta_chat": "Abrir el chat",
-        "cta2_texto": "Ver el Instagram",
-        "cta2_url": "",
-        "ancla": "cierre"
-      }
+      "settings": { "estilo": "gradiente" }
     }
   },
   "order": [
     "hero",
+    "ticker",
     "ritual",
+    "carrusel",
     "cuenta",
     "estanteria",
     "claro",
     "voces",
+    "marcas",
     "cierre"
   ]
 }

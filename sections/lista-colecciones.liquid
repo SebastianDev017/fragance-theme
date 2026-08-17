@@ -1,0 +1,34 @@
+{%- comment -%} Todas las colecciones de la tienda. {%- endcomment -%}
+
+<section class="colecciones" style="--cols: {{ section.settings.columnas }}; --cols-movil: 1;">
+  <header class="sec-head">
+    <h1 class="h2">{{ 'colecciones.todas' | t }}</h1>
+  </header>
+  <div class="shelf">
+    {%- for coleccion in collections -%}
+      <a class="coleccion-card" href="{{ coleccion.url }}">
+        <span class="coleccion-card__foto">
+          {%- if coleccion.featured_image -%}
+            <img src="{{ coleccion.featured_image | image_url: width: 700 }}" alt=""
+              width="{{ coleccion.featured_image.width }}" height="{{ coleccion.featured_image.height }}"
+              loading="lazy" decoding="async">
+          {%- else -%}
+            <span class="card__sinfoto"></span>
+          {%- endif -%}
+        </span>
+        <span class="coleccion-card__tit">{{ coleccion.title }}</span>
+        <span class="coleccion-card__n">{{ 'colecciones.cuenta' | t: count: coleccion.products_count }}</span>
+      </a>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:secciones.colecciones.nombre",
+  "tag": "section",
+  "settings": [
+    { "type": "range", "id": "columnas", "min": 2, "max": 5, "step": 1, "label": "t:comun.columnas", "default": 3 }
+  ]
+}
+{% endschema %}

@@ -1,7 +1,205 @@
 {
+  "blogs": {
+    "eyebrow": "Journal",
+    "por": "By {{ autor }}",
+    "vacio": "Nothing published here yet.",
+    "volver": "Back to the journal"
+  },
+  "carrito": {
+    "actualizar": "Update",
+    "descuento": "Discount",
+    "impuestos": "Taxes and shipping calculated at checkout. Free shipping over $20.",
+    "nota": "Order note",
+    "nota_ph": "Delivery area, landmarks, or if you would rather pay in bolívares.",
+    "pagar": "Check out",
+    "pagar_bolivares": "Rather pay in bolívares? Message us",
+    "quitar": "Remove",
+    "subtotal": "Subtotal",
+    "titulo": "Your cart",
+    "vacio_cta": "Browse the decants",
+    "vacio_texto": "Start with a decant: they cost little and tell you everything.",
+    "vacio_titulo": "Your cart is empty."
+  },
+  "colecciones": {
+    "aplicar": "Apply",
+    "cuenta": "{{ count }} fragrances",
+    "eyebrow": "Catalogue",
+    "ordenar": "Sort by",
+    "sin_productos": "This collection has no fragrances yet.",
+    "todas": "All collections",
+    "ver_todo": "Browse the full catalogue"
+  },
   "general": {
-    "accessibility": {
+    "404": {
+      "cta": "Browse the catalogue",
+      "texto": "The fragrance you were after may have changed its name. Search for it here, or browse the full catalogue.",
+      "titulo": "This page is gone."
+    },
+    "accesibilidad": {
+      "abrir_menu": "Open menu",
+      "anterior": "Previous",
+      "cerrar_menu": "Close menu",
+      "imagen_anterior": "Previous image",
+      "imagen_siguiente": "Next image",
+      "menu_principal": "Main menu",
+      "pie": "Footer",
+      "siguiente": "Next",
       "skip_to_content": "Skip to content"
+    },
+    "anterior": "Previous",
+    "buscar": {
+      "boton": "Search",
+      "encabezado": "Which one are you after?",
+      "etiqueta": "Search the store",
+      "placeholder": "Sauvage, Bleu de Chanel, Good Girl…",
+      "pregunta": "Ask us on chat",
+      "resultados": "{{ count }} results for “{{ terms }}”",
+      "sin_resultados": "We found nothing for “{{ terms }}”.",
+      "titulo": "Search"
+    },
+    "carrito": {
+      "titulo": "Cart"
+    },
+    "chat": {
+      "abrir": "Open chat",
+      "corto": "Chat",
+      "instagram": "Message us on Instagram",
+      "sin_conectar": "The chat is not responding right now."
+    },
+    "cuenta": {
+      "titulo": "Account"
+    },
+    "idioma": {
+      "etiqueta": "Language",
+      "ir": "Change"
+    },
+    "paginacion": "Pagination",
+    "siguiente": "Next",
+    "vacio": {
+      "coleccion_sin_productos": "The “{{ titulo }}” collection has no products yet.",
+      "cuenta": "Add a “Fragrance” block and pick the product you want to compare, or choose a fallback collection.",
+      "decant": "Decant 5 ml",
+      "elige_coleccion": "Pick a collection in this section’s settings.",
+      "fragancia": "Fragrance",
+      "frasco": "Full bottle",
+      "frase": "A short line describing how it smells goes here.",
+      "marca": "Brand",
+      "nombre": "Fragrance name",
+      "notas": "Note · Note · Note",
+      "ticker": "Add lines to the ticker from this section’s blocks."
+    },
+    "volver_arriba": "Back to top"
+  },
+  "productos": {
+    "agotado": "Sold out",
+    "anadir": "Add to cart",
+    "anadir_uno": "Add one",
+    "cantidad": "Quantity",
+    "decant_10": "Decant 10 ml",
+    "decant_5": "Decant 5 ml",
+    "desde": "From",
+    "dudas": "Not sure about this one? Message us",
+    "frasco": "Full bottle",
+    "impuestos": "Taxes included. Shipping calculated at checkout.",
+    "oferta": "On sale",
+    "presentacion": "Size",
+    "promesa_decant": "What you paid for the decant comes off the full bottle",
+    "promesa_envio": "Free shipping over $20, anywhere in Venezuela",
+    "promesa_original": "Sealed original bottle — never a clone",
+    "quitar_uno": "Remove one",
+    "ver_imagen": "View image {{ n }}"
+  },
+  "secciones": {
+    "carrusel": {
+      "aria": "Fragrance carousel",
+      "titulo": "Have a look."
+    },
+    "cierre": {
+      "texto": "Tell us what you wear now or what you like to smell, and we will tell you which decant to order first. No salesperson breathing down your neck.",
+      "titulo": "Shall we start with one?"
+    },
+    "claro": {
+      "preguntas": {
+        "1": {
+          "p": "Is it really original?",
+          "r": "Yes. We buy the sealed bottle and the decant comes out of it. If you want, we fill it in front of you, or we send you the video of the filling with your name on the label. We do not do clones or “inspired by”."
+        },
+        "2": {
+          "p": "And if I end up not liking it?",
+          "r": "Then you saved yourself a full bottle that would have sat on your shelf. That is exactly the point of the decant. Message us and we will help you find another one that suits you."
+        },
+        "3": {
+          "p": "How do I pay?",
+          "r": "Prices on the site are in US dollars and you pay through the store like any other purchase. If you would rather pay in bolívares, message us on chat: we give you the amount at the day’s rate and sort out pago móvil or a transfer."
+        },
+        "4": {
+          "p": "When does it arrive? Do you ship nationwide?",
+          "r": "We ship anywhere in Venezuela. In Caracas, 24 to 48 hours; elsewhere, by Zoom or MRW in 2 to 3 business days. Shipping is on us over $20 paying in dollars, or over $30 paying in bolívares at the BCV rate."
+        },
+        "5": {
+          "p": "Is the decant discount for real?",
+          "r": "For real. What you paid for the decant comes off the full bottle of that same fragrance, for the next 60 days. Just send us your receipt on chat."
+        }
+      },
+      "titulo": "What you would ask if you were standing here."
+    },
+    "cuenta": {
+      "aria_picker": "Pick a fragrance",
+      "como_pagas": "How you pay",
+      "cuando": "When you get it",
+      "envio_courier": "Shipping + courier",
+      "no_venden": "Not sold",
+      "titulo": "The bottle costs the same. What you save is everything else.",
+      "total": "Bottle total"
+    },
+    "estanteria": {
+      "titulo": "The ones everyone asks us for."
+    },
+    "hero": {
+      "subtitulo": "The fragrances you already know, as a decant you can live with for a week. And if it turns out to be yours, the full bottle at the same price as Amazon — only here, and in two days.",
+      "titulo_1": "Try it in 5 ml.",
+      "titulo_2": "Buy it once you are sure."
+    },
+    "indice": {
+      "subtitulo": "Each one as a 5 or 10 ml decant. Live with it a full week and decide then — not off a paper strip in a shop.",
+      "titulo": "Six ways to smell different this week."
+    },
+    "ritual": {
+      "pasos": {
+        "1": {
+          "texto": "5 or 10 ml of the original, in a glass atomiser. Enough for 30 to 60 days of real wear. No commitment, no sales pitch.",
+          "titulo": "You take the decant"
+        },
+        "2": {
+          "texto": "How it opens, how it dries down, how long it lasts, what people say in the street. That is the only thing that decides whether a fragrance is yours.",
+          "titulo": "You live with it a week"
+        },
+        "3": {
+          "texto": "If it is yours, you take the sealed full bottle and we take off what you paid for the decant. Trying it cost you nothing.",
+          "titulo": "Now, the bottle"
+        },
+        "4": {
+          "texto": "Caracas in 24 to 48 hours; the rest of the country by Zoom or MRW in 2 to 3 business days. Free over $20.",
+          "titulo": "And we bring it to you"
+        }
+      },
+      "texto": "A fragrance is not decided on a paper strip. It is decided six hours later, once it has mixed with you and somebody asks what you are wearing.",
+      "titulo": "Nobody marries on the first date."
+    },
+    "vitrina": {
+      "subtitulo": "Original decants and full bottles, at the same price as abroad but here, in two days and with no customs.",
+      "titulo_1": "Try it in 5 ml.",
+      "titulo_2": "Buy it sure."
+    },
+    "voces": {
+      "mensajes": {
+        "1": "Man, the Sauvage lasted me all day, I am buying the bottle",
+        "2": "Haha told you. I will take the decant off the bottle price.",
+        "3": "I got 3 decants to try and stuck with the Bleu. Gave the other two to my brother lol",
+        "4": "What I liked most was not spending 130 dollars on something I did not know I would like. It arrived the next day in Chacao.",
+        "5": "That is the point"
+      },
+      "titulo": "Unedited."
     }
   }
 }

@@ -1,0 +1,328 @@
+{
+  "comun": {
+    "alineacion": "Alignment",
+    "alineaciones": {
+      "centro": "Centred",
+      "izquierda": "Left",
+      "offset": "Indented"
+    },
+    "altura": "Height",
+    "alturas": {
+      "alta": "Three quarters",
+      "auto": "Fit content",
+      "media": "Half screen",
+      "pantalla": "Full screen"
+    },
+    "ancho": "Width",
+    "ancla": "Anchor (for in-page links)",
+    "antetitulo": "Eyebrow",
+    "boton": "Button",
+    "boton_2": "Secondary button",
+    "boton_2_chat": "Secondary button opens the chat",
+    "boton_2_chat_texto": "Button that opens the chat",
+    "boton_2_enlace": "Secondary button link",
+    "boton_chat": "Chat button",
+    "boton_enlace": "Button link",
+    "coleccion": "Collection",
+    "columnas": "Columns on desktop",
+    "columnas_movil": "Columns on mobile",
+    "disposicion": "Layout",
+    "estilo": "Style",
+    "etiqueta": "Label",
+    "filas": "Rows",
+    "icono": "Icon",
+    "iconos": {
+      "camion": "Shipping",
+      "chat": "Chat",
+      "check": "Check",
+      "escudo": "Guarantee",
+      "gota": "Drop",
+      "ninguno": "None"
+    },
+    "logo": "Logo",
+    "logo_alto": "Logo height",
+    "menu": "Menu",
+    "nota": "Note",
+    "numero": "Number",
+    "producto": "Product",
+    "ratio": "Image ratio",
+    "ratio_info": "Images are never cropped: they fit whole inside the ratio you pick.",
+    "ratios": {
+      "cuadrada": "Square (1:1)",
+      "horizontal": "Landscape (5:4)",
+      "panoramica": "Wide (16:9)",
+      "retrato": "Tall (3:4)",
+      "vertical": "Portrait (4:5)"
+    },
+    "rejilla": "Grid",
+    "subtitulo": "Subheading",
+    "texto": "Text",
+    "textos": "Copy",
+    "titular": "Heading",
+    "titular_1": "Heading, line 1",
+    "titular_2": "Heading, line 2",
+    "titular_3": "Heading, line 3",
+    "vacio_traduce": "Leave a field blank and the translated version for the shopper’s language is used. Type something and yours wins.",
+    "wordmark": "Brand name"
+  },
+  "secciones": {
+    "404": {
+      "nombre": "404 page"
+    },
+    "articulo": {
+      "nombre": "Article"
+    },
+    "blog": {
+      "nombre": "Blog"
+    },
+    "busqueda": {
+      "nombre": "Search"
+    },
+    "cabecera": {
+      "acciones": "Actions",
+      "fijo": "Stick on scroll",
+      "mostrar_buscar": "Show search",
+      "mostrar_chat": "Show chat button",
+      "mostrar_cuenta": "Show account",
+      "mostrar_idioma": "Show language picker",
+      "nombre": "Header",
+      "texto_chat": "Chat button text"
+    },
+    "carrito": {
+      "nombre": "Cart"
+    },
+    "carrusel": {
+      "ajustes": "Carousel",
+      "barra": "Progress bar",
+      "limite": "How many fragrances in total",
+      "nombre": "Catalogue carousel",
+      "por_vista": "How many show at once (desktop)",
+      "por_vista_movil": "How many show at once (mobile)",
+      "presets": {
+        "escaparate": "Carousel — oversized",
+        "novedades": "Carousel — new in",
+        "relacionados": "Carousel — related",
+        "tira": "Carousel — long strip",
+        "vitrina": "Carousel — showcase"
+      },
+      "sangrar": "Let the next one peek off the edge",
+      "sangrar_info": "Makes it obvious there is more, and invites a swipe."
+    },
+    "cierre": {
+      "estilos": {
+        "gradiente": "Brand gradient",
+        "papel": "Paper",
+        "tinta": "Ink"
+      },
+      "nombre": "Closing",
+      "presets": {
+        "asesoria": "Closing — advice",
+        "bolivares": "Closing — bolívares",
+        "cierre": "Closing",
+        "envio": "Closing — free shipping",
+        "tinta": "Closing — ink"
+      }
+    },
+    "claro": {
+      "bloque": "Question",
+      "cta_chat": "Chat link inside the answer",
+      "cta_chat_info": "Empty = no link.",
+      "disposiciones": {
+        "ancha": "One wide column",
+        "centrada": "Centred and narrow",
+        "dos": "Two columns"
+      },
+      "nombre": "Straight answers",
+      "pie": "Text underneath",
+      "pie_enlace": "Chat link",
+      "pregunta": "Question",
+      "presets": {
+        "completa": "Straight answers — full",
+        "confianza": "Straight answers — trust",
+        "corta": "Straight answers — short",
+        "dos_columnas": "Straight answers — two columns",
+        "envios": "Straight answers — shipping and payment"
+      },
+      "primera_abierta": "Open the first one",
+      "respuesta": "Answer"
+    },
+    "coleccion": {
+      "mostrar_orden": "Show sorting",
+      "nombre": "Collection",
+      "por_pagina": "Fragrances per page"
+    },
+    "colecciones": {
+      "nombre": "All collections"
+    },
+    "cuenta": {
+      "ayuda_bloques": "Each tab of the comparison is a “Fragrance” block: add one per perfume you want to compare and pick the product right there.",
+      "bloque": "Fragrance",
+      "col_afuera": "“Abroad” column",
+      "col_aqui": "“Here” column",
+      "courier": "Courier cost if they order it themselves (USD)",
+      "courier_bloque": "Courier for this fragrance (USD)",
+      "courier_bloque_info": "Empty or 0 = use the section value.",
+      "etiqueta_chip": "Tab text",
+      "etiqueta_chip_info": "Empty = the product name.",
+      "fila_envio": "Shipping row",
+      "fine_cola": "Tail",
+      "fine_enlace": "Chat link text",
+      "letra_chica": "Small print",
+      "limite": "How many fragrances from the fallback",
+      "nombre": "The plain maths",
+      "presets": {
+        "bolivares": "Paying in bolívares",
+        "comparador": "The plain maths",
+        "desde_coleccion": "From a collection",
+        "envio_rapido": "What waiting costs",
+        "uno": "A single fragrance"
+      },
+      "respaldo": "Fallback",
+      "respaldo_info": "Only used while there are no blocks: as soon as you add one, blocks win.",
+      "valor_entrega": "When you get it",
+      "valor_envio": "Shipping value",
+      "valor_pago": "How you pay"
+    },
+    "estanteria": {
+      "nombre": "Catalogue",
+      "presets": {
+        "compacta": "Catalogue — compact strip",
+        "destacados": "Catalogue — three picks",
+        "duo": "Catalogue — head to head",
+        "estanteria": "Catalogue — the shelf",
+        "muro": "Catalogue — full wall"
+      },
+      "ver_todo": "“See all” button"
+    },
+    "hero": {
+      "ayuda": "The 3D animation reads the collection to work out the “from” price. It needs products with a variant named “Decant 5 ml”.",
+      "nombre": "Hero — 3D decant",
+      "nota_cola": "Note — tail",
+      "nota_enlace": "Note — chat link text",
+      "presets": {
+        "bolivares": "Paying in bolívares",
+        "decant": "Hero — 3D decant",
+        "directo": "Straight to it",
+        "envio": "Shipping first",
+        "sin_remate": "No payoff"
+      },
+      "remate": "Payoff (appears as the bottle fills)",
+      "scroll": "Scroll hint"
+    },
+    "indice": {
+      "limite": "How many fragrances in the list",
+      "nombre": "Hero — the index",
+      "pie": "Link under the list",
+      "presets": {
+        "asesoria": "With advice",
+        "carta": "Full menu",
+        "corto": "Short index",
+        "indice": "Hero — the index",
+        "lista": "Plain list"
+      }
+    },
+    "pagina": {
+      "nombre": "Page"
+    },
+    "pie": {
+      "bloque_menu": "Link column",
+      "bloque_texto": "Text column",
+      "linea": "Legal line",
+      "menu_base": "Bottom row menu",
+      "mostrar_pagos": "Show payment icons",
+      "nombre": "Footer"
+    },
+    "producto": {
+      "nombre": "Product page"
+    },
+    "ritual": {
+      "bloque": "Step",
+      "disposicion": "Layout",
+      "disposiciones": {
+        "apilada": "Stacked",
+        "escalera": "Staircase",
+        "fila": "In a row"
+      },
+      "nombre": "The ritual",
+      "presets": {
+        "apilada": "The ritual — stacked",
+        "cuatro": "The ritual — four steps",
+        "escalera": "The ritual — staircase",
+        "fila": "The ritual — in a row",
+        "iconos": "The ritual — with icons"
+      }
+    },
+    "ticker": {
+      "bloque": "Line",
+      "destacado": "Highlight this line",
+      "direccion": "Direction",
+      "direcciones": {
+        "derecha": "To the right",
+        "izquierda": "To the left"
+      },
+      "estilos": {
+        "claro": "Light (paper band)",
+        "gradiente": "Brand gradient",
+        "linea": "Text only, between rules",
+        "tinta": "Ink (dark band)"
+      },
+      "inclinacion": "Tilt",
+      "nombre": "Ticker",
+      "presets": {
+        "envio": "Ticker — shipping",
+        "grito": "Ticker — shouting",
+        "marcas": "Ticker — brands",
+        "promesas": "Ticker — promises",
+        "susurro": "Ticker — whisper"
+      },
+      "separador": "Separator",
+      "separador_texto": "Separator character",
+      "separadores": {
+        "gota": "Drop",
+        "texto": "A character"
+      },
+      "tamano": "Text size",
+      "titulo_oculto": "Ticker name",
+      "titulo_oculto_info": "Not visible: screen readers use it to announce what the ticker is.",
+      "velocidad": "Speed"
+    },
+    "vitrina": {
+      "corte": "Where the colour splits",
+      "corte_info": "The line where the background goes from photo to light panel. The heading splits on the same line.",
+      "imagen": "Background image",
+      "imagen_info": "Landscape, at least 2000 px wide. Left empty, a brand gradient is used.",
+      "mostrar_tira": "Show the strip",
+      "nombre": "Hero — showcase",
+      "presets": {
+        "campana": "Campaign (photo first)",
+        "chat": "With chat button",
+        "editorial": "Editorial, no strip",
+        "franja": "Short band",
+        "vitrina": "Hero — showcase"
+      },
+      "tira": "Product strip",
+      "velo": "Darken the photo",
+      "zoom": "Photo zoom"
+    },
+    "voces": {
+      "anchos": {
+        "ancho": "Wide",
+        "angosto": "Narrow, like a chat",
+        "medio": "Medium"
+      },
+      "bloque_cliente": "Customer message",
+      "bloque_tienda": "Store reply",
+      "cta": "Chat button underneath",
+      "hora": "Time",
+      "mensaje": "Message",
+      "nombre": "Voices",
+      "presets": {
+        "con_cta": "Voices — with chat button",
+        "conversacion": "Voices — conversation",
+        "corta": "Voices — short",
+        "izquierda": "Voices — left aligned",
+        "muro": "Voices — wall of messages"
+      }
+    }
+  }
+}

@@ -1,0 +1,125 @@
+{%- comment -%}
+  Carrito.
+
+  Un solo <form> con las cantidades en `updates[]` POSICIONALES: el orden de
+  los inputs es el orden de las líneas, y por eso no se puede reordenar la
+  lista ni saltarse una. Así el carrito se actualiza sin JavaScript; el JS
+  sólo añade los botones −/+ y el envío automático al cambiar la cantidad.
+{%- endcomment -%}
+
+<section class="carrito">
+  <header class="sec-head">
+    <p class="eyebrow"><span class="dot" aria-hidden="true"></span> {{ 'general.carrito.titulo' | t }}</p>
+    <h1 class="h2">
+      {%- if cart.item_count > 0 -%}
+        {{ 'carrito.titulo' | t }}
+      {%- else -%}
+        {{ 'carrito.vacio_titulo' | t }}
+      {%- endif -%}
+    </h1>
+  </header>
+
+  {%- if cart.item_count > 0 -%}
+    <form action="{{ routes.cart_url }}" method="post" novalidate class="carrito__form" data-carrito-form>
+      <ul class="carrito__lista" role="list">
+        {%- for item in cart.items -%}
+          <li class="linea">
+            <a class="linea__foto" href="{{ item.url }}" tabindex="-1" aria-hidden="true">
+              {%- if item.image -%}
+                <img src="{{ item.image | image_url: width: 240 }}" alt="" width="120" height="120"
+                  loading="lazy" decoding="async">
+              {%- else -%}
+                <span class="card__sinfoto"></span>
+              {%- endif -%}
+            </a>
+
+            <div class="linea__txt">
+              {%- if item.product.vendor != blank -%}
+                <p class="linea__marca">{{ item.product.vendor }}</p>
+              {%- endif -%}
+              <h2 class="linea__nombre"><a href="{{ item.url }}">{{ item.product.title }}</a></h2>
+              {%- unless item.product.has_only_default_variant -%}
+                <p class="linea__variante">{{ item.variant.title }}</p>
+              {%- endunless -%}
+              {%- if item.selling_plan_allocation -%}
+                <p class="linea__variante">{{ item.selling_plan_allocation.selling_plan.name }}</p>
+              {%- endif -%}
+              {%- for propiedad in item.properties -%}
+                {%- if propiedad.last != blank and propiedad.first[0] != '_' -%}
+                  <p class="linea__prop">{{ propiedad.first }}: {{ propiedad.last }}</p>
+                {%- endif -%}
+              {%- endfor -%}
+              <p class="linea__unidad">{{ item.original_price | money }}</p>
+            </div>
+
+            <div class="linea__cant">
+              <label class="visually-hidden" for="cant-{{ item.index | plus: 1 }}">
+                {{ 'productos.cantidad' | t }}
+              </label>
+              <div class="cantidad">
+                <button class="cantidad__b" type="button" data-cantidad="-1"
+                  aria-label="{{ 'productos.quitar_uno' | t }}">{% render 'icono', tipo: 'menos', tam: 15 %}</button>
+                <input id="cant-{{ item.index | plus: 1 }}" class="cantidad__i" type="number"
+                  name="updates[]" value="{{ item.quantity }}" min="0" inputmode="numeric">
+                <button class="cantidad__b" type="button" data-cantidad="1"
+                  aria-label="{{ 'productos.anadir_uno' | t }}">{% render 'icono', tipo: 'mas', tam: 15 %}</button>
+              </div>
+              <a class="linea__quitar" href="{{ item.url_to_remove }}">
+                {% render 'icono', tipo: 'papelera', tam: 15 %}
+                <span>{{ 'carrito.quitar' | t }}</span>
+              </a>
+            </div>
+
+            <p class="linea__total">{{ item.original_line_price | money }}</p>
+          </li>
+        {%- endfor -%}
+      </ul>
+
+      <div class="carrito__pie">
+        <div class="carrito__notas">
+          <label for="nota-carrito">{{ 'carrito.nota' | t }}</label>
+          <textarea id="nota-carrito" name="note" rows="3"
+            placeholder="{{ 'carrito.nota_ph' | t }}">{{ cart.note }}</textarea>
+        </div>
+
+        <div class="carrito__caja">
+          <p class="carrito__sub">
+            <span>{{ 'carrito.subtotal' | t }}</span>
+            <strong>{{ cart.total_price | money }}</strong>
+          </p>
+          {%- if cart.total_discount > 0 -%}
+            <p class="carrito__desc">{{ 'carrito.descuento' | t }} −{{ cart.total_discount | money }}</p>
+          {%- endif -%}
+          <p class="carrito__fine">{{ 'carrito.impuestos' | t }}</p>
+
+          <button class="btn btn--ink btn--lg carrito__checkout" type="submit" name="checkout">
+            {{ 'carrito.pagar' | t }}
+          </button>
+          <button class="btn btn--ghost carrito__update" type="submit" name="update">
+            {{ 'carrito.actualizar' | t }}
+          </button>
+
+          <button class="link carrito__chat" type="button" data-chat>
+            {{ 'carrito.pagar_bolivares' | t }}
+          </button>
+        </div>
+      </div>
+    </form>
+  {%- else -%}
+    <div class="vacio-pagina">
+      <p class="vacio-pagina__t">{{ 'carrito.vacio_texto' | t }}</p>
+      <a class="btn btn--ink btn--lg" href="{{ routes.all_products_collection_url }}">
+        {{ 'carrito.vacio_cta' | t }}
+        {% render 'icono', tipo: 'flecha' %}
+      </a>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "t:secciones.carrito.nombre",
+  "tag": "section",
+  "settings": []
+}
+{% endschema %}

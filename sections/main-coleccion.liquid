@@ -1,0 +1,112 @@
+{%- comment -%}
+  Página de colección: la misma rejilla del catálogo, con orden y paginación.
+
+  El orden es un <form> con GET: cambia la URL, así que el enlace se puede
+  compartir y el botón «atrás» del navegador hace lo que se espera. Sin JS el
+  botón «Ordenar» queda visible y hace lo mismo.
+{%- endcomment -%}
+
+{%- liquid
+  assign cols = section.settings.columnas | default: 4
+  assign cols_movil = section.settings.columnas_movil | default: 2
+  assign por_pagina = section.settings.por_pagina | default: 24
+-%}
+
+<section class="coleccion" style="--cols: {{ cols }}; --cols-movil: {{ cols_movil }};">
+  <header class="sec-head sec-head--row">
+    <div>
+      <p class="eyebrow"><span class="dot" aria-hidden="true"></span> {{ 'colecciones.eyebrow' | t }}</p>
+      <h1 class="h2">{{ collection.title }}</h1>
+    </div>
+    {%- if collection.description != blank -%}
+      <div class="sec-head__p rte">{{ collection.description }}</div>
+    {%- endif -%}
+  </header>
+
+  <div class="coleccion__barra">
+    <p class="coleccion__cuenta">
+      {{ 'colecciones.cuenta' | t: count: collection.products_count }}
+    </p>
+
+    {%- if section.settings.mostrar_orden -%}
+      {%- assign orden_actual = collection.sort_by | default: collection.default_sort_by -%}
+      <form class="orden" method="get" action="{{ collection.url }}">
+        <label for="orden-{{ section.id }}">{{ 'colecciones.ordenar' | t }}</label>
+        <select id="orden-{{ section.id }}" name="sort_by" data-envia-al-cambiar>
+          {%- for opcion in collection.sort_options -%}
+            {%- if opcion.value != blank -%}
+              <option value="{{ opcion.value }}" {% if opcion.value == orden_actual %}selected{% endif %}>
+                {{ opcion.name }}
+              </option>
+            {%- endif -%}
+          {%- endfor -%}
+        </select>
+        <noscript><button type="submit" class="orden__ir">{{ 'colecciones.aplicar' | t }}</button></noscript>
+      </form>
+    {%- endif -%}
+  </div>
+
+  {%- paginate collection.products by por_pagina -%}
+    {%- if collection.products.size > 0 -%}
+      <div class="shelf">
+        {%- for producto in collection.products -%}
+          {% render 'card-fragancia', producto: producto, ratio: section.settings.ratio %}
+        {%- endfor -%}
+      </div>
+
+      {%- if paginate.pages > 1 -%}
+        <nav class="paginacion" aria-label="{{ 'general.paginacion' | t }}">
+          {%- if paginate.previous -%}
+            <a href="{{ paginate.previous.url }}" rel="prev">
+              {% render 'icono', tipo: 'izquierda', tam: 16 %} {{ 'general.anterior' | t }}
+            </a>
+          {%- endif -%}
+          {%- for parte in paginate.parts -%}
+            {%- if parte.is_link -%}
+              <a href="{{ parte.url }}">{{ parte.title }}</a>
+            {%- else -%}
+              <span {% if parte.title == paginate.current_page %}aria-current="page" class="is-actual"{% endif %}>{{ parte.title }}</span>
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if paginate.next -%}
+            <a href="{{ paginate.next.url }}" rel="next">
+              {{ 'general.siguiente' | t }} {% render 'icono', tipo: 'derecha', tam: 16 %}
+            </a>
+          {%- endif -%}
+        </nav>
+      {%- endif -%}
+    {%- else -%}
+      <div class="vacio-pagina">
+        <p class="vacio-pagina__t">{{ 'colecciones.sin_productos' | t }}</p>
+        <a class="btn btn--ink" href="{{ routes.all_products_collection_url }}">
+          {{ 'colecciones.ver_todo' | t }}
+        </a>
+      </div>
+    {%- endif -%}
+  {%- endpaginate -%}
+</section>
+
+{% schema %}
+{
+  "name": "t:secciones.coleccion.nombre",
+  "tag": "section",
+  "settings": [
+    { "type": "range", "id": "columnas", "min": 2, "max": 6, "step": 1, "label": "t:comun.columnas", "default": 4 },
+    { "type": "range", "id": "columnas_movil", "min": 1, "max": 2, "step": 1, "label": "t:comun.columnas_movil", "default": 2 },
+    { "type": "range", "id": "por_pagina", "min": 8, "max": 48, "step": 4, "label": "t:secciones.coleccion.por_pagina", "default": 24 },
+    { "type": "checkbox", "id": "mostrar_orden", "label": "t:secciones.coleccion.mostrar_orden", "default": true },
+    {
+      "type": "select",
+      "id": "ratio",
+      "label": "t:comun.ratio",
+      "default": "1/1",
+      "options": [
+        { "value": "1/1", "label": "t:comun.ratios.cuadrada" },
+        { "value": "4/5", "label": "t:comun.ratios.vertical" },
+        { "value": "3/4", "label": "t:comun.ratios.retrato" },
+        { "value": "5/4", "label": "t:comun.ratios.horizontal" }
+      ]
+    }
+  ]
+}
+{% endschema %}

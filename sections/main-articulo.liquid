@@ -1,0 +1,38 @@
+{%- comment -%} Artículo del blog. {%- endcomment -%}
+
+<article class="articulo">
+  <header class="sec-head">
+    <p class="eyebrow"><span class="dot" aria-hidden="true"></span>
+      {{ article.published_at | date: format: 'date' }}
+    </p>
+    <h1 class="h2">{{ article.title }}</h1>
+    {%- if article.author != blank -%}
+      <p class="sec-head__p">{{ 'blogs.por' | t: autor: article.author }}</p>
+    {%- endif -%}
+  </header>
+
+  {%- if article.image -%}
+    <figure class="articulo__foto">
+      <img src="{{ article.image | image_url: width: 1600 }}"
+        alt="{{ article.image.alt | escape }}"
+        width="{{ article.image.width }}" height="{{ article.image.height }}"
+        loading="eager" decoding="async">
+    </figure>
+  {%- endif -%}
+
+  <div class="articulo__cuerpo rte">{{ article.content }}</div>
+
+  <p class="pagina__cta">
+    <a class="btn btn--ghost" href="{{ blog.url }}">
+      {% render 'icono', tipo: 'izquierda', tam: 16 %} {{ 'blogs.volver' | t }}
+    </a>
+  </p>
+</article>
+
+{% schema %}
+{
+  "name": "t:secciones.articulo.nombre",
+  "tag": "section",
+  "settings": []
+}
+{% endschema %}

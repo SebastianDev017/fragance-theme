@@ -1,0 +1,54 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-producto",
+      "settings": {}
+    },
+    "relacionados": {
+      "type": "catalogo-carrusel",
+      "settings": {
+        "por_vista": 4,
+        "por_vista_movil": 1,
+        "limite": 8,
+        "ratio": "1/1",
+        "sangrar": false,
+        "eyebrow": "Sigue probando",
+        "titulo": "",
+        "ver_todo": "Ver el catálogo completo",
+        "ancla": "relacionados"
+      }
+    },
+    "claro": {
+      "type": "hablemos-claro",
+      "settings": {
+        "disposicion": "dos",
+        "primera_abierta": false,
+        "eyebrow": "Antes de pedir"
+      },
+      "blocks": {
+        "q1": {
+          "type": "pregunta",
+          "settings": {}
+        },
+        "q2": {
+          "type": "pregunta",
+          "settings": {}
+        },
+        "q3": {
+          "type": "pregunta",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3"
+      ]
+    }
+  },
+  "order": [
+    "main",
+    "relacionados",
+    "claro"
+  ]
+}

@@ -1,0 +1,176 @@
+{%- comment -%}
+  Cinta / ticker.
+
+  Marquesina infinita con las promesas de la tienda. Cada frase es un bloque,
+  así que el comerciante añade y quita sin tocar código.
+
+  El bucle es CSS puro: la lista se imprime DOS veces y la animación desplaza
+  exactamente el 50% del ancho total, así que el salto cae justo donde la
+  segunda copia empieza y no se ve el corte. Sin JavaScript, y con
+  `prefers-reduced-motion` la cinta se queda quieta y se puede leer entera
+  desplazándola con el dedo.
+{%- endcomment -%}
+
+{%- liquid
+  assign n = section.blocks.size
+  comment
+    La velocidad del editor (1–10) se traduce a la duración de una vuelta:
+    1 = paseo largo, 10 = rápido. Nunca por debajo de 8 s, que ya marea.
+  endcomment
+  assign dur = 120 | divided_by: section.settings.velocidad | at_least: 8
+-%}
+
+<section class="ticker ticker--{{ section.settings.estilo }}"
+  style="--ticker-dur: {{ dur }}s; --ticker-inclina: {{ section.settings.inclinacion }}deg; --ticker-tam: {{ section.settings.tamano }}px;"
+  aria-label="{{ section.settings.titulo_oculto | default: shop.name | escape }}">
+
+  {%- if n > 0 -%}
+    <div class="ticker__pista{% if section.settings.direccion == 'derecha' %} ticker__pista--rev{% endif %}">
+      {%- for copia in (1..2) -%}
+        <ul class="ticker__grupo" {% unless forloop.first %}aria-hidden="true"{% endunless %}>
+          {%- for block in section.blocks -%}
+            <li class="ticker__item{% if block.settings.destacado %} is-destacado{% endif %}" {{ block.shopify_attributes }}>
+              {%- if block.settings.icono != 'ninguno' -%}
+                {% render 'icono', tipo: block.settings.icono, tam: 20, grosor: 1.6 %}
+              {%- endif -%}
+              <span>{{ block.settings.texto }}</span>
+            </li>
+            <li class="ticker__sep" aria-hidden="true">
+              {%- if section.settings.separador == 'gota' -%}
+                <span class="ticker__gota"></span>
+              {%- else -%}
+                {{ section.settings.separador_texto | default: '·' }}
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endfor -%}
+    </div>
+  {%- else -%}
+    <p class="aviso-vacio aviso-vacio--centro">{{ 'general.vacio.ticker' | t }}</p>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "t:secciones.ticker.nombre",
+  "tag": "div",
+  "class": "seccion-ticker",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "select",
+      "id": "estilo",
+      "label": "t:comun.estilo",
+      "default": "tinta",
+      "options": [
+        { "value": "tinta", "label": "t:secciones.ticker.estilos.tinta" },
+        { "value": "claro", "label": "t:secciones.ticker.estilos.claro" },
+        { "value": "gradiente", "label": "t:secciones.ticker.estilos.gradiente" },
+        { "value": "linea", "label": "t:secciones.ticker.estilos.linea" }
+      ]
+    },
+    { "type": "range", "id": "tamano", "min": 14, "max": 64, "step": 2, "unit": "px", "label": "t:secciones.ticker.tamano", "default": 26 },
+    { "type": "range", "id": "velocidad", "min": 1, "max": 10, "step": 1, "label": "t:secciones.ticker.velocidad", "default": 4 },
+    { "type": "range", "id": "inclinacion", "min": -6, "max": 6, "step": 1, "unit": "°", "label": "t:secciones.ticker.inclinacion", "default": 0 },
+    {
+      "type": "select",
+      "id": "direccion",
+      "label": "t:secciones.ticker.direccion",
+      "default": "izquierda",
+      "options": [
+        { "value": "izquierda", "label": "t:secciones.ticker.direcciones.izquierda" },
+        { "value": "derecha", "label": "t:secciones.ticker.direcciones.derecha" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "separador",
+      "label": "t:secciones.ticker.separador",
+      "default": "gota",
+      "options": [
+        { "value": "gota", "label": "t:secciones.ticker.separadores.gota" },
+        { "value": "texto", "label": "t:secciones.ticker.separadores.texto" }
+      ]
+    },
+    { "type": "text", "id": "separador_texto", "label": "t:secciones.ticker.separador_texto", "default": "·" },
+    { "type": "text", "id": "titulo_oculto", "label": "t:secciones.ticker.titulo_oculto", "info": "t:secciones.ticker.titulo_oculto_info" }
+  ],
+  "blocks": [
+    {
+      "type": "frase",
+      "name": "t:secciones.ticker.bloque",
+      "settings": [
+        { "type": "text", "id": "texto", "label": "t:comun.texto", "default": "Decants desde 5 ml" },
+        { "type": "checkbox", "id": "destacado", "label": "t:secciones.ticker.destacado", "default": false },
+        {
+          "type": "select",
+          "id": "icono",
+          "label": "t:comun.icono",
+          "default": "ninguno",
+          "options": [
+            { "value": "ninguno", "label": "t:comun.iconos.ninguno" },
+            { "value": "gota", "label": "t:comun.iconos.gota" },
+            { "value": "camion", "label": "t:comun.iconos.camion" },
+            { "value": "escudo", "label": "t:comun.iconos.escudo" },
+            { "value": "check", "label": "t:comun.iconos.check" },
+            { "value": "chat", "label": "t:comun.iconos.chat" }
+          ]
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:secciones.ticker.presets.promesas",
+      "settings": { "estilo": "tinta", "tamano": 26, "velocidad": 4 },
+      "blocks": [
+        { "type": "frase", "settings": { "texto": "Decants desde 5 ml", "icono": "gota" } },
+        { "type": "frase", "settings": { "texto": "Envíos a toda Venezuela", "icono": "camion" } },
+        { "type": "frase", "settings": { "texto": "100% originales", "icono": "escudo" } },
+        { "type": "frase", "settings": { "texto": "Te descontamos el decant del frasco", "destacado": true } },
+        { "type": "frase", "settings": { "texto": "Pagas en dólares o en bolívares", "icono": "chat" } }
+      ]
+    },
+    {
+      "name": "t:secciones.ticker.presets.envio",
+      "settings": { "estilo": "gradiente", "tamano": 20, "velocidad": 3, "inclinacion": 0 },
+      "blocks": [
+        { "type": "frase", "settings": { "texto": "Envío gratis desde $20", "icono": "camion", "destacado": true } },
+        { "type": "frase", "settings": { "texto": "Caracas en 24–48 h", "icono": "check" } },
+        { "type": "frase", "settings": { "texto": "Interior por Zoom o MRW", "icono": "camion" } }
+      ]
+    },
+    {
+      "name": "t:secciones.ticker.presets.marcas",
+      "settings": { "estilo": "linea", "tamano": 34, "velocidad": 2, "separador": "gota" },
+      "blocks": [
+        { "type": "frase", "settings": { "texto": "Dior" } },
+        { "type": "frase", "settings": { "texto": "Chanel" } },
+        { "type": "frase", "settings": { "texto": "Versace" } },
+        { "type": "frase", "settings": { "texto": "Jean Paul Gaultier" } },
+        { "type": "frase", "settings": { "texto": "Carolina Herrera" } },
+        { "type": "frase", "settings": { "texto": "YSL" } },
+        { "type": "frase", "settings": { "texto": "Lancôme" } }
+      ]
+    },
+    {
+      "name": "t:secciones.ticker.presets.grito",
+      "settings": { "estilo": "tinta", "tamano": 56, "velocidad": 6, "inclinacion": -3, "separador": "gota" },
+      "blocks": [
+        { "type": "frase", "settings": { "texto": "Pruébalo antes de casarte con él" } },
+        { "type": "frase", "settings": { "texto": "Nadie se casa en la primera cita" } }
+      ]
+    },
+    {
+      "name": "t:secciones.ticker.presets.susurro",
+      "settings": { "estilo": "claro", "tamano": 15, "velocidad": 2, "direccion": "derecha", "separador": "texto", "separador_texto": "—" },
+      "blocks": [
+        { "type": "frase", "settings": { "texto": "Sin réplicas" } },
+        { "type": "frase", "settings": { "texto": "Sin «inspirados en»" } },
+        { "type": "frase", "settings": { "texto": "Frasco sellado, decant delante de ti" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

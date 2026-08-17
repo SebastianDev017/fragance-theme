@@ -1,0 +1,29 @@
+{%- comment -%}
+  Cambio de idioma (y de moneda, si la tienda tiene más de una).
+
+  Es un <form> nativo de Shopify: funciona sin JavaScript. El <select> envía
+  el formulario al cambiar, y si el JS está apagado queda el botón «Ir».
+
+  Sólo se pinta si la tienda tiene más de un idioma publicado: en una tienda
+  de un solo idioma no hay nada que elegir y el control estorbaría.
+
+  Uso: {% render 'selector-idioma' %}
+       {% render 'selector-idioma', variante: 'drawer' %}
+{%- endcomment -%}
+
+{%- if shop.published_locales.size > 1 -%}
+  {%- form 'localization', class: 'idioma idioma--' | append: variante | default: 'idioma idioma--nav' -%}
+    <label class="visually-hidden" for="idioma-{{ variante | default: 'nav' }}">
+      {{ 'general.idioma.etiqueta' | t }}
+    </label>
+    {% render 'icono', tipo: 'globo', tam: 15 %}
+    <select id="idioma-{{ variante | default: 'nav' }}" name="locale_code" data-envia-al-cambiar>
+      {%- for idioma in shop.published_locales -%}
+        <option value="{{ idioma.iso_code }}" {% if idioma.iso_code == request.locale.iso_code %}selected{% endif %}>
+          {{ idioma.endonym_name | capitalize }}
+        </option>
+      {%- endfor -%}
+    </select>
+    <noscript><button type="submit" class="idioma__ir">{{ 'general.idioma.ir' | t }}</button></noscript>
+  {%- endform -%}
+{%- endif -%}

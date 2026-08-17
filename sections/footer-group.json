@@ -9,9 +9,44 @@
  */
 {
   "type": "footer",
-  "name": "Pie de página",
+  "name": "t:secciones.pie.nombre",
   "sections": {
-    "footer": { "type": "footer", "settings": {} }
+    "footer": {
+      "type": "footer",
+      "settings": {
+        "mostrar_idioma": true,
+        "mostrar_pagos": true
+      },
+      "blocks": {
+        "c1": {
+          "type": "menu",
+          "settings": {
+            "titulo": "Tienda"
+          }
+        },
+        "c2": {
+          "type": "menu",
+          "settings": {
+            "titulo": "Ayuda"
+          }
+        },
+        "c3": {
+          "type": "texto",
+          "settings": {
+            "titulo": "¿Dudas?",
+            "texto": "<p>Escríbenos y te ayudamos a elegir. Respondemos rápido, y si prefieres pagar en bolívares coordinamos por ahí mismo.</p>",
+            "cta_chat": "Abrir el chat"
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3"
+      ]
+    }
   },
-  "order": ["footer"]
+  "order": [
+    "footer"
+  ]
 }

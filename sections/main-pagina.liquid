@@ -1,0 +1,28 @@
+{%- comment -%} Página estática (Sobre nosotros, Envíos, Términos…). {%- endcomment -%}
+
+<section class="pagina">
+  <header class="sec-head">
+    <h1 class="h2">{{ page.title }}</h1>
+  </header>
+  <div class="pagina__cuerpo rte">
+    {{ page.content }}
+  </div>
+  {%- if section.settings.cta_chat != blank -%}
+    <p class="pagina__cta">
+      <button class="btn btn--ink btn--lg" type="button" data-chat>
+        {% render 'icono', tipo: 'chat', tam: 16 %}
+        {{ section.settings.cta_chat }}
+      </button>
+    </p>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "t:secciones.pagina.nombre",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "cta_chat", "label": "t:comun.boton_chat" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,82 @@
+{%- comment -%}
+  Buscador. El formulario es un GET normal: la búsqueda queda en la URL y se
+  puede compartir o guardar. `type=product` porque en esta tienda lo que se
+  busca son fragancias, no artículos del blog.
+{%- endcomment -%}
+
+<section class="busqueda" style="--cols: {{ section.settings.columnas }}; --cols-movil: 2;">
+  <header class="sec-head sec-head--center">
+    <p class="eyebrow"><span class="dot" aria-hidden="true"></span> {{ 'general.buscar.titulo' | t }}</p>
+    <h1 class="h2">{{ 'general.buscar.encabezado' | t }}</h1>
+  </header>
+
+  <form class="buscador" action="{{ routes.search_url }}" method="get" role="search">
+    <label class="visually-hidden" for="q">{{ 'general.buscar.etiqueta' | t }}</label>
+    {% render 'icono', tipo: 'buscar', tam: 20 %}
+    <input id="q" type="search" name="q" value="{{ search.terms | escape }}"
+      placeholder="{{ 'general.buscar.placeholder' | t }}" autocomplete="off">
+    <input type="hidden" name="type" value="product">
+    <button class="btn btn--ink" type="submit">{{ 'general.buscar.boton' | t }}</button>
+  </form>
+
+  {%- if search.performed -%}
+    {%- paginate search.results by 24 -%}
+      {%- if search.results_count > 0 -%}
+        <p class="busqueda__cuenta">
+          {{ 'general.buscar.resultados' | t: count: search.results_count, terms: search.terms }}
+        </p>
+        <div class="shelf">
+          {%- for item in search.results -%}
+            {%- if item.object_type == 'product' -%}
+              {% render 'card-fragancia', producto: item, ratio: section.settings.ratio %}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+        {%- if paginate.pages > 1 -%}
+          <nav class="paginacion" aria-label="{{ 'general.paginacion' | t }}">
+            {%- if paginate.previous -%}
+              <a href="{{ paginate.previous.url }}" rel="prev">{{ 'general.anterior' | t }}</a>
+            {%- endif -%}
+            {%- for parte in paginate.parts -%}
+              {%- if parte.is_link -%}
+                <a href="{{ parte.url }}">{{ parte.title }}</a>
+              {%- else -%}
+                <span {% if parte.title == paginate.current_page %}aria-current="page" class="is-actual"{% endif %}>{{ parte.title }}</span>
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if paginate.next -%}
+              <a href="{{ paginate.next.url }}" rel="next">{{ 'general.siguiente' | t }}</a>
+            {%- endif -%}
+          </nav>
+        {%- endif -%}
+      {%- else -%}
+        <div class="vacio-pagina">
+          <p class="vacio-pagina__t">{{ 'general.buscar.sin_resultados' | t: terms: search.terms }}</p>
+          <button class="btn btn--ink" type="button" data-chat>{{ 'general.buscar.pregunta' | t }}</button>
+        </div>
+      {%- endif -%}
+    {%- endpaginate -%}
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "t:secciones.busqueda.nombre",
+  "tag": "section",
+  "settings": [
+    { "type": "range", "id": "columnas", "min": 2, "max": 6, "step": 1, "label": "t:comun.columnas", "default": 4 },
+    {
+      "type": "select",
+      "id": "ratio",
+      "label": "t:comun.ratio",
+      "default": "1/1",
+      "options": [
+        { "value": "1/1", "label": "t:comun.ratios.cuadrada" },
+        { "value": "4/5", "label": "t:comun.ratios.vertical" },
+        { "value": "3/4", "label": "t:comun.ratios.retrato" }
+      ]
+    }
+  ]
+}
+{% endschema %}

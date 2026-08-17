@@ -36,14 +36,24 @@
     en el CDN de Shopify un import relativo entre assets del tema no resuelve
     de forma fiable.
   {%- endcomment -%}
-  <script>window.DropScentsAssets = { scene: "{{ 'dropscents-scene.js' | asset_url }}" };</script>
+  <script>
+    window.DropScentsAssets = { scene: "{{ 'dropscents-scene.js' | asset_url }}" };
+    /* Los textos que escribe el JavaScript (avisos del chat, precios que
+       cambian al elegir presentación) tienen que salir traducidos igual que
+       el resto: se los pasa Liquid, no van escritos en el bundle. */
+    window.DropScentsTextos = {
+      chatFallo: {{ 'general.chat.sin_conectar' | t | json }},
+      chatInstagram: {{ 'general.chat.instagram' | t | json }},
+      formatoDinero: {{ shop.money_format | json }}
+    };
+  </script>
   <script type="module" src="{{ 'dropscents.js' | asset_url }}"></script>
 
   {{ content_for_header }}
 </head>
 
 <body class="template--{{ template.name | handle }}">
-  <a class="visually-hidden" href="#main">Saltar al contenido</a>
+  <a class="visually-hidden" href="#main">{{ 'general.accesibilidad.skip_to_content' | t }}</a>
 
   {%- comment -%} el campo de color de la marca, detrás de todo {%- endcomment -%}
   <div class="field" aria-hidden="true">

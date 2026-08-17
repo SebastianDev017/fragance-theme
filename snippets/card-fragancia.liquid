@@ -11,44 +11,88 @@
     description → la frase corta ("Denso, especiado, caro de oler.")
     type        → las notas ("Canela · Lavanda · Regaliz")
 
-  Uso: {% render 'card-fragancia', producto: producto %}
+  La foto NUNCA se recorta: `object-fit: contain` dentro de una caja de
+  proporción fija, para que se vea el frasco entero y su caja. Si el producto
+  tiene más de una imagen aparecen flechas al pasar el ratón y se puede
+  navegar entre ellas; con una sola imagen no hay flechas que estorben.
+
+  Uso: {% render 'card-fragancia', producto: producto, ratio: '1/1' %}
 {%- endcomment -%}
 
 {%- liquid
   assign v_d5 = null
+  assign v_d10 = null
   assign v_full = null
   for v in producto.variants
     if v.title contains 'Decant 5'
       assign v_d5 = v
+    elsif v.title contains 'Decant 10'
+      assign v_d10 = v
     else
-      unless v.title contains 'Decant'
-        assign v_full = v
-      endunless
+      assign v_full = v
     endif
   endfor
   unless v_full
     assign v_full = producto.selected_or_first_available_variant
   endunless
+
+  assign ratio = ratio | default: '1/1'
+  assign tam = tam | default: '(min-width: 1100px) 25vw, (min-width: 750px) 33vw, 88vw'
+  assign imagenes = producto.images
+  assign n_img = imagenes.size
 -%}
 
-<article class="card" data-reveal-card>
-  <a class="card__shot-link" href="{{ producto.url }}" tabindex="-1" aria-hidden="true">
-    <figure class="card__shot">
-      {%- if producto.featured_image -%}
-        <img
-          src="{{ producto.featured_image | image_url: width: 700 }}"
-          srcset="{{ producto.featured_image | image_url: width: 500 }} 500w,
-                  {{ producto.featured_image | image_url: width: 700 }} 700w,
-                  {{ producto.featured_image | image_url: width: 1000 }} 1000w"
-          sizes="(min-width: 900px) 25vw, 90vw"
-          alt="{{ producto.featured_image.alt | default: producto.title | escape }}"
-          width="500" height="400" loading="lazy" decoding="async">
+<article class="card" data-reveal-card style="--card-ratio: {{ ratio }};">
+  <div class="card__shot{% if n_img > 1 %} card__shot--galeria{% endif %}"
+    {% if n_img > 1 %}data-galeria data-total="{{ n_img }}"{% endif %}>
+
+    <a class="card__shot-link" href="{{ producto.url }}" tabindex="-1" aria-hidden="true">
+      {%- if n_img > 0 -%}
+        {%- for imagen in imagenes -%}
+          <img class="card__slide{% if forloop.first %} is-on{% endif %}"
+            data-i="{{ forloop.index0 }}"
+            src="{{ imagen | image_url: width: 800 }}"
+            srcset="{{ imagen | image_url: width: 400 }} 400w,
+                    {{ imagen | image_url: width: 600 }} 600w,
+                    {{ imagen | image_url: width: 900 }} 900w,
+                    {{ imagen | image_url: width: 1200 }} 1200w"
+            sizes="{{ tam }}"
+            alt="{{ imagen.alt | default: producto.title | escape }}"
+            width="{{ imagen.width }}" height="{{ imagen.height }}"
+            loading="lazy" decoding="async">
+        {%- endfor -%}
       {%- else -%}
         {%- comment -%} sin foto: el CSS dibuja una silueta neutra {%- endcomment -%}
-        <img alt="" width="500" height="400" loading="lazy">
+        <span class="card__sinfoto" aria-hidden="true"></span>
       {%- endif -%}
-    </figure>
-  </a>
+    </a>
+
+    {%- if n_img > 1 -%}
+      {%- comment -%}
+        Las flechas viven por encima del enlace que cubre toda la tarjeta
+        (z-index), si no, el clic se lo comería la navegación al producto.
+      {%- endcomment -%}
+      <button class="card__nav card__nav--prev" type="button" data-galeria-paso="-1"
+        aria-label="{{ 'general.accesibilidad.imagen_anterior' | t }}">
+        {% render 'icono', tipo: 'izquierda', tam: 17, grosor: 2 %}
+      </button>
+      <button class="card__nav card__nav--next" type="button" data-galeria-paso="1"
+        aria-label="{{ 'general.accesibilidad.imagen_siguiente' | t }}">
+        {% render 'icono', tipo: 'derecha', tam: 17, grosor: 2 %}
+      </button>
+      <div class="card__puntos" aria-hidden="true">
+        {%- for imagen in imagenes -%}
+          <span class="card__punto{% if forloop.first %} is-on{% endif %}"></span>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if producto.available == false -%}
+      <span class="card__sello">{{ 'productos.agotado' | t }}</span>
+    {%- elsif producto.compare_at_price > producto.price -%}
+      <span class="card__sello card__sello--oferta">{{ 'productos.oferta' | t }}</span>
+    {%- endif -%}
+  </div>
 
   <div class="card__body">
     {%- if producto.vendor != blank -%}
@@ -69,8 +113,12 @@
     <div class="card__foot">
       {%- if v_d5 -%}
         <p class="card__price">{{ v_d5.title }}<b>{{ v_d5.price | money }}</b></p>
+      {%- elsif v_d10 -%}
+        <p class="card__price">{{ v_d10.title }}<b>{{ v_d10.price | money }}</b></p>
+      {%- else -%}
+        <p class="card__price">{{ 'productos.desde' | t }}<b>{{ producto.price_min | money }}</b></p>
       {%- endif -%}
-      {%- if v_full -%}
+      {%- if v_full and v_full != v_d5 -%}
         <p class="card__full">{{ v_full.title }}<br><b>{{ v_full.price | money }}</b></p>
       {%- endif -%}
     </div>

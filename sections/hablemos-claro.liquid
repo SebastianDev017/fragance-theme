@@ -1,42 +1,139 @@
-{%- comment -%} Preguntas honestas. Cada una es un bloque. {%- endcomment -%}
+{%- comment -%}
+  Preguntas honestas. Cada una es un bloque.
 
-<section class="claro" id="{{ section.settings.ancla | default: 'claro' }}">
-  <header class="sec-head">
+  El <details> es nativo: se abre y se cierra sin JavaScript, y el buscador lo
+  indexa igual. Un bloque en blanco cae en la pregunta traducida que
+  corresponde a su posición.
+{%- endcomment -%}
+
+{%- liquid
+  assign titulo = section.settings.titulo
+  if titulo == blank
+    assign titulo = 'secciones.claro.titulo' | t
+  endif
+-%}
+
+<section class="claro claro--{{ section.settings.disposicion }}" id="{{ section.settings.ancla | default: 'claro' }}">
+  <header class="sec-head{% if section.settings.disposicion == 'centrada' %} sec-head--center{% endif %}">
     {%- if section.settings.eyebrow != blank -%}
       <p class="eyebrow"><span class="dot" aria-hidden="true"></span> {{ section.settings.eyebrow }}</p>
     {%- endif -%}
-    <h2 class="h2">{{ section.settings.titulo }}</h2>
+    <h2 class="h2">{{ titulo }}</h2>
+    {%- if section.settings.texto != blank -%}
+      <p class="sec-head__p">{{ section.settings.texto }}</p>
+    {%- endif -%}
   </header>
 
   <div class="qa">
     {%- for block in section.blocks -%}
-      <details class="qa__item" {% if forloop.first %}open{% endif %} {{ block.shopify_attributes }}>
-        <summary><span>{{ block.settings.pregunta }}</span><i aria-hidden="true"></i></summary>
-        <p>{{ block.settings.respuesta }}</p>
+      {%- liquid
+        assign i = forloop.index
+        assign p = block.settings.pregunta
+        if p == blank
+          assign clave = 'secciones.claro.preguntas.' | append: i | append: '.p'
+          assign p = clave | t
+        endif
+        assign r = block.settings.respuesta
+        if r == blank
+          assign clave = 'secciones.claro.preguntas.' | append: i | append: '.r'
+          assign r = clave | t
+        endif
+      -%}
+      <details class="qa__item"
+        {% if section.settings.primera_abierta and forloop.first %}open{% endif %}
+        {{ block.shopify_attributes }}>
+        <summary><span>{{ p }}</span><i aria-hidden="true"></i></summary>
+        <div class="qa__cuerpo">
+          <p>{{ r }}</p>
+          {%- if block.settings.cta_chat != blank -%}
+            <button class="link" type="button" data-chat>{{ block.settings.cta_chat }}</button>
+          {%- endif -%}
+        </div>
       </details>
     {%- endfor -%}
   </div>
+
+  {%- if section.settings.pie != blank -%}
+    <p class="claro__pie">
+      {{ section.settings.pie }}
+      <button class="link" type="button" data-chat>{{ section.settings.pie_enlace }}</button>
+    </p>
+  {%- endif -%}
 </section>
 
 {% schema %}
 {
-  "name": "Hablemos claro",
+  "name": "t:secciones.claro.nombre",
   "tag": "div",
   "settings": [
-    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Hablemos claro" },
-    { "type": "text", "id": "titulo", "label": "Titular", "default": "Lo que preguntarías si estuvieras aquí." },
-    { "type": "text", "id": "ancla", "label": "Ancla", "default": "claro" }
+    {
+      "type": "select",
+      "id": "disposicion",
+      "label": "t:comun.disposicion",
+      "default": "ancha",
+      "options": [
+        { "value": "ancha", "label": "t:secciones.claro.disposiciones.ancha" },
+        { "value": "dos", "label": "t:secciones.claro.disposiciones.dos" },
+        { "value": "centrada", "label": "t:secciones.claro.disposiciones.centrada" }
+      ]
+    },
+    { "type": "checkbox", "id": "primera_abierta", "label": "t:secciones.claro.primera_abierta", "default": true },
+    { "type": "header", "content": "t:comun.textos" },
+    { "type": "paragraph", "content": "t:comun.vacio_traduce" },
+    { "type": "text", "id": "eyebrow", "label": "t:comun.antetitulo", "default": "Hablemos claro" },
+    { "type": "text", "id": "titulo", "label": "t:comun.titular" },
+    { "type": "textarea", "id": "texto", "label": "t:comun.texto" },
+    { "type": "text", "id": "pie", "label": "t:secciones.claro.pie", "default": "¿Te queda una duda que no está aquí?" },
+    { "type": "text", "id": "pie_enlace", "label": "t:secciones.claro.pie_enlace", "default": "Escríbenos por el chat" },
+    { "type": "text", "id": "ancla", "label": "t:comun.ancla", "default": "claro" }
   ],
   "blocks": [
     {
       "type": "pregunta",
-      "name": "Pregunta",
+      "name": "t:secciones.claro.bloque",
       "settings": [
-        { "type": "text", "id": "pregunta", "label": "Pregunta", "default": "¿Es original de verdad?" },
-        { "type": "textarea", "id": "respuesta", "label": "Respuesta", "default": "Sí." }
+        { "type": "text", "id": "pregunta", "label": "t:secciones.claro.pregunta" },
+        { "type": "textarea", "id": "respuesta", "label": "t:secciones.claro.respuesta" },
+        { "type": "text", "id": "cta_chat", "label": "t:secciones.claro.cta_chat", "info": "t:secciones.claro.cta_chat_info" }
       ]
     }
   ],
-  "presets": [{ "name": "Hablemos claro" }]
+  "presets": [
+    {
+      "name": "t:secciones.claro.presets.completa",
+      "settings": { "disposicion": "ancha" },
+      "blocks": [
+        { "type": "pregunta" }, { "type": "pregunta" }, { "type": "pregunta" },
+        { "type": "pregunta" }, { "type": "pregunta" }
+      ]
+    },
+    {
+      "name": "t:secciones.claro.presets.dos_columnas",
+      "settings": { "disposicion": "dos", "primera_abierta": false },
+      "blocks": [
+        { "type": "pregunta" }, { "type": "pregunta" }, { "type": "pregunta" },
+        { "type": "pregunta" }, { "type": "pregunta" }
+      ]
+    },
+    {
+      "name": "t:secciones.claro.presets.corta",
+      "settings": { "disposicion": "centrada", "texto": "", "pie": "" },
+      "blocks": [{ "type": "pregunta" }, { "type": "pregunta" }, { "type": "pregunta" }]
+    },
+    {
+      "name": "t:secciones.claro.presets.envios",
+      "settings": { "disposicion": "ancha", "eyebrow": "Envíos y pagos", "primera_abierta": true },
+      "blocks": [
+        { "type": "pregunta", "settings": { "cta_chat": "Coordinar por el chat" } },
+        { "type": "pregunta" },
+        { "type": "pregunta" }
+      ]
+    },
+    {
+      "name": "t:secciones.claro.presets.confianza",
+      "settings": { "disposicion": "dos", "eyebrow": "Sin letra chica", "pie": "¿Sigues con dudas?" },
+      "blocks": [{ "type": "pregunta" }, { "type": "pregunta" }]
+    }
+  ]
 }
 {% endschema %}

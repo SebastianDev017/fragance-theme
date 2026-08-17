@@ -1,35 +1,83 @@
-{%- comment -%} El cierre: el unico momento donde el gradiente sube de volumen. {%- endcomment -%}
+{%- comment -%}
+  El cierre: el único momento donde el gradiente sube de volumen.
+{%- endcomment -%}
+
+{%- liquid
+  assign titulo = section.settings.titulo
+  if titulo == blank
+    assign titulo = 'secciones.cierre.titulo' | t
+  endif
+  assign texto = section.settings.texto
+  if texto == blank
+    assign texto = 'secciones.cierre.texto' | t
+  endif
+  assign ig = section.settings.cta2_url | default: settings.instagram
+-%}
 
 <section class="cierre" id="{{ section.settings.ancla | default: 'cierre' }}">
-  <div class="cierre__card">
-    <h2 class="h2">{{ section.settings.titulo }}</h2>
-    <p>{{ section.settings.texto }}</p>
+  <div class="cierre__card cierre__card--{{ section.settings.estilo }}">
+    <h2 class="h2">{{ titulo }}</h2>
+    <p>{{ texto }}</p>
     <div class="cierre__cta">
-      <button class="btn btn--ink btn--lg" type="button" data-chat>
-        {% render 'icon-chat' %}
-        {{ section.settings.cta_chat }}
-      </button>
-      {%- if section.settings.cta2_texto != blank -%}
-        <a class="btn btn--ghost btn--lg" href="{{ section.settings.cta2_url | default: settings.instagram }}" target="_blank" rel="noopener">
+      {%- if section.settings.cta_chat != blank -%}
+        <button class="btn btn--ink btn--lg" type="button" data-chat>
+          {% render 'icono', tipo: 'chat', tam: 16 %}
+          {{ section.settings.cta_chat }}
+        </button>
+      {%- endif -%}
+      {%- if section.settings.cta2_texto != blank and ig != blank -%}
+        <a class="btn btn--ghost btn--lg" href="{{ ig }}" target="_blank" rel="noopener">
           {{ section.settings.cta2_texto }}
         </a>
       {%- endif -%}
     </div>
+    {%- if section.settings.nota != blank -%}
+      <p class="cierre__nota">{{ section.settings.nota }}</p>
+    {%- endif -%}
   </div>
 </section>
 
 {% schema %}
 {
-  "name": "Cierre",
+  "name": "t:secciones.cierre.nombre",
   "tag": "div",
   "settings": [
-    { "type": "text", "id": "titulo", "label": "Titular", "default": "¿Empezamos por uno?" },
-    { "type": "textarea", "id": "texto", "label": "Texto", "default": "Dinos qué usas ahora o qué te gusta oler, y te decimos cuál decant pedir primero. Sin vendedor encima, sin discurso." },
-    { "type": "text", "id": "cta_chat", "label": "Botón de chat", "default": "Abrir el chat" },
-    { "type": "text", "id": "cta2_texto", "label": "Botón secundario", "default": "Ver el Instagram" },
-    { "type": "url", "id": "cta2_url", "label": "Enlace del botón secundario" },
-    { "type": "text", "id": "ancla", "label": "Ancla", "default": "cierre" }
+    {
+      "type": "select",
+      "id": "estilo",
+      "label": "t:comun.estilo",
+      "default": "gradiente",
+      "options": [
+        { "value": "gradiente", "label": "t:secciones.cierre.estilos.gradiente" },
+        { "value": "tinta", "label": "t:secciones.cierre.estilos.tinta" },
+        { "value": "papel", "label": "t:secciones.cierre.estilos.papel" }
+      ]
+    },
+    { "type": "header", "content": "t:comun.textos" },
+    { "type": "paragraph", "content": "t:comun.vacio_traduce" },
+    { "type": "text", "id": "titulo", "label": "t:comun.titular" },
+    { "type": "textarea", "id": "texto", "label": "t:comun.texto" },
+    { "type": "text", "id": "cta_chat", "label": "t:comun.boton_chat", "default": "Abrir el chat" },
+    { "type": "text", "id": "cta2_texto", "label": "t:comun.boton_2", "default": "Ver el Instagram" },
+    { "type": "url", "id": "cta2_url", "label": "t:comun.boton_2_enlace" },
+    { "type": "text", "id": "nota", "label": "t:comun.nota" },
+    { "type": "text", "id": "ancla", "label": "t:comun.ancla", "default": "cierre" }
   ],
-  "presets": [{ "name": "Cierre" }]
+  "presets": [
+    { "name": "t:secciones.cierre.presets.cierre", "settings": { "estilo": "gradiente" } },
+    { "name": "t:secciones.cierre.presets.tinta", "settings": { "estilo": "tinta", "cta2_texto": "" } },
+    {
+      "name": "t:secciones.cierre.presets.envio",
+      "settings": { "estilo": "papel", "titulo": "Envío gratis desde $20.", "texto": "A toda Venezuela. Caracas en 24 a 48 h; el interior por Zoom o MRW en 2 a 3 días hábiles.", "cta_chat": "Preguntar por mi zona", "nota": "Desde $30 si pagas en bolívares a tasa BCV." }
+    },
+    {
+      "name": "t:secciones.cierre.presets.asesoria",
+      "settings": { "estilo": "gradiente", "titulo": "¿No sabes por cuál empezar?", "texto": "Dinos qué usas ahora y te decimos cuál decant pedir primero. Sin vendedor encima.", "cta_chat": "Que me recomienden uno", "cta2_texto": "" }
+    },
+    {
+      "name": "t:secciones.cierre.presets.bolivares",
+      "settings": { "estilo": "tinta", "titulo": "¿Pagas en bolívares?", "texto": "Escríbenos y te pasamos el monto a la tasa del día. Pago móvil o transferencia.", "cta_chat": "Coordinar el pago", "cta2_texto": "Ver el Instagram" }
+    }
+  ]
 }
 {% endschema %}

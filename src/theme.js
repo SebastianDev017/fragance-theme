@@ -12,6 +12,7 @@
 --------------------------------------------------------------------------- */
 
 import './styles.css';
+import './tienda.css';
 import { iniciar, conectarEditorDeTemas } from './ui.js';
 
 /* La URL del bundle de la escena la pone theme.liquid con `asset_url`: en el

@@ -13,8 +13,11 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
+import { conectarChat, conectarDrawer, conectarTienda, abrirChat } from './tienda.js';
 
 gsap.registerPlugin(ScrollTrigger);
+
+export { abrirChat };
 
 export const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 export const $ = (s, c = document) => c.querySelector(s);
@@ -50,48 +53,9 @@ export function formatearDinero(centimos, formato) {
 /* ===========================================================================
    1. el chat
    ---------------------------------------------------------------------------
-   Todos los botones [data-chat] llaman aquí. El plugin real se conecta
-   definiendo `window.DropScentsChat = () => miPlugin.abrir()`. Mientras tanto
-   se prueban las APIs de los plugins más comunes y, si no hay ninguno, se
-   avisa en vez de dejar un botón muerto.
+   Vive en tienda.js: todos los botones [data-chat] de todas las páginas
+   llaman a la misma función, y quien decide a qué app hablar es ese módulo.
    =========================================================================== */
-
-export function abrirChat() {
-  if (typeof window.DropScentsChat === 'function') { window.DropScentsChat(); return; }
-  if (window.$crisp) { window.$crisp.push(['do', 'chat:open']); return; }
-  if (window.Tawk_API?.maximize) { window.Tawk_API.maximize(); return; }
-  if (window.tidioChatApi?.open) { window.tidioChatApi.open(); return; }
-  if (window.Intercom) { window.Intercom('show'); return; }
-  if (window.zE) { window.zE('messenger', 'open'); return; }
-  if (window.Shopify?.chat?.open) { window.Shopify.chat.open(); return; }
-  aviso();
-}
-
-let avisoTO = 0;
-function aviso() {
-  let t = $('.toast');
-  if (!t) {
-    t = document.createElement('div');
-    t.className = 'toast';
-    t.setAttribute('role', 'status');
-    const ig = document.documentElement.dataset.instagram || 'https://instagram.com/dropscents';
-    t.innerHTML = `El chat todavía no está conectado.
-      <a href="${ig}" target="_blank" rel="noopener">Escríbenos por Instagram</a>`;
-    document.body.appendChild(t);
-  }
-  requestAnimationFrame(() => t.classList.add('is-on'));
-  clearTimeout(avisoTO);
-  avisoTO = setTimeout(() => t.classList.remove('is-on'), 6000);
-}
-
-function conectarChat() {
-  document.addEventListener('click', (e) => {
-    const b = e.target.closest('[data-chat]');
-    if (!b) return;
-    e.preventDefault();
-    abrirChat();
-  });
-}
 
 /* ===========================================================================
    2. comparador
@@ -106,7 +70,9 @@ function conectarComparador() {
   if (!picker || !compare) return;
 
   const formato = compare.dataset.moneyFormat || '';
-  const envioAfuera = Number(compare.dataset.envioAfuera || 0);
+  /* El courier por defecto es de la sección, pero cada pestaña puede traer el
+     suyo (data-envio): hay fragancias que pesan y salen más caras de traer. */
+  const envioSeccion = Number(compare.dataset.envioAfuera || 0);
   const out = {};
   $$('[data-f]', compare).forEach((el) => { out[el.dataset.f] = el; });
 
@@ -129,6 +95,7 @@ function conectarComparador() {
   function pintar(chip, animar = true) {
     const d = chip.dataset;
     const full = Number(d.full || 0);
+    const envioAfuera = Number(d.envio || 0) || envioSeccion;
     if (out.name) out.name.textContent = d.nombre || '';
     if (out.name2) out.name2.textContent = d.nombre || '';
     setNum(out.d5, Number(d.d5 || 0), animar);
@@ -158,8 +125,17 @@ function conectarComparador() {
    =========================================================================== */
 
 function conectarFotos() {
-  $$('.card__shot img').forEach((img) => {
-    const marcar = () => img.parentElement.classList.add('is-empty');
+  /* Si una foto no carga se pone la silueta neutra en su sitio, en vez de
+     dejar el icono de imagen rota del navegador. */
+  $$('.card__slide, .mini__shot img, .pdp__img').forEach((img) => {
+    const marcar = () => {
+      if (img.parentElement.querySelector('.card__sinfoto')) return;
+      const hueco = document.createElement('span');
+      hueco.className = 'card__sinfoto';
+      hueco.setAttribute('aria-hidden', 'true');
+      img.parentElement.appendChild(hueco);
+      img.style.display = 'none';
+    };
     img.addEventListener('error', marcar);
     if (img.complete && img.naturalWidth === 0) marcar();
   });
@@ -386,9 +362,11 @@ export function iniciar(opciones = {}) {
   window.addEventListener('pageshow', () => window.scrollTo(0, 0));
 
   conectarChat();
+  conectarDrawer();
   conectarComparador();
   conectarFotos();
-  conectarScroll();
+  conectarScroll();     // deja window.DropScentsLenis listo para el drawer
+  conectarTienda();
   conectarMovimiento();
   conectarNav();
 
@@ -409,6 +387,11 @@ export function conectarEditorDeTemas() {
       escena?.dispose();
       conectarHero().then((s) => { escena = s; });
     }
+    /* La sección se ha vuelto a pintar entera: sus galerías, carruseles y
+       selectores son elementos NUEVOS y no tienen ningún listener. */
+    conectarTienda(e.target);
+    conectarComparador();
+    conectarFotos();
     ScrollTrigger.refresh();
   });
   document.addEventListener('shopify:section:unload', () => ScrollTrigger.refresh());

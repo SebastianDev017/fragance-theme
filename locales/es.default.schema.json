@@ -1,0 +1,328 @@
+{
+  "comun": {
+    "alineacion": "Alineación",
+    "alineaciones": {
+      "centro": "Centrada",
+      "izquierda": "A la izquierda",
+      "offset": "Desplazada"
+    },
+    "altura": "Altura",
+    "alturas": {
+      "alta": "Tres cuartos",
+      "auto": "La que necesite",
+      "media": "Media pantalla",
+      "pantalla": "Pantalla completa"
+    },
+    "ancho": "Ancho",
+    "ancla": "Ancla (para los enlaces internos)",
+    "antetitulo": "Antetítulo",
+    "boton": "Botón",
+    "boton_2": "Botón secundario",
+    "boton_2_chat": "El botón secundario abre el chat",
+    "boton_2_chat_texto": "Botón que abre el chat",
+    "boton_2_enlace": "Enlace del botón secundario",
+    "boton_chat": "Botón de chat",
+    "boton_enlace": "Enlace del botón",
+    "coleccion": "Colección",
+    "columnas": "Columnas en escritorio",
+    "columnas_movil": "Columnas en móvil",
+    "disposicion": "Disposición",
+    "estilo": "Estilo",
+    "etiqueta": "Etiqueta",
+    "filas": "Filas",
+    "icono": "Icono",
+    "iconos": {
+      "camion": "Envío",
+      "chat": "Chat",
+      "check": "Visto bueno",
+      "escudo": "Garantía",
+      "gota": "Gota",
+      "ninguno": "Ninguno"
+    },
+    "logo": "Logo",
+    "logo_alto": "Alto del logo",
+    "menu": "Menú",
+    "nota": "Nota",
+    "numero": "Número",
+    "producto": "Producto",
+    "ratio": "Proporción de la foto",
+    "ratio_info": "La foto nunca se recorta: se ajusta entera dentro de la proporción que elijas.",
+    "ratios": {
+      "cuadrada": "Cuadrada (1:1)",
+      "horizontal": "Horizontal (5:4)",
+      "panoramica": "Panorámica (16:9)",
+      "retrato": "Retrato (3:4)",
+      "vertical": "Vertical (4:5)"
+    },
+    "rejilla": "Rejilla",
+    "subtitulo": "Subtítulo",
+    "texto": "Texto",
+    "textos": "Textos",
+    "titular": "Titular",
+    "titular_1": "Titular, línea 1",
+    "titular_2": "Titular, línea 2",
+    "titular_3": "Titular, línea 3",
+    "vacio_traduce": "Deja un texto en blanco y saldrá la versión traducida al idioma que esté viendo el cliente. Escribe algo y mandará lo que escribas.",
+    "wordmark": "Nombre de la marca"
+  },
+  "secciones": {
+    "404": {
+      "nombre": "Página 404"
+    },
+    "articulo": {
+      "nombre": "Artículo"
+    },
+    "blog": {
+      "nombre": "Blog"
+    },
+    "busqueda": {
+      "nombre": "Buscador"
+    },
+    "cabecera": {
+      "acciones": "Acciones",
+      "fijo": "Fija al hacer scroll",
+      "mostrar_buscar": "Mostrar buscador",
+      "mostrar_chat": "Mostrar botón de chat",
+      "mostrar_cuenta": "Mostrar cuenta",
+      "mostrar_idioma": "Mostrar selector de idioma",
+      "nombre": "Cabecera",
+      "texto_chat": "Texto del botón de chat"
+    },
+    "carrito": {
+      "nombre": "Carrito"
+    },
+    "carrusel": {
+      "ajustes": "Carrusel",
+      "barra": "Barra de avance",
+      "limite": "Cuántas fragancias en total",
+      "nombre": "Catálogo carrusel",
+      "por_vista": "Cuántas se ven a la vez (escritorio)",
+      "por_vista_movil": "Cuántas se ven a la vez (móvil)",
+      "presets": {
+        "escaparate": "Carrusel — en grande",
+        "novedades": "Carrusel — novedades",
+        "relacionados": "Carrusel — relacionados",
+        "tira": "Carrusel — tira larga",
+        "vitrina": "Carrusel — vitrina"
+      },
+      "sangrar": "Que asome la siguiente por el borde",
+      "sangrar_info": "Se nota que hay más y da ganas de arrastrar."
+    },
+    "cierre": {
+      "estilos": {
+        "gradiente": "Gradiente de marca",
+        "papel": "Papel",
+        "tinta": "Tinta"
+      },
+      "nombre": "Cierre",
+      "presets": {
+        "asesoria": "Cierre — asesoría",
+        "bolivares": "Cierre — bolívares",
+        "cierre": "Cierre",
+        "envio": "Cierre — envío gratis",
+        "tinta": "Cierre — tinta"
+      }
+    },
+    "claro": {
+      "bloque": "Pregunta",
+      "cta_chat": "Enlace al chat dentro de la respuesta",
+      "cta_chat_info": "Vacío = sin enlace.",
+      "disposiciones": {
+        "ancha": "Una columna ancha",
+        "centrada": "Centrada y angosta",
+        "dos": "Dos columnas"
+      },
+      "nombre": "Hablemos claro",
+      "pie": "Texto de debajo",
+      "pie_enlace": "Enlace al chat",
+      "pregunta": "Pregunta",
+      "presets": {
+        "completa": "Hablemos claro — completa",
+        "confianza": "Hablemos claro — confianza",
+        "corta": "Hablemos claro — corta",
+        "dos_columnas": "Hablemos claro — dos columnas",
+        "envios": "Hablemos claro — envíos y pagos"
+      },
+      "primera_abierta": "Abrir la primera",
+      "respuesta": "Respuesta"
+    },
+    "coleccion": {
+      "mostrar_orden": "Mostrar el orden",
+      "nombre": "Colección",
+      "por_pagina": "Fragancias por página"
+    },
+    "colecciones": {
+      "nombre": "Todas las colecciones"
+    },
+    "cuenta": {
+      "ayuda_bloques": "Cada pestaña del comparador es un bloque «Fragancia»: añade uno por cada perfume que quieras comparar y elige el producto ahí mismo.",
+      "bloque": "Fragancia",
+      "col_afuera": "Columna «afuera»",
+      "col_aqui": "Columna «aquí»",
+      "courier": "Costo del courier si lo pide él mismo (USD)",
+      "courier_bloque": "Courier de esta fragancia (USD)",
+      "courier_bloque_info": "Vacío o 0 = usa el de la sección.",
+      "etiqueta_chip": "Texto de la pestaña",
+      "etiqueta_chip_info": "Vacío = el nombre del producto.",
+      "fila_envio": "Fila de envío",
+      "fine_cola": "Final",
+      "fine_enlace": "Texto del enlace al chat",
+      "letra_chica": "Letra chica",
+      "limite": "Cuántas fragancias del respaldo",
+      "nombre": "La cuenta clara",
+      "presets": {
+        "bolivares": "Pagando en bolívares",
+        "comparador": "La cuenta clara",
+        "desde_coleccion": "Desde una colección",
+        "envio_rapido": "Lo que cuesta esperar",
+        "uno": "Una sola fragancia"
+      },
+      "respaldo": "Respaldo",
+      "respaldo_info": "Sólo se usa mientras no haya bloques: en cuanto añades uno, mandan los bloques.",
+      "valor_entrega": "Cuándo lo tienes",
+      "valor_envio": "Valor de envío",
+      "valor_pago": "Cómo pagas"
+    },
+    "estanteria": {
+      "nombre": "Catálogo",
+      "presets": {
+        "compacta": "Catálogo — tira compacta",
+        "destacados": "Catálogo — tres destacados",
+        "duo": "Catálogo — cara a cara",
+        "estanteria": "Catálogo — la estantería",
+        "muro": "Catálogo — muro completo"
+      },
+      "ver_todo": "Botón «ver todo»"
+    },
+    "hero": {
+      "ayuda": "La animación 3D usa la colección para calcular el precio «desde». Necesita productos con una variante que se llame «Decant 5 ml».",
+      "nombre": "Hero — decant 3D",
+      "nota_cola": "Nota — final",
+      "nota_enlace": "Nota — texto del enlace al chat",
+      "presets": {
+        "bolivares": "Pago en bolívares",
+        "decant": "Hero — decant 3D",
+        "directo": "Al grano",
+        "envio": "Con el envío por delante",
+        "sin_remate": "Sin remate final"
+      },
+      "remate": "Remate (aparece al llenarse el frasco)",
+      "scroll": "Pista de scroll"
+    },
+    "indice": {
+      "limite": "Cuántas fragancias en la lista",
+      "nombre": "Hero — el índice",
+      "pie": "Enlace de debajo de la lista",
+      "presets": {
+        "asesoria": "Con asesoría",
+        "carta": "La carta completa",
+        "corto": "Índice corto",
+        "indice": "Hero — el índice",
+        "lista": "Lista limpia"
+      }
+    },
+    "pagina": {
+      "nombre": "Página"
+    },
+    "pie": {
+      "bloque_menu": "Columna de enlaces",
+      "bloque_texto": "Columna de texto",
+      "linea": "Línea legal",
+      "menu_base": "Menú de la línea inferior",
+      "mostrar_pagos": "Mostrar formas de pago",
+      "nombre": "Pie de página"
+    },
+    "producto": {
+      "nombre": "Ficha de producto"
+    },
+    "ritual": {
+      "bloque": "Paso",
+      "disposicion": "Disposición",
+      "disposiciones": {
+        "apilada": "Apilada",
+        "escalera": "En escalera",
+        "fila": "En fila"
+      },
+      "nombre": "El ritual",
+      "presets": {
+        "apilada": "El ritual — apilada",
+        "cuatro": "El ritual — cuatro pasos",
+        "escalera": "El ritual — escalera",
+        "fila": "El ritual — en fila",
+        "iconos": "El ritual — con iconos"
+      }
+    },
+    "ticker": {
+      "bloque": "Frase",
+      "destacado": "Destacar esta frase",
+      "direccion": "Dirección",
+      "direcciones": {
+        "derecha": "Hacia la derecha",
+        "izquierda": "Hacia la izquierda"
+      },
+      "estilos": {
+        "claro": "Claro (fondo papel)",
+        "gradiente": "Gradiente de marca",
+        "linea": "Sólo texto, entre filetes",
+        "tinta": "Tinta (fondo oscuro)"
+      },
+      "inclinacion": "Inclinación",
+      "nombre": "Cinta",
+      "presets": {
+        "envio": "Cinta — envíos",
+        "grito": "Cinta — a gritos",
+        "marcas": "Cinta — marcas",
+        "promesas": "Cinta — promesas",
+        "susurro": "Cinta — en voz baja"
+      },
+      "separador": "Separador",
+      "separador_texto": "Carácter separador",
+      "separadores": {
+        "gota": "Gota",
+        "texto": "Un carácter"
+      },
+      "tamano": "Tamaño del texto",
+      "titulo_oculto": "Nombre de la cinta",
+      "titulo_oculto_info": "No se ve: lo usan los lectores de pantalla para anunciar de qué va la cinta.",
+      "velocidad": "Velocidad"
+    },
+    "vitrina": {
+      "corte": "Dónde parte el color",
+      "corte_info": "La línea donde el fondo pasa de foto a panel claro. El titular se parte por la misma línea.",
+      "imagen": "Foto de fondo",
+      "imagen_info": "Horizontal y de al menos 2000 px de ancho. Si la dejas vacía sale un fondo de marca.",
+      "mostrar_tira": "Mostrar la tira",
+      "nombre": "Hero — vitrina",
+      "presets": {
+        "campana": "Campaña (foto protagonista)",
+        "chat": "Con botón de chat",
+        "editorial": "Editorial, sin tira",
+        "franja": "Franja corta",
+        "vitrina": "Hero — vitrina"
+      },
+      "tira": "Tira de producto",
+      "velo": "Oscurecer la foto",
+      "zoom": "Acercamiento de la foto"
+    },
+    "voces": {
+      "anchos": {
+        "ancho": "Ancho",
+        "angosto": "Angosto, como un chat",
+        "medio": "Medio"
+      },
+      "bloque_cliente": "Mensaje del cliente",
+      "bloque_tienda": "Respuesta de la tienda",
+      "cta": "Botón de chat de debajo",
+      "hora": "Hora",
+      "mensaje": "Mensaje",
+      "nombre": "Voces",
+      "presets": {
+        "con_cta": "Voces — con botón de chat",
+        "conversacion": "Voces — conversación",
+        "corta": "Voces — corta",
+        "izquierda": "Voces — alineada a la izquierda",
+        "muro": "Voces — muro de mensajes"
+      }
+    }
+  }
+}

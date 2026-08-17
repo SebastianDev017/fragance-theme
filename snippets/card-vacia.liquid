@@ -1,0 +1,24 @@
+{%- comment -%}
+  Tarjeta de marcador: se ve la forma del catálogo, sin datos.
+
+  Una sección sin contenido tiene que leerse como «falta llenar esto», no como
+  «esto está roto».
+
+  Uso: {% render 'card-vacia', ratio: '1/1' %}
+{%- endcomment -%}
+
+<article class="card card--vacia" style="--card-ratio: {{ ratio | default: '1/1' }};">
+  <div class="card__shot">
+    <span class="card__sinfoto" aria-hidden="true"></span>
+  </div>
+  <div class="card__body">
+    <p class="card__brand">{{ 'general.vacio.marca' | t }}</p>
+    <h3 class="card__name">{{ 'general.vacio.nombre' | t }}</h3>
+    <p class="card__fam">{{ 'general.vacio.frase' | t }}</p>
+    <p class="card__notes">{{ 'general.vacio.notas' | t }}</p>
+    <div class="card__foot">
+      <p class="card__price">{{ 'general.vacio.decant' | t }}<b>&mdash;</b></p>
+      <p class="card__full">{{ 'general.vacio.frasco' | t }}<br><b>&mdash;</b></p>
+    </div>
+  </div>
+</article>

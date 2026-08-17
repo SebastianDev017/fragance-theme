@@ -1,26 +1,62 @@
 {%- comment -%}
   Los tres pasos. Van como bloques para que se puedan reordenar, quitar o
-  reescribir desde el editor sin tocar codigo. El tercero es el oscuro (el del
-  compromiso) y el CSS lo distingue por su posicion.
+  reescribir desde el editor sin tocar código. El último es el oscuro (el del
+  compromiso) y el CSS lo distingue por su posición.
+
+  Si un bloque se deja en blanco entra el texto traducido que corresponde a su
+  posición, así el ritual se lee igual en español y en inglés sin escribirlo
+  dos veces.
 {%- endcomment -%}
 
+{%- liquid
+  assign titulo = section.settings.titulo
+  if titulo == blank
+    assign titulo = 'secciones.ritual.titulo' | t
+  endif
+  assign texto = section.settings.texto
+  if texto == blank
+    assign texto = 'secciones.ritual.texto' | t
+  endif
+  assign total = section.blocks.size
+-%}
+
 <section class="ritual" id="{{ section.settings.ancla | default: 'ritual' }}">
-  <header class="sec-head sec-head--offset">
+  <header class="sec-head{% if section.settings.alinear == 'offset' %} sec-head--offset{% elsif section.settings.alinear == 'centro' %} sec-head--center{% endif %}">
     {%- if section.settings.eyebrow != blank -%}
       <p class="eyebrow"><span class="dot" aria-hidden="true"></span> {{ section.settings.eyebrow }}</p>
     {%- endif -%}
-    <h2 class="h2">{{ section.settings.titulo }}</h2>
-    {%- if section.settings.texto != blank -%}
-      <p class="sec-head__p">{{ section.settings.texto }}</p>
+    <h2 class="h2">{{ titulo }}</h2>
+    {%- if texto != blank -%}
+      <p class="sec-head__p">{{ texto }}</p>
     {%- endif -%}
   </header>
 
-  <ol class="steps">
+  <ol class="steps steps--{{ section.settings.disposicion }}" style="--pasos: {{ total }};">
     {%- for block in section.blocks -%}
-      <li class="step step--{{ forloop.index }}" {{ block.shopify_attributes }}>
-        <span class="step__n">{{ block.settings.numero }}</span>
-        <h3>{{ block.settings.titulo }}</h3>
-        <p>{{ block.settings.texto }}</p>
+      {%- liquid
+        assign i = forloop.index
+        assign n = block.settings.numero
+        if n == blank
+          assign n = i | prepend: '0' | slice: -2, 2
+        endif
+        assign bt = block.settings.titulo
+        if bt == blank
+          assign clave = 'secciones.ritual.pasos.' | append: i | append: '.titulo'
+          assign bt = clave | t
+        endif
+        assign bx = block.settings.texto
+        if bx == blank
+          assign clave = 'secciones.ritual.pasos.' | append: i | append: '.texto'
+          assign bx = clave | t
+        endif
+      -%}
+      <li class="step step--{{ i }}{% if forloop.last %} step--ultimo{% endif %}" {{ block.shopify_attributes }}>
+        {%- if block.settings.icono != 'ninguno' -%}
+          <span class="step__ico">{% render 'icono', tipo: block.settings.icono, tam: 26, grosor: 1.6 %}</span>
+        {%- endif -%}
+        <span class="step__n">{{ n }}</span>
+        <h3>{{ bt }}</h3>
+        <p>{{ bx }}</p>
       </li>
     {%- endfor -%}
   </ol>
@@ -28,34 +64,98 @@
 
 {% schema %}
 {
-  "name": "El ritual",
+  "name": "t:secciones.ritual.nombre",
   "tag": "div",
-  "max_blocks": 3,
+  "max_blocks": 4,
   "settings": [
-    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "El ritual" },
-    { "type": "text", "id": "titulo", "label": "Titular", "default": "Nadie se casa en la primera cita." },
-    { "type": "textarea", "id": "texto", "label": "Texto", "default": "Un perfume no se decide en el papelito de la tienda. Se decide a las seis horas, cuando ya se mezcló contigo y alguien te pregunta qué te pusiste." },
-    { "type": "text", "id": "ancla", "label": "Ancla", "default": "ritual" }
+    {
+      "type": "select",
+      "id": "disposicion",
+      "label": "t:secciones.ritual.disposicion",
+      "default": "escalera",
+      "options": [
+        { "value": "escalera", "label": "t:secciones.ritual.disposiciones.escalera" },
+        { "value": "fila", "label": "t:secciones.ritual.disposiciones.fila" },
+        { "value": "apilada", "label": "t:secciones.ritual.disposiciones.apilada" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "alinear",
+      "label": "t:comun.alineacion",
+      "default": "offset",
+      "options": [
+        { "value": "izquierda", "label": "t:comun.alineaciones.izquierda" },
+        { "value": "offset", "label": "t:comun.alineaciones.offset" },
+        { "value": "centro", "label": "t:comun.alineaciones.centro" }
+      ]
+    },
+    { "type": "header", "content": "t:comun.textos" },
+    { "type": "paragraph", "content": "t:comun.vacio_traduce" },
+    { "type": "text", "id": "eyebrow", "label": "t:comun.antetitulo", "default": "El ritual" },
+    { "type": "text", "id": "titulo", "label": "t:comun.titular" },
+    { "type": "textarea", "id": "texto", "label": "t:comun.texto" },
+    { "type": "text", "id": "ancla", "label": "t:comun.ancla", "default": "ritual" }
   ],
   "blocks": [
     {
       "type": "paso",
-      "name": "Paso",
+      "name": "t:secciones.ritual.bloque",
       "settings": [
-        { "type": "text", "id": "numero", "label": "Número", "default": "01" },
-        { "type": "text", "id": "titulo", "label": "Titular", "default": "Te llevas el decant" },
-        { "type": "textarea", "id": "texto", "label": "Texto", "default": "5 o 10 ml del original, en atomizador de vidrio." }
+        { "type": "text", "id": "numero", "label": "t:comun.numero" },
+        { "type": "text", "id": "titulo", "label": "t:comun.titular" },
+        { "type": "textarea", "id": "texto", "label": "t:comun.texto" },
+        {
+          "type": "select",
+          "id": "icono",
+          "label": "t:comun.icono",
+          "default": "ninguno",
+          "options": [
+            { "value": "ninguno", "label": "t:comun.iconos.ninguno" },
+            { "value": "gota", "label": "t:comun.iconos.gota" },
+            { "value": "check", "label": "t:comun.iconos.check" },
+            { "value": "escudo", "label": "t:comun.iconos.escudo" },
+            { "value": "camion", "label": "t:comun.iconos.camion" },
+            { "value": "chat", "label": "t:comun.iconos.chat" }
+          ]
+        }
       ]
     }
   ],
   "presets": [
     {
-      "name": "El ritual",
+      "name": "t:secciones.ritual.presets.escalera",
+      "settings": { "disposicion": "escalera", "alinear": "offset" },
+      "blocks": [{ "type": "paso" }, { "type": "paso" }, { "type": "paso" }]
+    },
+    {
+      "name": "t:secciones.ritual.presets.fila",
+      "settings": { "disposicion": "fila", "alinear": "centro" },
+      "blocks": [{ "type": "paso" }, { "type": "paso" }, { "type": "paso" }]
+    },
+    {
+      "name": "t:secciones.ritual.presets.iconos",
+      "settings": { "disposicion": "fila", "alinear": "izquierda" },
       "blocks": [
-        { "type": "paso", "settings": { "numero": "01", "titulo": "Te llevas el decant" } },
-        { "type": "paso", "settings": { "numero": "02", "titulo": "Lo vives una semana" } },
-        { "type": "paso", "settings": { "numero": "03", "titulo": "Ahora sí, el frasco" } }
+        { "type": "paso", "settings": { "icono": "gota" } },
+        { "type": "paso", "settings": { "icono": "check" } },
+        { "type": "paso", "settings": { "icono": "escudo" } }
       ]
+    },
+    {
+      "name": "t:secciones.ritual.presets.cuatro",
+      "settings": { "disposicion": "fila", "alinear": "centro" },
+      "blocks": [
+        { "type": "paso", "settings": { "icono": "gota" } },
+        { "type": "paso", "settings": { "icono": "check" } },
+        { "type": "paso", "settings": { "icono": "camion" } },
+        { "type": "paso", "settings": { "icono": "escudo" } }
+      ]
+    },
+    {
+      "name": "t:secciones.ritual.presets.apilada",
+      "settings": { "disposicion": "apilada", "alinear": "izquierda", "eyebrow": "Paso a paso" },
+      "blocks": [{ "type": "paso" }, { "type": "paso" }, { "type": "paso" }]
     }
   ]
 }

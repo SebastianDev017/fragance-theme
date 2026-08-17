@@ -12,6 +12,7 @@
 
 import './fonts.css';
 import './styles.css';
+import './tienda.css';
 import { FRAGANCIAS, ENVIO_AFUERA, dol, desde, foto } from './data.js';
 import { iniciar, $, $$ } from './ui.js';
 

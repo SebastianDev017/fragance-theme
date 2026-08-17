@@ -1,6 +1,12 @@
 {%- comment -%}
-  El catálogo. Lee una colección: no hay lista de productos escrita a mano en
-  ningún sitio, así que lo que esté publicado en Shopify es lo que se ve.
+  El catálogo, en rejilla.
+
+  Lee una colección: no hay lista de productos escrita a mano en ningún sitio,
+  así que lo que esté publicado en Shopify es lo que se ve.
+
+  Cuántos productos salen NO se pide aparte: es filas × columnas, para que lo
+  que el comerciante ve en el editor sea exactamente lo que sale en la tienda
+  y no queden huecos a media fila.
 {%- endcomment -%}
 
 {%- liquid
@@ -13,15 +19,27 @@
   endcomment
   assign coleccion = section.settings.coleccion
   assign cuantos = coleccion.products_count | default: 0 | plus: 0
+
+  assign cols = section.settings.columnas | default: 4
+  assign cols_movil = section.settings.columnas_movil | default: 1
+  assign filas = section.settings.filas | default: 2
+  assign limite = cols | times: filas
+
+  assign titulo = section.settings.titulo
+  if titulo == blank
+    assign titulo = 'secciones.estanteria.titulo' | t
+  endif
 -%}
 
-<section class="estanteria" id="{{ section.settings.ancla | default: 'estanteria' }}">
+<section class="estanteria" id="{{ section.settings.ancla | default: 'estanteria' }}"
+  style="--cols: {{ cols }}; --cols-movil: {{ cols_movil }};">
+
   <header class="sec-head sec-head--row">
     <div>
       {%- if section.settings.eyebrow != blank -%}
         <p class="eyebrow"><span class="dot" aria-hidden="true"></span> {{ section.settings.eyebrow }}</p>
       {%- endif -%}
-      <h2 class="h2">{{ section.settings.titulo }}</h2>
+      <h2 class="h2">{{ titulo }}</h2>
     </div>
     {%- if section.settings.texto != blank -%}
       <p class="sec-head__p">{{ section.settings.texto }}</p>
@@ -30,14 +48,17 @@
 
   {%- if cuantos > 0 -%}
     <div class="shelf">
-      {%- for producto in coleccion.products limit: section.settings.limite -%}
-        {% render 'card-fragancia', producto: producto %}
+      {%- for producto in coleccion.products limit: limite -%}
+        {% render 'card-fragancia', producto: producto, ratio: section.settings.ratio %}
       {%- endfor -%}
     </div>
 
-    {%- if cuantos > section.settings.limite -%}
+    {%- if section.settings.ver_todo != blank and cuantos > limite -%}
       <p class="estanteria__mas">
-        <a class="btn btn--ghost" href="{{ coleccion.url }}">{{ section.settings.ver_todo }}</a>
+        <a class="btn btn--ghost" href="{{ coleccion.url }}">
+          {{ section.settings.ver_todo }}
+          {% render 'icono', tipo: 'flecha', tam: 17 %}
+        </a>
       </p>
     {%- endif -%}
   {%- else -%}
@@ -45,28 +66,16 @@
       Sin colección (o vacía) la sección muestra tarjetas de marcador: se
       entiende que falta contenido, no que el tema esté roto.
     {%- endcomment -%}
-    <div class="shelf shelf--vacia">
-      {%- for i in (1..4) -%}
-        <article class="card card--vacia">
-          <figure class="card__shot is-empty"></figure>
-          <div class="card__body">
-            <p class="card__brand">Marca</p>
-            <h3 class="card__name">Nombre de la fragancia</h3>
-            <p class="card__fam">Aquí va la frase corta que describe cómo huele.</p>
-            <p class="card__notes">Nota · Nota · Nota</p>
-            <div class="card__foot">
-              <p class="card__price">Decant 5 ml<b>&mdash;</b></p>
-              <p class="card__full">Frasco<br><b>&mdash;</b></p>
-            </div>
-          </div>
-        </article>
+    <div class="shelf shelf--vacia" aria-hidden="true">
+      {%- for i in (1..cols) -%}
+        {% render 'card-vacia', ratio: section.settings.ratio %}
       {%- endfor -%}
     </div>
     <p class="aviso-vacio">
       {%- if coleccion == blank -%}
-        Elige una colección en los ajustes de esta sección.
+        {{ 'general.vacio.elige_coleccion' | t }}
       {%- else -%}
-        La coleccion <strong>{{ coleccion.title }}</strong> todavía no tiene productos.
+        {{ 'general.vacio.coleccion_sin_productos' | t: titulo: coleccion.title }}
       {%- endif -%}
     </p>
   {%- endif -%}
@@ -74,17 +83,57 @@
 
 {% schema %}
 {
-  "name": "Catálogo",
+  "name": "t:secciones.estanteria.nombre",
   "tag": "div",
   "settings": [
-    { "type": "collection", "id": "coleccion", "label": "Colección" },
-    { "type": "range", "id": "limite", "min": 4, "max": 24, "step": 2, "label": "Cuántas mostrar", "default": 8 },
-    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "La estantería" },
-    { "type": "text", "id": "titulo", "label": "Titular", "default": "Los que siempre nos piden." },
-    { "type": "textarea", "id": "texto", "label": "Texto", "default": "Nada raro, nada de nicho imposible de conseguir. Los que reconoces cuando pasan por al lado — y algunos que deberías conocer." },
-    { "type": "text", "id": "ver_todo", "label": "Botón «ver todo»", "default": "Ver el catálogo completo" },
-    { "type": "text", "id": "ancla", "label": "Ancla (para los enlaces internos)", "default": "estanteria" }
+    { "type": "collection", "id": "coleccion", "label": "t:comun.coleccion" },
+    { "type": "header", "content": "t:comun.rejilla" },
+    { "type": "range", "id": "columnas", "min": 2, "max": 6, "step": 1, "label": "t:comun.columnas", "default": 4 },
+    { "type": "range", "id": "filas", "min": 1, "max": 8, "step": 1, "label": "t:comun.filas", "default": 2 },
+    { "type": "range", "id": "columnas_movil", "min": 1, "max": 2, "step": 1, "label": "t:comun.columnas_movil", "default": 1 },
+    {
+      "type": "select",
+      "id": "ratio",
+      "label": "t:comun.ratio",
+      "info": "t:comun.ratio_info",
+      "default": "1/1",
+      "options": [
+        { "value": "1/1", "label": "t:comun.ratios.cuadrada" },
+        { "value": "4/5", "label": "t:comun.ratios.vertical" },
+        { "value": "3/4", "label": "t:comun.ratios.retrato" },
+        { "value": "5/4", "label": "t:comun.ratios.horizontal" },
+        { "value": "16/9", "label": "t:comun.ratios.panoramica" }
+      ]
+    },
+    { "type": "header", "content": "t:comun.textos" },
+    { "type": "paragraph", "content": "t:comun.vacio_traduce" },
+    { "type": "text", "id": "eyebrow", "label": "t:comun.antetitulo", "default": "La estantería" },
+    { "type": "text", "id": "titulo", "label": "t:comun.titular" },
+    { "type": "textarea", "id": "texto", "label": "t:comun.texto" },
+    { "type": "text", "id": "ver_todo", "label": "t:secciones.estanteria.ver_todo", "default": "Ver el catálogo completo" },
+    { "type": "text", "id": "ancla", "label": "t:comun.ancla", "default": "estanteria" }
   ],
-  "presets": [{ "name": "Catálogo" }]
+  "presets": [
+    {
+      "name": "t:secciones.estanteria.presets.estanteria",
+      "settings": { "columnas": 4, "filas": 2, "columnas_movil": 1, "ratio": "1/1", "eyebrow": "La estantería", "texto": "Nada raro, nada de nicho imposible de conseguir. Los que reconoces cuando pasan por al lado — y algunos que deberías conocer." }
+    },
+    {
+      "name": "t:secciones.estanteria.presets.destacados",
+      "settings": { "columnas": 3, "filas": 1, "columnas_movil": 1, "ratio": "4/5", "eyebrow": "Los tres de esta semana", "ver_todo": "" }
+    },
+    {
+      "name": "t:secciones.estanteria.presets.muro",
+      "settings": { "columnas": 6, "filas": 3, "columnas_movil": 2, "ratio": "1/1", "eyebrow": "Todo el catálogo", "ver_todo": "" }
+    },
+    {
+      "name": "t:secciones.estanteria.presets.duo",
+      "settings": { "columnas": 2, "filas": 1, "columnas_movil": 1, "ratio": "5/4", "eyebrow": "Cara a cara", "ver_todo": "" }
+    },
+    {
+      "name": "t:secciones.estanteria.presets.compacta",
+      "settings": { "columnas": 5, "filas": 1, "columnas_movil": 2, "ratio": "3/4", "eyebrow": "También te puede gustar", "ver_todo": "" }
+    }
+  ]
 }
 {% endschema %}

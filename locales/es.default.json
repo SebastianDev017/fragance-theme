@@ -1,7 +1,205 @@
 {
+  "blogs": {
+    "eyebrow": "Diario",
+    "por": "Por {{ autor }}",
+    "vacio": "Todavía no hay nada publicado aquí.",
+    "volver": "Volver al diario"
+  },
+  "carrito": {
+    "actualizar": "Actualizar",
+    "descuento": "Descuento",
+    "impuestos": "Impuestos y envío se calculan al pagar. Envío gratis desde $20.",
+    "nota": "Nota para el pedido",
+    "nota_ph": "Zona de entrega, referencias, o si prefieres pagar en bolívares.",
+    "pagar": "Ir a pagar",
+    "pagar_bolivares": "¿Prefieres pagar en bolívares? Escríbenos",
+    "quitar": "Quitar",
+    "subtotal": "Subtotal",
+    "titulo": "Tu carrito",
+    "vacio_cta": "Ver los decants",
+    "vacio_texto": "Empieza por un decant: cuestan poco y te dicen todo.",
+    "vacio_titulo": "Tu carrito está vacío."
+  },
+  "colecciones": {
+    "aplicar": "Aplicar",
+    "cuenta": "{{ count }} fragancias",
+    "eyebrow": "Catálogo",
+    "ordenar": "Ordenar por",
+    "sin_productos": "Esta colección todavía no tiene fragancias.",
+    "todas": "Todas las colecciones",
+    "ver_todo": "Ver todo el catálogo"
+  },
   "general": {
-    "accessibility": {
+    "404": {
+      "cta": "Ver el catálogo",
+      "texto": "Puede que la fragancia que buscabas cambiara de nombre. Búscala aquí o mira el catálogo completo.",
+      "titulo": "Esta página ya no existe."
+    },
+    "accesibilidad": {
+      "abrir_menu": "Abrir el menú",
+      "anterior": "Anterior",
+      "cerrar_menu": "Cerrar el menú",
+      "imagen_anterior": "Imagen anterior",
+      "imagen_siguiente": "Imagen siguiente",
+      "menu_principal": "Menú principal",
+      "pie": "Pie de página",
+      "siguiente": "Siguiente",
       "skip_to_content": "Saltar al contenido"
+    },
+    "anterior": "Anterior",
+    "buscar": {
+      "boton": "Buscar",
+      "encabezado": "¿Cuál andas buscando?",
+      "etiqueta": "Buscar en la tienda",
+      "placeholder": "Sauvage, Bleu de Chanel, Good Girl…",
+      "pregunta": "Pregúntanos por el chat",
+      "resultados": "{{ count }} resultados para «{{ terms }}»",
+      "sin_resultados": "No encontramos nada para «{{ terms }}».",
+      "titulo": "Buscar"
+    },
+    "carrito": {
+      "titulo": "Carrito"
+    },
+    "chat": {
+      "abrir": "Abrir el chat",
+      "corto": "Chat",
+      "instagram": "Escríbenos por Instagram",
+      "sin_conectar": "El chat no está respondiendo ahora mismo."
+    },
+    "cuenta": {
+      "titulo": "Mi cuenta"
+    },
+    "idioma": {
+      "etiqueta": "Idioma",
+      "ir": "Cambiar"
+    },
+    "paginacion": "Paginación",
+    "siguiente": "Siguiente",
+    "vacio": {
+      "coleccion_sin_productos": "La colección «{{ titulo }}» todavía no tiene productos.",
+      "cuenta": "Añade un bloque «Fragancia» y elige el producto que quieres comparar, o elige una colección de respaldo.",
+      "decant": "Decant 5 ml",
+      "elige_coleccion": "Elige una colección en los ajustes de esta sección.",
+      "fragancia": "Fragancia",
+      "frasco": "Frasco",
+      "frase": "Aquí va la frase corta que describe cómo huele.",
+      "marca": "Marca",
+      "nombre": "Nombre de la fragancia",
+      "notas": "Nota · Nota · Nota",
+      "ticker": "Añade frases a la cinta desde los bloques de esta sección."
+    },
+    "volver_arriba": "Volver arriba"
+  },
+  "productos": {
+    "agotado": "Agotado",
+    "anadir": "Añadir al carrito",
+    "anadir_uno": "Añadir uno",
+    "cantidad": "Cantidad",
+    "decant_10": "Decant 10 ml",
+    "decant_5": "Decant 5 ml",
+    "desde": "Desde",
+    "dudas": "¿Dudas con esta fragancia? Escríbenos",
+    "frasco": "Frasco completo",
+    "impuestos": "Impuestos incluidos. Envío calculado al pagar.",
+    "oferta": "Oferta",
+    "presentacion": "Presentación",
+    "promesa_decant": "Te descontamos el decant del frasco completo",
+    "promesa_envio": "Envío gratis desde $20 a toda Venezuela",
+    "promesa_original": "Frasco original sellado, sin réplicas",
+    "quitar_uno": "Quitar uno",
+    "ver_imagen": "Ver la imagen {{ n }}"
+  },
+  "secciones": {
+    "carrusel": {
+      "aria": "Carrusel de fragancias",
+      "titulo": "Pasa y mira."
+    },
+    "cierre": {
+      "texto": "Dinos qué usas ahora o qué te gusta oler, y te decimos cuál decant pedir primero. Sin vendedor encima, sin discurso.",
+      "titulo": "¿Empezamos por uno?"
+    },
+    "claro": {
+      "preguntas": {
+        "1": {
+          "p": "¿Es original de verdad?",
+          "r": "Sí. Compramos el frasco sellado y de ahí sale el decant. Si quieres, te lo llenamos delante de ti o te mandamos el video del llenado con tu nombre en la etiqueta. No trabajamos réplicas ni «inspirados en»."
+        },
+        "2": {
+          "p": "¿Y si al final no me gusta?",
+          "r": "Entonces te ahorraste comprar un frasco completo que iba a quedarse lleno en tu repisa. Ese es justamente el punto del decant. Escríbenos y te ayudamos a buscar otro que sí te vaya."
+        },
+        "3": {
+          "p": "¿Cómo pago?",
+          "r": "Los precios de la página están en dólares y los pagas por la tienda como cualquier compra. Si prefieres pagar en bolívares, escríbenos por el chat: te pasamos el monto a la tasa del día y coordinamos pago móvil o transferencia."
+        },
+        "4": {
+          "p": "¿Cuándo me llega? ¿Envían a todo el país?",
+          "r": "Enviamos a toda Venezuela. En Caracas, 24 a 48 horas; al interior, por Zoom o MRW en 2 a 3 días hábiles. El envío va por nuestra cuenta en pedidos desde $20 si pagas en dólares, o desde $30 si pagas en bolívares a tasa BCV."
+        },
+        "5": {
+          "p": "¿El descuento del decant es de verdad?",
+          "r": "De verdad. Lo que pagaste por el decant se te descuenta del frasco completo de esa misma fragancia, durante los 60 días siguientes. Solo mándanos tu comprobante por el chat."
+        }
+      },
+      "titulo": "Lo que preguntarías si estuvieras aquí."
+    },
+    "cuenta": {
+      "aria_picker": "Elige una fragancia",
+      "como_pagas": "Cómo pagas",
+      "cuando": "Cuándo lo tienes",
+      "envio_courier": "Envío + courier",
+      "no_venden": "No venden",
+      "titulo": "El frasco cuesta lo mismo. Lo que te ahorras es todo lo demás.",
+      "total": "Total del frasco"
+    },
+    "estanteria": {
+      "titulo": "Los que siempre nos piden."
+    },
+    "hero": {
+      "subtitulo": "Los perfumes que ya conoces, en decant para vivirlos una semana en tu piel. Y si es el tuyo, el frasco completo al mismo precio que en Amazon — solo que aquí, y en dos días.",
+      "titulo_1": "Pruébalo en 5 ml.",
+      "titulo_2": "Cómpralo cuando estés seguro."
+    },
+    "indice": {
+      "subtitulo": "Cada una en decant de 5 o 10 ml. Pruébala una semana entera y decide después, no en el papelito de la tienda.",
+      "titulo": "Seis maneras de oler distinto esta semana."
+    },
+    "ritual": {
+      "pasos": {
+        "1": {
+          "texto": "5 o 10 ml del original, en atomizador de vidrio. Alcanza para 30 o 60 días de uso real. Sin compromiso, sin discurso de vendedor.",
+          "titulo": "Te llevas el decant"
+        },
+        "2": {
+          "texto": "Cómo abre, cómo seca, cuánto te dura, qué te dicen en la calle. Eso es lo único que decide si una fragancia es tuya o no.",
+          "titulo": "Lo vives una semana"
+        },
+        "3": {
+          "texto": "Si es el tuyo, te llevas el frasco completo sellado y te descontamos lo que pagaste por el decant. Probar no te costó nada.",
+          "titulo": "Ahora sí, el frasco"
+        },
+        "4": {
+          "texto": "Caracas en 24 a 48 horas; el interior por Zoom o MRW en 2 a 3 días hábiles. Gratis desde $20.",
+          "titulo": "Y te lo llevamos"
+        }
+      },
+      "texto": "Un perfume no se decide en el papelito de la tienda. Se decide a las seis horas, cuando ya se mezcló contigo y alguien te pregunta qué te pusiste.",
+      "titulo": "Nadie se casa en la primera cita."
+    },
+    "vitrina": {
+      "subtitulo": "Decants y frascos originales, al mismo precio que afuera pero aquí, en dos días y sin aduana.",
+      "titulo_1": "Pruébalo en 5 ml.",
+      "titulo_2": "Cómpralo seguro."
+    },
+    "voces": {
+      "mensajes": {
+        "1": "Marico el Sauvage me duró todo el día, ya voy a comprar el frasco",
+        "2": "Jajaja te lo dije. Te descuento el decant del frasco.",
+        "3": "Compré 3 decants para probar y me quedé con el Bleu. Los otros dos se los regalé a mi hermano jaja",
+        "4": "Lo que más me gustó fue no gastar 130 dólares en algo que no sabía si me iba a gustar. Llegó al día siguiente en Chacao.",
+        "5": "Ese es el punto"
+      },
+      "titulo": "Sin filtro."
     }
   }
 }

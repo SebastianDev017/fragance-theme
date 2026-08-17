@@ -1,0 +1,34 @@
+{%- comment -%}
+  404. No es un callejón sin salida: se ofrece el buscador y el catálogo.
+{%- endcomment -%}
+
+<section class="pagina pagina--404">
+  <header class="sec-head sec-head--center">
+    <p class="eyebrow"><span class="dot" aria-hidden="true"></span> 404</p>
+    <h1 class="h2">{{ 'general.404.titulo' | t }}</h1>
+    <p class="sec-head__p">{{ 'general.404.texto' | t }}</p>
+  </header>
+
+  <form class="buscador" action="{{ routes.search_url }}" method="get" role="search">
+    <label class="visually-hidden" for="q404">{{ 'general.buscar.etiqueta' | t }}</label>
+    {% render 'icono', tipo: 'buscar', tam: 20 %}
+    <input id="q404" type="search" name="q" placeholder="{{ 'general.buscar.placeholder' | t }}">
+    <input type="hidden" name="type" value="product">
+    <button class="btn btn--ink" type="submit">{{ 'general.buscar.boton' | t }}</button>
+  </form>
+
+  <p class="pagina__cta">
+    <a class="btn btn--ghost btn--lg" href="{{ routes.all_products_collection_url }}">
+      {{ 'general.404.cta' | t }}
+      {% render 'icono', tipo: 'flecha' %}
+    </a>
+  </p>
+</section>
+
+{% schema %}
+{
+  "name": "t:secciones.404.nombre",
+  "tag": "section",
+  "settings": []
+}
+{% endschema %}

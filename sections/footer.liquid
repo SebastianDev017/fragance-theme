@@ -1,32 +1,118 @@
+{%- comment -%}
+  Pie de página.
+
+  Las columnas de enlaces son bloques, así que el comerciante decide cuántas
+  hay y qué menú va en cada una. El selector de idioma vive aquí además de en
+  la cabecera: es donde lo busca la gente cuando ya bajó del todo.
+{%- endcomment -%}
+
 <footer class="foot">
-  <div class="foot__brand">
-    <span class="nav__drop" aria-hidden="true"></span>
-    <span>{{ section.settings.wordmark | default: shop.name }}</span>
+  {%- if section.blocks.size > 0 -%}
+    <div class="foot__cols">
+      {%- for block in section.blocks -%}
+        <div class="foot__col" {{ block.shopify_attributes }}>
+          {%- case block.type -%}
+            {%- when 'menu' -%}
+              {%- if block.settings.titulo != blank -%}
+                <h2 class="foot__col-tit">{{ block.settings.titulo }}</h2>
+              {%- endif -%}
+              {%- if block.settings.menu != blank -%}
+                <ul class="foot__col-links">
+                  {%- for link in block.settings.menu.links -%}
+                    <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+
+            {%- when 'texto' -%}
+              {%- if block.settings.titulo != blank -%}
+                <h2 class="foot__col-tit">{{ block.settings.titulo }}</h2>
+              {%- endif -%}
+              <div class="foot__col-txt rte">{{ block.settings.texto }}</div>
+              {%- if block.settings.cta_chat != blank -%}
+                <button class="btn btn--ghost foot__chat" type="button" data-chat>
+                  {% render 'icono', tipo: 'chat', tam: 16 %}
+                  {{ block.settings.cta_chat }}
+                </button>
+              {%- endif -%}
+          {%- endcase -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  <div class="foot__base">
+    <div class="foot__brand">
+      <span class="nav__drop" aria-hidden="true"></span>
+      <span>{{ section.settings.wordmark | default: shop.name }}</span>
+    </div>
+
+    {%- if section.settings.linea != blank -%}
+      <p class="foot__line">{{ section.settings.linea }}</p>
+    {%- endif -%}
+
+    <nav class="foot__links" aria-label="{{ 'general.accesibilidad.pie' | t }}">
+      {%- if settings.instagram != blank -%}
+        <a href="{{ settings.instagram }}" target="_blank" rel="noopener">Instagram</a>
+      {%- endif -%}
+      <button class="link" type="button" data-chat>{{ 'general.chat.corto' | t }}</button>
+      {%- if section.settings.menu != blank -%}
+        {%- for link in section.settings.menu.links -%}
+          <a href="{{ link.url }}">{{ link.title }}</a>
+        {%- endfor -%}
+      {%- endif -%}
+      <a href="#top">{{ 'general.volver_arriba' | t }}</a>
+    </nav>
   </div>
 
-  <p class="foot__line">{{ section.settings.linea }}</p>
+  <div class="foot__legal">
+    {%- if section.settings.mostrar_idioma -%}
+      {% render 'selector-idioma', variante: 'pie' %}
+    {%- endif -%}
 
-  <nav class="foot__links" aria-label="Pie de página">
-    {%- if settings.instagram != blank -%}
-      <a href="{{ settings.instagram }}" target="_blank" rel="noopener">Instagram</a>
+    {%- if section.settings.mostrar_pagos and shop.enabled_payment_types.size > 0 -%}
+      <ul class="foot__pagos" role="list">
+        {%- for tipo in shop.enabled_payment_types -%}
+          <li>{{ tipo | payment_type_svg_tag: class: 'foot__pago' }}</li>
+        {%- endfor -%}
+      </ul>
     {%- endif -%}
-    <button class="link" type="button" data-chat>Chat</button>
-    {%- if section.settings.menu != blank -%}
-      {%- for link in section.settings.menu.links -%}
-        <a href="{{ link.url }}">{{ link.title }}</a>
-      {%- endfor -%}
-    {%- endif -%}
-    <a href="#top">Volver arriba</a>
-  </nav>
+
+    <p class="foot__copy">
+      &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}.
+      {{ powered_by_link }}
+    </p>
+  </div>
 </footer>
 
 {% schema %}
 {
-  "name": "Pie de página",
+  "name": "t:secciones.pie.nombre",
   "settings": [
-    { "type": "text", "id": "wordmark", "label": "Nombre de la marca", "default": "DropScents" },
-    { "type": "text", "id": "linea", "label": "Línea legal", "default": "Decants y frascos originales. Envíos a toda Venezuela. Precios en dólares; pagos en bolívares por el chat." },
-    { "type": "link_list", "id": "menu", "label": "Menú" }
+    { "type": "text", "id": "wordmark", "label": "t:comun.wordmark", "default": "DropScents" },
+    { "type": "text", "id": "linea", "label": "t:secciones.pie.linea", "default": "Decants y frascos originales. Envíos a toda Venezuela. Precios en dólares; pagos en bolívares por el chat." },
+    { "type": "link_list", "id": "menu", "label": "t:secciones.pie.menu_base" },
+    { "type": "checkbox", "id": "mostrar_idioma", "label": "t:secciones.cabecera.mostrar_idioma", "default": true },
+    { "type": "checkbox", "id": "mostrar_pagos", "label": "t:secciones.pie.mostrar_pagos", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "t:secciones.pie.bloque_menu",
+      "settings": [
+        { "type": "text", "id": "titulo", "label": "t:comun.titular", "default": "Tienda" },
+        { "type": "link_list", "id": "menu", "label": "t:comun.menu" }
+      ]
+    },
+    {
+      "type": "texto",
+      "name": "t:secciones.pie.bloque_texto",
+      "settings": [
+        { "type": "text", "id": "titulo", "label": "t:comun.titular", "default": "¿Dudas?" },
+        { "type": "richtext", "id": "texto", "label": "t:comun.texto", "default": "<p>Escríbenos y te ayudamos a elegir. Respondemos rápido.</p>" },
+        { "type": "text", "id": "cta_chat", "label": "t:comun.boton_chat", "default": "Abrir el chat" }
+      ]
+    }
   ]
 }
 {% endschema %}

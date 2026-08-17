@@ -1,38 +1,181 @@
 {%- comment -%}
-  Cabecera. El contenido cae sobre el mismo contenedor que el resto de la
-  página (--edge en el CSS), no de borde a borde de la pantalla.
+  Cabecera.
+
+  El contenido cae sobre el mismo contenedor que el resto de la página
+  (--edge en el CSS), no de borde a borde de la pantalla.
+
+  Móvil y escritorio no muestran lo mismo a propósito:
+    · escritorio → enlaces + iconos (buscar, cuenta, carrito) + botón de chat
+    · móvil      → sólo el carrito y la hamburguesa; todo lo demás vive en el
+                   menú lateral, que es una columna con el logo arriba, los
+                   enlaces en medio y cuenta/carrito/buscar abajo.
 {%- endcomment -%}
 
-<header class="nav" id="nav">
-  <a class="nav__brand" href="{{ routes.root_url }}" aria-label="{{ shop.name }}, inicio">
-    <span class="nav__drop" aria-hidden="true"></span>
-    <span>{{ section.settings.wordmark | default: shop.name }}</span>
+{%- liquid
+  assign cuenta_url = routes.account_url
+  assign hay_cuentas = shop.customer_accounts_enabled
+
+  comment
+    OJO con `| default: 'clave' | t`: si el ajuste TIENE valor, `default` lo
+    deja pasar y `t` intentaría traducir el texto del comerciante como si
+    fuera una clave. Por eso el respaldo va siempre con un `if`.
+  endcomment
+  assign txt_chat = section.settings.texto_chat
+  if txt_chat == blank
+    assign txt_chat = 'general.chat.abrir' | t
+  endif
+-%}
+
+<header class="nav{% if section.settings.fijo %} nav--fijo{% endif %}" id="nav">
+  <a class="nav__brand" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
+    {%- if section.settings.logo != blank -%}
+      {%- assign alto = section.settings.logo_alto | default: 30 -%}
+      <img class="nav__logo" src="{{ section.settings.logo | image_url: height: 120 }}"
+        alt="{{ shop.name | escape }}" height="{{ alto }}"
+        width="{{ alto | times: section.settings.logo.aspect_ratio | round }}"
+        style="height:{{ alto }}px" loading="eager">
+    {%- else -%}
+      <span class="nav__drop" aria-hidden="true"></span>
+      <span>{{ section.settings.wordmark | default: shop.name }}</span>
+    {%- endif -%}
   </a>
 
   {%- if section.settings.menu != blank -%}
-    <nav class="nav__links" aria-label="Principal">
+    <nav class="nav__links" aria-label="{{ 'general.accesibilidad.menu_principal' | t }}">
       {%- for link in section.settings.menu.links -%}
-        <a href="{{ link.url }}">{{ link.title }}</a>
+        <a href="{{ link.url }}" {% if link.active %}aria-current="page"{% endif %}>{{ link.title }}</a>
       {%- endfor -%}
     </nav>
   {%- endif -%}
 
-  {%- if section.settings.mostrar_chat -%}
-    <button class="btn btn--ink nav__cta" type="button" data-chat>
-      {% render 'icon-chat' %}
-      {{ section.settings.texto_chat }}
+  <div class="nav__acciones">
+    {%- if section.settings.mostrar_idioma -%}
+      <div class="nav__idioma">{% render 'selector-idioma' %}</div>
+    {%- endif -%}
+
+    {%- if section.settings.mostrar_buscar -%}
+      <a class="nav__ico" href="{{ routes.search_url }}" aria-label="{{ 'general.buscar.titulo' | t }}">
+        {% render 'icono', tipo: 'buscar', tam: 19 %}
+      </a>
+    {%- endif -%}
+
+    {%- if section.settings.mostrar_cuenta and hay_cuentas -%}
+      <a class="nav__ico nav__ico--cuenta" href="{{ cuenta_url }}" aria-label="{{ 'general.cuenta.titulo' | t }}">
+        {% render 'icono', tipo: 'cuenta', tam: 19 %}
+      </a>
+    {%- endif -%}
+
+    <a class="nav__ico nav__ico--carrito" href="{{ routes.cart_url }}"
+      aria-label="{{ 'general.carrito.titulo' | t }}">
+      {% render 'icono', tipo: 'carrito', tam: 19 %}
+      <span class="nav__cuenta-carrito" data-cart-count {% if cart.item_count == 0 %}hidden{% endif %}>
+        {{ cart.item_count }}
+      </span>
+    </a>
+
+    {%- if section.settings.mostrar_chat -%}
+      <button class="btn btn--ink nav__cta" type="button" data-chat>
+        {% render 'icono', tipo: 'chat', tam: 16 %}
+        <span>{{ txt_chat }}</span>
+      </button>
+    {%- endif -%}
+
+    {%- comment -%} la hamburguesa: sólo móvil, y sustituye al botón de chat {%- endcomment -%}
+    <button class="nav__burger" type="button" data-drawer-abrir
+      aria-controls="menu-lateral" aria-expanded="false"
+      aria-label="{{ 'general.accesibilidad.abrir_menu' | t }}">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
     </button>
-  {%- endif -%}
+  </div>
 </header>
+
+{%- comment -%}
+  Menú lateral. Columna con `space-between`: logo arriba, enlaces en medio y
+  los accesos de tienda abajo, con padding suficiente para que nada quede
+  pegado al borde del teléfono (incluida la zona segura del iPhone).
+{%- endcomment -%}
+<div class="drawer" id="menu-lateral" hidden>
+  <div class="drawer__fondo" data-drawer-cerrar></div>
+
+  <aside class="drawer__panel" role="dialog" aria-modal="true"
+    aria-label="{{ 'general.accesibilidad.menu_principal' | t }}">
+
+    <div class="drawer__top">
+      <a class="nav__brand" href="{{ routes.root_url }}">
+        {%- if section.settings.logo != blank -%}
+          <img class="nav__logo" src="{{ section.settings.logo | image_url: height: 120 }}"
+            alt="{{ shop.name | escape }}" height="30"
+            width="{{ 30 | times: section.settings.logo.aspect_ratio | round }}"
+            style="height:30px" loading="lazy">
+        {%- else -%}
+          <span class="nav__drop" aria-hidden="true"></span>
+          <span>{{ section.settings.wordmark | default: shop.name }}</span>
+        {%- endif -%}
+      </a>
+      <button class="drawer__cerrar" type="button" data-drawer-cerrar
+        aria-label="{{ 'general.accesibilidad.cerrar_menu' | t }}">
+        {% render 'icono', tipo: 'cerrar', tam: 20 %}
+      </button>
+    </div>
+
+    <nav class="drawer__links" aria-label="{{ 'general.accesibilidad.menu_principal' | t }}">
+      {%- if section.settings.menu != blank -%}
+        {%- for link in section.settings.menu.links -%}
+          <a href="{{ link.url }}">
+            <span>{{ link.title }}</span>
+            {% render 'icono', tipo: 'flecha', tam: 18 %}
+          </a>
+        {%- endfor -%}
+      {%- endif -%}
+    </nav>
+
+    <div class="drawer__pie">
+      <div class="drawer__accesos">
+        <a href="{{ routes.cart_url }}">
+          {% render 'icono', tipo: 'carrito', tam: 18 %}
+          <span>{{ 'general.carrito.titulo' | t }}</span>
+          <b data-cart-count {% if cart.item_count == 0 %}hidden{% endif %}>{{ cart.item_count }}</b>
+        </a>
+        {%- if hay_cuentas -%}
+          <a href="{{ cuenta_url }}">
+            {% render 'icono', tipo: 'cuenta', tam: 18 %}
+            <span>{{ 'general.cuenta.titulo' | t }}</span>
+          </a>
+        {%- endif -%}
+        <a href="{{ routes.search_url }}">
+          {% render 'icono', tipo: 'buscar', tam: 18 %}
+          <span>{{ 'general.buscar.titulo' | t }}</span>
+        </a>
+      </div>
+
+      {%- if section.settings.mostrar_chat -%}
+        <button class="btn btn--ink drawer__chat" type="button" data-chat>
+          {% render 'icono', tipo: 'chat', tam: 16 %}
+          {{ txt_chat }}
+        </button>
+      {%- endif -%}
+
+      {% render 'selector-idioma', variante: 'drawer' %}
+    </div>
+  </aside>
+</div>
 
 {% schema %}
 {
-  "name": "Cabecera",
+  "name": "t:secciones.cabecera.nombre",
   "settings": [
-    { "type": "text", "id": "wordmark", "label": "Nombre de la marca", "default": "DropScents" },
-    { "type": "link_list", "id": "menu", "label": "Menú" },
-    { "type": "checkbox", "id": "mostrar_chat", "label": "Mostrar botón de chat", "default": true },
-    { "type": "text", "id": "texto_chat", "label": "Texto del botón", "default": "Abrir el chat" }
+    { "type": "image_picker", "id": "logo", "label": "t:comun.logo" },
+    { "type": "range", "id": "logo_alto", "min": 18, "max": 60, "step": 2, "unit": "px", "label": "t:comun.logo_alto", "default": 30 },
+    { "type": "text", "id": "wordmark", "label": "t:comun.wordmark", "default": "DropScents" },
+    { "type": "link_list", "id": "menu", "label": "t:comun.menu" },
+    { "type": "checkbox", "id": "fijo", "label": "t:secciones.cabecera.fijo", "default": true },
+    { "type": "header", "content": "t:secciones.cabecera.acciones" },
+    { "type": "checkbox", "id": "mostrar_buscar", "label": "t:secciones.cabecera.mostrar_buscar", "default": true },
+    { "type": "checkbox", "id": "mostrar_cuenta", "label": "t:secciones.cabecera.mostrar_cuenta", "default": true },
+    { "type": "checkbox", "id": "mostrar_idioma", "label": "t:secciones.cabecera.mostrar_idioma", "default": true },
+    { "type": "checkbox", "id": "mostrar_chat", "label": "t:secciones.cabecera.mostrar_chat", "default": true },
+    { "type": "text", "id": "texto_chat", "label": "t:secciones.cabecera.texto_chat", "default": "Abrir el chat" }
   ]
 }
 {% endschema %}

@@ -363,9 +363,18 @@ img { max-width: 100%; display: block; }
    ESTANTERÍA — la foto manda, el fondo se calla
    =========================================================================== */
 .estanteria { padding-block: clamp(5rem, 12vh, 9rem); }
+/* Las columnas las decide la sección (--cols / --cols-movil). En pantallas
+   intermedias se topan en 3 para que la tarjeta no baje de un ancho legible. */
 .shelf {
   padding-inline: var(--edge);
-  display: grid; gap: 1.1rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
+  display: grid; gap: 1.1rem;
+  grid-template-columns: repeat(var(--cols-movil, 1), minmax(0, 1fr));
+}
+@media (min-width: 620px) {
+  .shelf { grid-template-columns: repeat(min(var(--cols, 4), 3), minmax(0, 1fr)); }
+}
+@media (min-width: 1000px) {
+  .shelf { grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr)); gap: 1.25rem; }
 }
 
 .card {
@@ -380,29 +389,35 @@ img { max-width: 100%; display: block; }
 /* la foto: frasco + caja sobre fondo casi blanco, para que el color del
    producto sea lo único saturado de la tarjeta */
 .card__shot {
-  position: relative; margin: 0; aspect-ratio: 5 / 4;
+  position: relative; margin: 0; aspect-ratio: var(--card-ratio, 1 / 1);
   background: linear-gradient(178deg, #FFFFFF 0%, #F6F3F7 100%);
   border-bottom: 1px solid var(--line-soft);
   display: grid; place-items: center; overflow: hidden;
 }
-.card__shot img {
+.card__shot-link { display: block; position: absolute; inset: 0; }
+
+/* Las imágenes se apilan y se cruza el fundido. `contain` + padding para que
+   se vea el frasco ENTERO con su caja: nunca se recorta la foto. */
+.card__slide {
+  position: absolute; inset: 0;
   width: 100%; height: 100%; object-fit: contain;
-  padding: 1.1rem; transition: transform .6s var(--ease);
+  padding: 1.1rem;
+  opacity: 0; visibility: hidden;
+  transition: opacity .35s var(--ease), transform .6s var(--ease), visibility 0s .35s;
 }
-.card:hover .card__shot img { transform: scale(1.045); }
+.card__slide.is-on {
+  opacity: 1; visibility: visible;
+  transition: opacity .35s var(--ease), transform .6s var(--ease);
+}
+.card:hover .card__slide.is-on { transform: scale(1.035); }
 
 /* mientras no exista la foto, una silueta neutra en vez de un hueco roto */
-.card__shot.is-empty::after {
-  content: ''; position: absolute; inset: 0; opacity: .5;
+.card__sinfoto {
+  display: block; position: absolute; inset: 0; opacity: .5;
   background: center / 46% no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 96' fill='none' stroke='%238A6597' stroke-width='2.2'%3E%3Crect x='16' y='30' width='34' height='52' rx='6'/%3E%3Cpath d='M27 30v-8h12v8'/%3E%3Crect x='30' y='12' width='6' height='10' rx='2'/%3E%3Crect x='62' y='22' width='42' height='60' rx='4'/%3E%3Cpath d='M62 36h42'/%3E%3C/svg%3E");
 }
-.card__shot.is-empty img { display: none; }
 
-/* la foto entera es enlace al producto, pero fuera del orden de tabulación:
-   el nombre de abajo ya lleva al mismo sitio y no hay que tabular dos veces */
-.card__shot-link { display: block; }
-
-.card__body { padding: 1.15rem 1.25rem 1.35rem; display: flex; flex-direction: column; flex: 1; }
+.card__body { position: relative; z-index: 2; padding: 1.15rem 1.25rem 1.35rem; display: flex; flex-direction: column; flex: 1; }
 .card__name a { display: block; }
 .card__name a::after {
   content: ''; position: absolute; inset: 0; z-index: 1;   /* toda la tarjeta clicable */
