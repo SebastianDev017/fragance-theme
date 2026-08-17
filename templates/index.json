@@ -104,6 +104,42 @@
     },
     "cuenta": {
       "type": "cuenta-clara",
+      "blocks": {
+        "fragancia_AWkmU6": {
+          "type": "fragancia",
+          "settings": {
+            "producto": "bleu",
+            "etiqueta": ""
+          }
+        },
+        "fragancia_4GrUi3": {
+          "type": "fragancia",
+          "settings": {
+            "producto": "goodgirl",
+            "etiqueta": ""
+          }
+        },
+        "fragancia_XeVBBH": {
+          "type": "fragancia",
+          "settings": {
+            "producto": "lemale-elixir",
+            "etiqueta": ""
+          }
+        },
+        "fragancia_dzYkdX": {
+          "type": "fragancia",
+          "settings": {
+            "producto": "stronger",
+            "etiqueta": ""
+          }
+        }
+      },
+      "block_order": [
+        "fragancia_AWkmU6",
+        "fragancia_4GrUi3",
+        "fragancia_XeVBBH",
+        "fragancia_dzYkdX"
+      ],
       "settings": {
         "courier": 24,
         "coleccion": "frontpage",
