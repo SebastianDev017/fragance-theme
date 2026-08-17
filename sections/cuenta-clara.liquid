@@ -105,7 +105,53 @@
       </p>
     {%- endif -%}
   {%- else -%}
-    <p class="fine">Elige una colección en los ajustes de esta sección para mostrar el comparador.</p>
+    {%- comment -%}
+      Marcador: se ve la forma del comparador, sin números. Una sección sin
+      contenido tiene que leerse como «falta llenar esto», no como «esto está
+      roto».
+    {%- endcomment -%}
+    <div class="picker" aria-hidden="true">
+      {%- for i in (1..4) -%}
+        <span class="chip chip--vacio">Fragancia {{ forloop.index }}</span>
+      {%- endfor -%}
+    </div>
+    <div class="compare compare--vacia" aria-hidden="true">
+      <article class="compare__col compare__col--us">
+        <div class="compare__top">
+          <h3>{{ section.settings.col_aqui }}</h3>
+          <span class="tag tag--punch">{{ section.settings.tag_aqui }}</span>
+        </div>
+        <p class="compare__name">&mdash;</p>
+        <dl class="compare__rows">
+          <div><dt>Decant 5 ml</dt><dd>&mdash;</dd></div>
+          <div><dt>Decant 10 ml</dt><dd>&mdash;</dd></div>
+          <div class="is-key"><dt>Frasco completo</dt><dd>&mdash;</dd></div>
+          <div><dt>{{ section.settings.fila_envio }}</dt><dd class="is-free">{{ section.settings.valor_envio }}</dd></div>
+          <div><dt>Cuándo lo tienes</dt><dd>{{ section.settings.valor_entrega }}</dd></div>
+        </dl>
+      </article>
+      <article class="compare__col compare__col--them">
+        <div class="compare__top">
+          <h3>{{ section.settings.col_afuera }}</h3>
+          <span class="tag">{{ section.settings.tag_afuera }}</span>
+        </div>
+        <p class="compare__name">&mdash;</p>
+        <dl class="compare__rows">
+          <div><dt>Decant 5 ml</dt><dd class="is-none">No venden</dd></div>
+          <div><dt>Decant 10 ml</dt><dd class="is-none">No venden</dd></div>
+          <div class="is-key"><dt>Frasco completo</dt><dd>&mdash;</dd></div>
+          <div><dt>Envío + courier</dt><dd>&mdash;</dd></div>
+          <div><dt>Cuándo lo tienes</dt><dd>{{ section.settings.tag_afuera }}</dd></div>
+        </dl>
+      </article>
+    </div>
+    <p class="aviso-vacio">
+      {%- if coleccion == blank -%}
+        Elige una colección en los ajustes de esta sección.
+      {%- else -%}
+        La colección <strong>{{ coleccion.title }}</strong> todavía no tiene productos.
+      {%- endif -%}
+    </p>
   {%- endif -%}
 </section>
 
