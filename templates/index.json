@@ -9,6 +9,29 @@
  */
 {
   "sections": {
+    "hero_vitrina_9U6jXM": {
+      "type": "hero-vitrina",
+      "name": "t:secciones.vitrina.presets.chat",
+      "settings": {
+        "altura": "media",
+        "corte": 50,
+        "velo": 35,
+        "zoom": 106,
+        "eyebrow": "Decants y frascos originales · Toda Venezuela",
+        "titulo_1": "Pruébalo en 5 ml.",
+        "titulo_2": "Cómpralo cuando estes seguro",
+        "subtitulo": "Los perfumes que ya conoces, en decant para vivirlos una semana en tu piel. Y si es el tuyo, el frasco completo al mismo precio que en Amazon — solo que aquí, y en dos días.",
+        "cta_texto": "Ver los decants",
+        "cta_url": "",
+        "cta2_texto": "Pregúntanos por el chat",
+        "cta2_url": "",
+        "cta2_chat": true,
+        "mostrar_tira": true,
+        "coleccion": "frontpage",
+        "tira_titulo": "Los que más nos piden",
+        "tira_limite": 8
+      }
+    },
     "hero": {
       "type": "hero-decant",
       "settings": {
@@ -31,29 +54,6 @@
         "final_cta": "Ver la cuenta completa",
         "final_url": "",
         "scroll_texto": "baja y sirve"
-      }
-    },
-    "hero_vitrina_9U6jXM": {
-      "type": "hero-vitrina",
-      "name": "t:secciones.vitrina.presets.chat",
-      "settings": {
-        "altura": "alta",
-        "corte": 50,
-        "velo": 35,
-        "zoom": 106,
-        "eyebrow": "Decants y frascos originales · Toda Venezuela",
-        "titulo_1": "Pruébalo en 5 ml.",
-        "titulo_2": "Cómpralo cuando estes seguro",
-        "subtitulo": "Los perfumes que ya conoces, en decant para vivirlos una semana en tu piel. Y si es el tuyo, el frasco completo al mismo precio que en Amazon — solo que aquí, y en dos días.",
-        "cta_texto": "Ver los decants",
-        "cta_url": "",
-        "cta2_texto": "Pregúntanos por el chat",
-        "cta2_url": "",
-        "cta2_chat": true,
-        "mostrar_tira": true,
-        "coleccion": "frontpage",
-        "tira_titulo": "Los que más nos piden",
-        "tira_limite": 8
       }
     },
     "ritual": {
