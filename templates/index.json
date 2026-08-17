@@ -101,7 +101,7 @@
       "type": "estanteria",
       "settings": {
         "coleccion": "frontpage",
-        "limite": 8,
+        "limite": 4,
         "eyebrow": "La estantería",
         "titulo": "Los que siempre nos piden.",
         "texto": "Nada raro, nada de nicho imposible de conseguir. Los que reconoces cuando pasan por al lado — y algunos que deberías conocer.",
