@@ -24,7 +24,8 @@
         "eyebrow": "Sigue probando",
         "titulo": "",
         "ver_todo": "Ver el catálogo completo",
-        "ancla": "relacionados"
+        "ancla": "relacionados",
+        "coleccion": "frontpage"
       }
     },
     "claro": {
@@ -53,10 +54,56 @@
         "q2",
         "q3"
       ]
+    },
+    "promesas": {
+      "type": "ticker",
+      "settings": {
+        "estilo": "claro",
+        "tamano": 16,
+        "velocidad": 3,
+        "separador": "gota"
+      },
+      "blocks": {
+        "p1": {
+          "type": "frase",
+          "settings": {
+            "texto": "Frasco original sellado",
+            "icono": "escudo"
+          }
+        },
+        "p2": {
+          "type": "frase",
+          "settings": {
+            "texto": "Envio gratis desde $20",
+            "icono": "camion"
+          }
+        },
+        "p3": {
+          "type": "frase",
+          "settings": {
+            "texto": "Te descontamos el decant del frasco",
+            "icono": "gota"
+          }
+        },
+        "p4": {
+          "type": "frase",
+          "settings": {
+            "texto": "Caracas en 24 a 48 h",
+            "icono": "check"
+          }
+        }
+      },
+      "block_order": [
+        "p1",
+        "p2",
+        "p3",
+        "p4"
+      ]
     }
   },
   "order": [
     "main",
+    "promesas",
     "relacionados",
     "claro"
   ]
