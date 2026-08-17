@@ -13,7 +13,8 @@
       "type": "hero-vitrina",
       "name": "t:secciones.vitrina.presets.chat",
       "settings": {
-        "altura": "media",
+        "imagen": "shopify://shop_images/c1d9e653741661d45d1c9a7f26578702.jpg",
+        "altura": "pantalla",
         "corte": 50,
         "velo": 35,
         "zoom": 106,
@@ -26,7 +27,7 @@
         "cta2_texto": "Pregúntanos por el chat",
         "cta2_url": "",
         "cta2_chat": true,
-        "mostrar_tira": true,
+        "mostrar_tira": false,
         "coleccion": "frontpage",
         "tira_titulo": "Los que más nos piden",
         "tira_limite": 8
