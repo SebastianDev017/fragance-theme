@@ -1,0 +1,62 @@
+{%- comment -%}
+  Los tres pasos. Van como bloques para que se puedan reordenar, quitar o
+  reescribir desde el editor sin tocar codigo. El tercero es el oscuro (el del
+  compromiso) y el CSS lo distingue por su posicion.
+{%- endcomment -%}
+
+<section class="ritual" id="{{ section.settings.ancla | default: 'ritual' }}">
+  <header class="sec-head sec-head--offset">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="eyebrow"><span class="dot" aria-hidden="true"></span> {{ section.settings.eyebrow }}</p>
+    {%- endif -%}
+    <h2 class="h2">{{ section.settings.titulo }}</h2>
+    {%- if section.settings.texto != blank -%}
+      <p class="sec-head__p">{{ section.settings.texto }}</p>
+    {%- endif -%}
+  </header>
+
+  <ol class="steps">
+    {%- for block in section.blocks -%}
+      <li class="step step--{{ forloop.index }}" {{ block.shopify_attributes }}>
+        <span class="step__n">{{ block.settings.numero }}</span>
+        <h3>{{ block.settings.titulo }}</h3>
+        <p>{{ block.settings.texto }}</p>
+      </li>
+    {%- endfor -%}
+  </ol>
+</section>
+
+{% schema %}
+{
+  "name": "El ritual",
+  "tag": "div",
+  "max_blocks": 3,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetitulo", "default": "El ritual" },
+    { "type": "text", "id": "titulo", "label": "Titular", "default": "Nadie se casa en la primera cita." },
+    { "type": "textarea", "id": "texto", "label": "Texto", "default": "Un perfume no se decide en el papelito de la tienda. Se decide a las seis horas, cuando ya se mezclo contigo y alguien te pregunta que te pusiste." },
+    { "type": "text", "id": "ancla", "label": "Ancla", "default": "ritual" }
+  ],
+  "blocks": [
+    {
+      "type": "paso",
+      "name": "Paso",
+      "settings": [
+        { "type": "text", "id": "numero", "label": "Numero", "default": "01" },
+        { "type": "text", "id": "titulo", "label": "Titular", "default": "Te llevas el decant" },
+        { "type": "textarea", "id": "texto", "label": "Texto", "default": "5 o 10 ml del original, en atomizador de vidrio." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "El ritual",
+      "blocks": [
+        { "type": "paso", "settings": { "numero": "01", "titulo": "Te llevas el decant" } },
+        { "type": "paso", "settings": { "numero": "02", "titulo": "Lo vives una semana" } },
+        { "type": "paso", "settings": { "numero": "03", "titulo": "Ahora si, el frasco" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

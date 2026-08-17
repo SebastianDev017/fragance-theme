@@ -1,0 +1,32 @@
+<footer class="foot">
+  <div class="foot__brand">
+    <span class="nav__drop" aria-hidden="true"></span>
+    <span>{{ section.settings.wordmark | default: shop.name }}</span>
+  </div>
+
+  <p class="foot__line">{{ section.settings.linea }}</p>
+
+  <nav class="foot__links" aria-label="Pie de pagina">
+    {%- if settings.instagram != blank -%}
+      <a href="{{ settings.instagram }}" target="_blank" rel="noopener">Instagram</a>
+    {%- endif -%}
+    <button class="link" type="button" data-chat>Chat</button>
+    {%- if section.settings.menu != blank -%}
+      {%- for link in section.settings.menu.links -%}
+        <a href="{{ link.url }}">{{ link.title }}</a>
+      {%- endfor -%}
+    {%- endif -%}
+    <a href="#top">Volver arriba</a>
+  </nav>
+</footer>
+
+{% schema %}
+{
+  "name": "Pie de pagina",
+  "settings": [
+    { "type": "text", "id": "wordmark", "label": "Nombre de la marca", "default": "DropScents" },
+    { "type": "text", "id": "linea", "label": "Linea legal", "default": "Decants y frascos originales. Envios a toda Venezuela. Precios en dolares; pagos en bolivares por el chat." },
+    { "type": "link_list", "id": "menu", "label": "Menu" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,78 @@
+{%- comment -%}
+  Tarjeta del catálogo.
+
+  Convención de variantes (es la que hace que todo esto funcione sin metafields):
+    · "Decant 5 ml"   → la que se muestra como precio de entrada
+    · "Decant 10 ml"
+    · cualquier otra  → el frasco completo (p. ej. "Frasco 100 ml")
+
+  Y del producto:
+    vendor      → la marca
+    description → la frase corta ("Denso, especiado, caro de oler.")
+    type        → las notas ("Canela · Lavanda · Regaliz")
+
+  Uso: {% render 'card-fragancia', producto: producto %}
+{%- endcomment -%}
+
+{%- liquid
+  assign v_d5 = null
+  assign v_full = null
+  for v in producto.variants
+    if v.title contains 'Decant 5'
+      assign v_d5 = v
+    else
+      unless v.title contains 'Decant'
+        assign v_full = v
+      endunless
+    endif
+  endfor
+  unless v_full
+    assign v_full = producto.selected_or_first_available_variant
+  endunless
+-%}
+
+<article class="card" data-reveal-card>
+  <a class="card__shot-link" href="{{ producto.url }}" tabindex="-1" aria-hidden="true">
+    <figure class="card__shot">
+      {%- if producto.featured_image -%}
+        <img
+          src="{{ producto.featured_image | image_url: width: 700 }}"
+          srcset="{{ producto.featured_image | image_url: width: 500 }} 500w,
+                  {{ producto.featured_image | image_url: width: 700 }} 700w,
+                  {{ producto.featured_image | image_url: width: 1000 }} 1000w"
+          sizes="(min-width: 900px) 25vw, 90vw"
+          alt="{{ producto.featured_image.alt | default: producto.title | escape }}"
+          width="500" height="400" loading="lazy" decoding="async">
+      {%- else -%}
+        {%- comment -%} sin foto: el CSS dibuja una silueta neutra {%- endcomment -%}
+        <img alt="" width="500" height="400" loading="lazy">
+      {%- endif -%}
+    </figure>
+  </a>
+
+  <div class="card__body">
+    {%- if producto.vendor != blank -%}
+      <p class="card__brand">{{ producto.vendor }}</p>
+    {%- endif -%}
+
+    <h3 class="card__name">
+      <a href="{{ producto.url }}">{{ producto.title }}</a>
+    </h3>
+
+    {%- if producto.description != blank -%}
+      <p class="card__fam">{{ producto.description | strip_html | truncate: 110 }}</p>
+    {%- endif -%}
+    {%- if producto.type != blank -%}
+      <p class="card__notes">{{ producto.type }}</p>
+    {%- endif -%}
+
+    <div class="card__foot">
+      {%- if v_d5 -%}
+        <p class="card__price">{{ v_d5.title }}<b>{{ v_d5.price | money }}</b></p>
+      {%- endif -%}
+      {%- if v_full -%}
+        <p class="card__full">{{ v_full.title }}<br><b>{{ v_full.price | money }}</b></p>
+      {%- endif -%}
+    </div>
+  </div>
+</article>

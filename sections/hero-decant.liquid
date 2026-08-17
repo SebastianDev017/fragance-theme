@@ -1,0 +1,124 @@
+{%- comment -%}
+  Hero con la escena 3D: el decant de 5 ml sirve al frasco completo.
+
+  El <canvas> es lo único que necesita el JS; la escena vive en
+  src/scene.js y se carga en su propio chunk. El reparto 50/50 (texto a la
+  izquierda, escena a la derecha) lo calcula la escena a partir del ancho
+  visible del mundo, no hay que tocar nada aquí.
+
+  El precio "desde" sale del decant más barato de la colección: si mañana
+  entra una fragancia más barata, el botón se actualiza solo.
+{%- endcomment -%}
+
+{%- liquid
+  assign coleccion = collections[section.settings.coleccion]
+  assign desde = 0
+  for producto in coleccion.products
+    for v in producto.variants
+      if v.title contains 'Decant' and v.available
+        if desde == 0 or v.price < desde
+          assign desde = v.price
+        endif
+      endif
+    endfor
+  endfor
+-%}
+
+<section class="hero" id="hero">
+  <div class="hero__stage">
+    <canvas id="scene" aria-hidden="true"></canvas>
+    <p class="visually-hidden">
+      Animación: un decant de 5 ml se inclina y vierte perfume dentro de un frasco completo, que se va llenando.
+    </p>
+  </div>
+
+  <div class="hero__ui">
+    <div class="hero__lead">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="eyebrow" data-hero-in>
+          <span class="dot" aria-hidden="true"></span> {{ section.settings.eyebrow }}
+        </p>
+      {%- endif -%}
+
+      <h1 class="hero__h1">
+        <span class="line" data-hero-in>{{ section.settings.titulo_1 }}</span>
+        <span class="line line--2" data-hero-in>{{ section.settings.titulo_2 }}</span>
+        {%- if section.settings.titulo_3 != blank -%}
+          <span class="line line--2" data-hero-in>{{ section.settings.titulo_3 }}</span>
+        {%- endif -%}
+      </h1>
+
+      <p class="hero__sub" data-hero-in>{{ section.settings.subtitulo }}</p>
+
+      <div class="hero__cta" data-hero-in>
+        <a class="btn btn--ink btn--lg" href="{{ section.settings.cta_url | default: '#estanteria' }}">
+          {{ section.settings.cta_texto }}
+          {%- if desde > 0 %} <span>{{ desde | money }}</span>{% endif -%}
+          {% render 'icon-arrow' %}
+        </a>
+        {%- if section.settings.cta2_texto != blank -%}
+          <a class="btn btn--ghost btn--lg" href="{{ section.settings.cta2_url | default: '#ritual' }}">
+            {{ section.settings.cta2_texto }}
+          </a>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.nota != blank -%}
+        <p class="hero__note" data-hero-in>
+          {{ section.settings.nota }}
+          <button class="link" type="button" data-chat>{{ section.settings.nota_enlace }}</button>
+          {{ section.settings.nota_cola }}
+        </p>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} el remate: aparece cuando el frasco ya está lleno {%- endcomment -%}
+    <div class="hero__final">
+      <p class="eyebrow"><span class="dot" aria-hidden="true"></span> {{ section.settings.final_eyebrow }}</p>
+      <h2 class="hero__final-h">{{ section.settings.final_titulo }}</h2>
+      <p>{{ section.settings.final_texto }}</p>
+      <a class="btn btn--ink btn--lg" href="{{ section.settings.final_url | default: '#cuenta' }}">
+        {{ section.settings.final_cta }}
+      </a>
+    </div>
+
+    <div class="hero__scroll" aria-hidden="true">
+      <span>{{ section.settings.scroll_texto }}</span>
+      <span class="hero__scroll-line"></span>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero — decant 3D",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "La animación 3D usa la colección para calcular el precio 'desde'. Necesita productos con una variante que se llame 'Decant 5 ml'."
+    },
+    { "type": "collection", "id": "coleccion", "label": "Colección del catálogo" },
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Decants y frascos originales · Toda Venezuela" },
+    { "type": "text", "id": "titulo_1", "label": "Titular, línea 1", "default": "Pruébalo en 5 ml." },
+    { "type": "text", "id": "titulo_2", "label": "Titular, línea 2", "default": "Cómpralo cuando" },
+    { "type": "text", "id": "titulo_3", "label": "Titular, línea 3", "default": "estés seguro." },
+    { "type": "textarea", "id": "subtitulo", "label": "Subtítulo", "default": "Los perfumes que ya conoces, en decant para vivirlos una semana en tu piel. Y si es el tuyo, el frasco completo al mismo precio que en Amazon — solo que aquí, y en dos días." },
+    { "type": "text", "id": "cta_texto", "label": "Botón principal", "default": "Ver decants desde" },
+    { "type": "url", "id": "cta_url", "label": "Enlace del botón principal" },
+    { "type": "text", "id": "cta2_texto", "label": "Botón secundario", "default": "Cómo funciona" },
+    { "type": "url", "id": "cta2_url", "label": "Enlace del botón secundario" },
+    { "type": "text", "id": "nota", "label": "Nota de pago", "default": "Precios en dólares. ¿Prefieres pagar en bolívares?" },
+    { "type": "text", "id": "nota_enlace", "label": "Nota — texto del enlace al chat", "default": "Escríbenos por el chat" },
+    { "type": "text", "id": "nota_cola", "label": "Nota — final", "default": "y te pasamos el monto a la tasa del día." },
+    { "type": "header", "content": "Remate (aparece al llenarse el frasco)" },
+    { "type": "text", "id": "final_eyebrow", "label": "Antetítulo", "default": "Y entonces sí" },
+    { "type": "text", "id": "final_titulo", "label": "Titular", "default": "Ya sabes que es el tuyo." },
+    { "type": "textarea", "id": "final_texto", "label": "Texto", "default": "El frasco completo, sellado, al mismo precio que en Amazon — menos lo que pagaste por el decant." },
+    { "type": "text", "id": "final_cta", "label": "Botón", "default": "Ver la cuenta completa" },
+    { "type": "url", "id": "final_url", "label": "Enlace del botón" },
+    { "type": "text", "id": "scroll_texto", "label": "Pista de scroll", "default": "baja y sirve" }
+  ],
+  "presets": [{ "name": "Hero — decant 3D" }]
+}
+{% endschema %}

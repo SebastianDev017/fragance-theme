@@ -1,0 +1,135 @@
+{%- comment -%}
+  El comparador: mismo frasco, aquí y pidiéndolo afuera.
+
+  No necesita ningún dato extra del producto. "Aquí" es el precio de la
+  variante del frasco; "afuera" es ese mismo precio más el courier, que es un
+  ajuste de la sección. Cada chip lleva los precios en céntimos en atributos
+  data-*, y src/ui.js sólo los lee y los anima.
+{%- endcomment -%}
+
+{%- assign coleccion = collections[section.settings.coleccion] -%}
+
+<section class="cuenta" id="{{ section.settings.ancla | default: 'cuenta' }}">
+  <header class="sec-head">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="eyebrow"><span class="dot" aria-hidden="true"></span> {{ section.settings.eyebrow }}</p>
+    {%- endif -%}
+    <h2 class="h2">{{ section.settings.titulo }}</h2>
+    {%- if section.settings.texto != blank -%}
+      <p class="sec-head__p">{{ section.settings.texto }}</p>
+    {%- endif -%}
+  </header>
+
+  {%- if coleccion.products_count > 0 -%}
+    <div class="picker" role="group" aria-label="Elige una fragancia">
+      {%- for producto in coleccion.products limit: section.settings.limite -%}
+        {%- liquid
+          assign v_d5 = null
+          assign v_d10 = null
+          assign v_full = null
+          for v in producto.variants
+            if v.title contains 'Decant 5'
+              assign v_d5 = v
+            elsif v.title contains 'Decant 10'
+              assign v_d10 = v
+            else
+              assign v_full = v
+            endif
+          endfor
+          unless v_full
+            assign v_full = producto.selected_or_first_available_variant
+          endunless
+        -%}
+        <button class="chip" type="button"
+          aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
+          data-nombre="{{ producto.vendor }} {{ producto.title }}{% if v_full %} · {{ v_full.title }}{% endif %}"
+          data-d5="{{ v_d5.price | default: 0 }}"
+          data-d10="{{ v_d10.price | default: 0 }}"
+          data-full="{{ v_full.price | default: 0 }}"
+          data-url="{{ producto.url }}">{{ producto.title }}</button>
+      {%- endfor -%}
+    </div>
+
+    <div class="compare" id="compare" aria-live="polite"
+      data-money-format="{{ shop.money_format | escape }}"
+      data-envio-afuera="{{ section.settings.courier | times: 100 }}">
+
+      <article class="compare__col compare__col--us" aria-labelledby="col-us">
+        <div class="compare__top">
+          <h3 id="col-us">{{ section.settings.col_aqui }}</h3>
+          <span class="tag tag--punch">{{ section.settings.tag_aqui }}</span>
+        </div>
+        <p class="compare__name" data-f="name">&mdash;</p>
+        <dl class="compare__rows">
+          <div><dt>Decant 5 ml</dt><dd data-f="d5">&mdash;</dd></div>
+          <div><dt>Decant 10 ml</dt><dd data-f="d10">&mdash;</dd></div>
+          <div class="is-key"><dt>Frasco completo</dt><dd data-f="full">&mdash;</dd></div>
+          <div><dt>{{ section.settings.fila_envio }}</dt><dd class="is-free">{{ section.settings.valor_envio }}</dd></div>
+          <div><dt>Cómo pagas</dt><dd>{{ section.settings.valor_pago }}</dd></div>
+          <div><dt>Cuándo lo tienes</dt><dd>{{ section.settings.valor_entrega }}</dd></div>
+        </dl>
+        <p class="compare__total"><span>Total del frasco</span><strong data-f="totalUs">&mdash;</strong></p>
+        <a class="btn btn--ink compare__cta" data-f="link" href="#">{{ section.settings.cta }}</a>
+      </article>
+
+      <article class="compare__col compare__col--them" aria-labelledby="col-them">
+        <div class="compare__top">
+          <h3 id="col-them">{{ section.settings.col_afuera }}</h3>
+          <span class="tag">{{ section.settings.tag_afuera }}</span>
+        </div>
+        <p class="compare__name" data-f="name2">&mdash;</p>
+        <dl class="compare__rows">
+          <div><dt>Decant 5 ml</dt><dd class="is-none">No venden</dd></div>
+          <div><dt>Decant 10 ml</dt><dd class="is-none">No venden</dd></div>
+          <div class="is-key"><dt>Frasco completo</dt><dd data-f="full2">&mdash;</dd></div>
+          <div><dt>Envío + courier</dt><dd data-f="ship">&mdash;</dd></div>
+          <div><dt>Cómo pagas</dt><dd>Tarjeta internacional</dd></div>
+          <div><dt>Cuándo lo tienes</dt><dd>{{ section.settings.tag_afuera }}</dd></div>
+        </dl>
+        <p class="compare__total"><span>Total del frasco</span><strong data-f="totalThem">&mdash;</strong></p>
+      </article>
+    </div>
+
+    {%- if section.settings.fine != blank -%}
+      <p class="fine">
+        {{ section.settings.fine }}
+        <button class="link" type="button" data-chat>{{ section.settings.fine_enlace }}</button>
+        {{ section.settings.fine_cola }}
+      </p>
+    {%- endif -%}
+  {%- else -%}
+    <p class="fine">Elige una colección en los ajustes de esta sección para mostrar el comparador.</p>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "La cuenta clara",
+  "tag": "div",
+  "settings": [
+    { "type": "collection", "id": "coleccion", "label": "Colección" },
+    { "type": "range", "id": "limite", "min": 3, "max": 10, "step": 1, "label": "Cuántas fragancias en el selector", "default": 6 },
+    { "type": "number", "id": "courier", "label": "Costo del courier si lo pide él mismo (USD)", "default": 24 },
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "La cuenta clara" },
+    { "type": "text", "id": "titulo", "label": "Titular", "default": "El frasco cuesta lo mismo. Lo que te ahorras es todo lo demás." },
+    { "type": "textarea", "id": "texto", "label": "Texto", "default": "No inventamos precios de boutique. Ponemos el mismo número que verías en Amazon. Elige una y mira la cuenta completa." },
+    { "type": "header", "content": "Columna «aquí»" },
+    { "type": "text", "id": "col_aqui", "label": "Título", "default": "Aquí" },
+    { "type": "text", "id": "tag_aqui", "label": "Etiqueta", "default": "Entrega en 48 h" },
+    { "type": "text", "id": "fila_envio", "label": "Fila de envío", "default": "Envío a toda Venezuela" },
+    { "type": "text", "id": "valor_envio", "label": "Valor de envío", "default": "Gratis desde $20" },
+    { "type": "text", "id": "valor_pago", "label": "Cómo pagas", "default": "Dólares — o bolívares por el chat" },
+    { "type": "text", "id": "valor_entrega", "label": "Cuándo lo tienes", "default": "24 a 48 h en Caracas" },
+    { "type": "text", "id": "cta", "label": "Botón", "default": "Pedir esta fragancia" },
+    { "type": "header", "content": "Columna «afuera»" },
+    { "type": "text", "id": "col_afuera", "label": "Título", "default": "Pidiéndolo afuera" },
+    { "type": "text", "id": "tag_afuera", "label": "Etiqueta", "default": "2 a 4 semanas" },
+    { "type": "header", "content": "Letra chica" },
+    { "type": "textarea", "id": "fine", "label": "Texto", "default": "Todos los precios están en dólares y son los del frasco en Amazon el día de hoy; lo que cambia es el envío, la espera y que aquí no esperas tres semanas. Enviamos a toda Venezuela, y el envío va por nuestra cuenta desde $20 pagando en dólares o desde $30 pagando en bolívares a tasa BCV. Si vas a pagar en bolívares," },
+    { "type": "text", "id": "fine_enlace", "label": "Texto del enlace al chat", "default": "escríbenos por el chat" },
+    { "type": "text", "id": "fine_cola", "label": "Final", "default": "y te pasamos el monto a la tasa del día." },
+    { "type": "text", "id": "ancla", "label": "Ancla", "default": "cuenta" }
+  ],
+  "presets": [{ "name": "La cuenta clara" }]
+}
+{% endschema %}

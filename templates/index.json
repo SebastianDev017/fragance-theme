@@ -1,0 +1,40 @@
+{
+  "sections": {
+    "hero": { "type": "hero-decant", "settings": { "coleccion": "catalogo" } },
+    "ritual": {
+      "type": "ritual",
+      "blocks": {
+        "p1": { "type": "paso", "settings": { "numero": "01", "titulo": "Te llevas el decant", "texto": "5 o 10 ml del original, en atomizador de vidrio. Alcanza para 30 o 60 dias de uso real. Sin compromiso, sin discurso de vendedor." } },
+        "p2": { "type": "paso", "settings": { "numero": "02", "titulo": "Lo vives una semana", "texto": "Como abre, como seca, cuanto te dura, que te dicen en la calle. Eso es lo unico que decide si una fragancia es tuya o no." } },
+        "p3": { "type": "paso", "settings": { "numero": "03", "titulo": "Ahora si, el frasco", "texto": "Si es el tuyo, te llevas el frasco completo sellado y te descontamos lo que pagaste por el decant. Probar no te costo nada." } }
+      },
+      "block_order": ["p1", "p2", "p3"]
+    },
+    "cuenta": { "type": "cuenta-clara", "settings": { "coleccion": "catalogo" } },
+    "estanteria": { "type": "estanteria", "settings": { "coleccion": "catalogo" } },
+    "claro": {
+      "type": "hablemos-claro",
+      "blocks": {
+        "q1": { "type": "pregunta", "settings": { "pregunta": "Es original de verdad?", "respuesta": "Si. Compramos el frasco sellado y de ahi sale el decant. Si quieres, te lo llenamos delante de ti o te mandamos el video del llenado con tu nombre en la etiqueta. No trabajamos replicas ni inspirados en." } },
+        "q2": { "type": "pregunta", "settings": { "pregunta": "Y si al final no me gusta?", "respuesta": "Entonces te ahorraste comprar un frasco completo que iba a quedarse lleno en tu repisa. Ese es justamente el punto del decant. Escribenos y te ayudamos a buscar otro que si te vaya." } },
+        "q3": { "type": "pregunta", "settings": { "pregunta": "Como pago?", "respuesta": "Los precios de la pagina estan en dolares y los pagas por la tienda como cualquier compra. Si prefieres pagar en bolivares, escribenos por el chat: te pasamos el monto a la tasa del dia y coordinamos pago movil o transferencia." } },
+        "q4": { "type": "pregunta", "settings": { "pregunta": "Cuando me llega? Envian a todo el pais?", "respuesta": "Enviamos a toda Venezuela. En Caracas, 24 a 48 horas; al interior, por Zoom o MRW en 2 a 3 dias habiles. El envio va por nuestra cuenta en pedidos desde 20 dolares si pagas en dolares, o desde 30 si pagas en bolivares a tasa BCV." } },
+        "q5": { "type": "pregunta", "settings": { "pregunta": "El descuento del decant es de verdad?", "respuesta": "De verdad. Lo que pagaste por el decant se te descuenta del frasco completo de esa misma fragancia, durante los 60 dias siguientes. Solo mandanos tu comprobante por el chat." } }
+      },
+      "block_order": ["q1", "q2", "q3", "q4", "q5"]
+    },
+    "voces": {
+      "type": "voces",
+      "blocks": {
+        "b1": { "type": "recibido", "settings": { "texto": "Marico el Sauvage me duro todo el dia, ya voy a comprar el frasco", "hora": "10:42" } },
+        "b2": { "type": "enviado", "settings": { "texto": "Jajaja te lo dije. Te descuento el decant del frasco.", "hora": "10:44" } },
+        "b3": { "type": "recibido", "settings": { "texto": "Compre 3 decants para probar y me quede con el Bleu. Los otros dos se los regale a mi hermano jaja", "hora": "18:07" } },
+        "b4": { "type": "recibido", "settings": { "texto": "Lo que mas me gusto fue no gastar 130 dolares en algo que no sabia si me iba a gustar. Llego al dia siguiente en Chacao.", "hora": "21:15" } },
+        "b5": { "type": "enviado", "settings": { "texto": "Ese es el punto", "hora": "21:16" } }
+      },
+      "block_order": ["b1", "b2", "b3", "b4", "b5"]
+    },
+    "cierre": { "type": "cierre", "settings": {} }
+  },
+  "order": ["hero", "ritual", "cuenta", "estanteria", "claro", "voces", "cierre"]
+}

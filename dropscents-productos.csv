@@ -1,0 +1,25 @@
+﻿Handle,Title,Body (HTML),Vendor,Type,Tags,Published,Option1 Name,Option1 Value,Variant SKU,Variant Grams,Variant Inventory Tracker,Variant Inventory Qty,Variant Inventory Policy,Variant Fulfillment Service,Variant Price,Variant Requires Shipping,Variant Taxable,Image Src,Image Position,Status
+sauvage-elixir,Sauvage Elixir,"<p>Denso, especiado, caro de oler. Con dos toques sobra.</p>",Dior,Canela · Lavanda · Regaliz,"Dior, decants",TRUE,Presentacion,Decant 5 ml,SAUVAGE-ELIX-5,0,shopify,10,deny,manual,19,TRUE,TRUE,,1,active
+sauvage-elixir,,,,,,,,Decant 10 ml,SAUVAGE-ELIX-10,0,shopify,10,deny,manual,34,TRUE,TRUE,,,
+sauvage-elixir,,,,,,,,Frasco 60 ml,SAUVAGE-ELIX-60,0,shopify,10,deny,manual,165,TRUE,TRUE,,,
+bleu,Bleu de Chanel,<p>Serio sin ser viejo. El de la reunión y el de la cita.</p>,Chanel,Cítricos · Incienso · Sándalo,"Chanel, decants",TRUE,Presentacion,Decant 5 ml,BLEU-5,0,shopify,10,deny,manual,13,TRUE,TRUE,,1,active
+bleu,,,,,,,,Decant 10 ml,BLEU-10,0,shopify,10,deny,manual,23,TRUE,TRUE,,,
+bleu,,,,,,,,Frasco 100 ml,BLEU-100,0,shopify,10,deny,manual,145,TRUE,TRUE,,,
+lemale-elixir,Le Male Elixir,"<p>Miel, lavanda y vainilla. Dulce pero con carácter.</p>",Jean Paul Gaultier,Miel · Lavanda · Haba tonka,"Jean Paul Gaultier, decants",TRUE,Presentacion,Decant 5 ml,LEMALE-ELIXI-5,0,shopify,10,deny,manual,14,TRUE,TRUE,,1,active
+lemale-elixir,,,,,,,,Decant 10 ml,LEMALE-ELIXI-10,0,shopify,10,deny,manual,25,TRUE,TRUE,,,
+lemale-elixir,,,,,,,,Frasco 100 ml,LEMALE-ELIXI-100,0,shopify,10,deny,manual,128,TRUE,TRUE,,,
+goodgirl,Good Girl,<p>Dulce y oscuro. Se queda pegado en la ropa dos días.</p>,Carolina Herrera,Jazmín · Tonka · Cacao,"Carolina Herrera, decants",TRUE,Presentacion,Decant 5 ml,GOODGIRL-5,0,shopify,10,deny,manual,10,TRUE,TRUE,,1,active
+goodgirl,,,,,,,,Decant 10 ml,GOODGIRL-10,0,shopify,10,deny,manual,18,TRUE,TRUE,,,
+goodgirl,,,,,,,,Frasco 80 ml,GOODGIRL-80,0,shopify,10,deny,manual,112,TRUE,TRUE,,,
+lavieestbelle,La Vie Est Belle,"<p>Dulce de verdad, no empalagoso. Rinde una barbaridad.</p>",Lancôme,Iris · Praliné · Pachulí,"Lancôme, decants",TRUE,Presentacion,Decant 5 ml,LAVIEESTBELL-5,0,shopify,10,deny,manual,12,TRUE,TRUE,,1,active
+lavieestbelle,,,,,,,,Decant 10 ml,LAVIEESTBELL-10,0,shopify,10,deny,manual,21,TRUE,TRUE,,,
+lavieestbelle,,,,,,,,Frasco 100 ml,LAVIEESTBELL-100,0,shopify,10,deny,manual,128,TRUE,TRUE,,,
+stronger,Stronger With You,<p>Vainilla con castaña. El que preguntan en la fiesta.</p>,Giorgio Armani,Cardamomo · Castaña · Vainilla,"Giorgio Armani, decants",TRUE,Presentacion,Decant 5 ml,STRONGER-5,0,shopify,10,deny,manual,9,TRUE,TRUE,,1,active
+stronger,,,,,,,,Decant 10 ml,STRONGER-10,0,shopify,10,deny,manual,16,TRUE,TRUE,,,
+stronger,,,,,,,,Frasco 100 ml,STRONGER-100,0,shopify,10,deny,manual,96,TRUE,TRUE,,,
+libre,Libre,"<p>Lavanda y vainilla. Suave de lejos, fuerte de cerca.</p>",Yves Saint Laurent,Lavanda · Azahar · Vainilla,"Yves Saint Laurent, decants",TRUE,Presentacion,Decant 5 ml,LIBRE-5,0,shopify,10,deny,manual,12,TRUE,TRUE,,1,active
+libre,,,,,,,,Decant 10 ml,LIBRE-10,0,shopify,10,deny,manual,22,TRUE,TRUE,,,
+libre,,,,,,,,Frasco 90 ml,LIBRE-90,0,shopify,10,deny,manual,135,TRUE,TRUE,,,
+eros,Eros,"<p>Menta y vainilla, sin pena. Para salir de noche.</p>",Versace,Menta · Manzana verde · Vainilla,"Versace, decants",TRUE,Presentacion,Decant 5 ml,EROS-5,0,shopify,10,deny,manual,8,TRUE,TRUE,,1,active
+eros,,,,,,,,Decant 10 ml,EROS-10,0,shopify,10,deny,manual,14,TRUE,TRUE,,,
+eros,,,,,,,,Frasco 100 ml,EROS-100,0,shopify,10,deny,manual,78,TRUE,TRUE,,,

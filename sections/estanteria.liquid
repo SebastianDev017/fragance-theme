@@ -1,0 +1,68 @@
+{%- comment -%}
+  El catálogo. Lee una colección: no hay lista de productos escrita a mano en
+  ningún sitio, así que lo que esté publicado en Shopify es lo que se ve.
+{%- endcomment -%}
+
+{%- assign coleccion = collections[section.settings.coleccion] -%}
+
+<section class="estanteria" id="{{ section.settings.ancla | default: 'estanteria' }}">
+  <header class="sec-head sec-head--row">
+    <div>
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="eyebrow"><span class="dot" aria-hidden="true"></span> {{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      <h2 class="h2">{{ section.settings.titulo }}</h2>
+    </div>
+    {%- if section.settings.texto != blank -%}
+      <p class="sec-head__p">{{ section.settings.texto }}</p>
+    {%- endif -%}
+  </header>
+
+  {%- if coleccion.products_count > 0 -%}
+    <div class="shelf">
+      {%- for producto in coleccion.products limit: section.settings.limite -%}
+        {% render 'card-fragancia', producto: producto %}
+      {%- endfor -%}
+    </div>
+
+    {%- if coleccion.products_count > section.settings.limite -%}
+      <p class="estanteria__mas">
+        <a class="btn btn--ghost" href="{{ coleccion.url }}">{{ section.settings.ver_todo }}</a>
+      </p>
+    {%- endif -%}
+  {%- else -%}
+    <div class="shelf">
+      {%- comment -%}
+        Sin colección elegida (o vacía) se muestran marcadores, para que la
+        sección no aparezca rota en el editor de temas.
+      {%- endcomment -%}
+      {%- for i in (1..4) -%}
+        <article class="card" data-reveal-card>
+          <figure class="card__shot"><img alt="" width="500" height="400"></figure>
+          <div class="card__body">
+            <p class="card__brand">Marca</p>
+            <h3 class="card__name">Elige una colección</h3>
+            <p class="card__fam">Los productos de la colección aparecerán aquí.</p>
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Catálogo",
+  "tag": "div",
+  "settings": [
+    { "type": "collection", "id": "coleccion", "label": "Colección" },
+    { "type": "range", "id": "limite", "min": 4, "max": 24, "step": 2, "label": "Cuántas mostrar", "default": 8 },
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "La estantería" },
+    { "type": "text", "id": "titulo", "label": "Titular", "default": "Los que siempre nos piden." },
+    { "type": "textarea", "id": "texto", "label": "Texto", "default": "Nada raro, nada de nicho imposible de conseguir. Los que reconoces cuando pasan por al lado — y algunos que deberías conocer." },
+    { "type": "text", "id": "ver_todo", "label": "Botón «ver todo»", "default": "Ver el catálogo completo" },
+    { "type": "text", "id": "ancla", "label": "Ancla (para los enlaces internos)", "default": "estanteria" }
+  ],
+  "presets": [{ "name": "Catálogo" }]
+}
+{% endschema %}

@@ -1,0 +1,26 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "DropScents",
+    "theme_version": "1.0.0",
+    "theme_author": "DropScents",
+    "theme_documentation_url": "https://github.com/dropscents/tienda",
+    "theme_support_email": "hola@dropscents.com"
+  },
+  {
+    "name": "Marca",
+    "settings": [
+      { "type": "image_picker", "id": "favicon", "label": "Favicon" },
+      { "type": "url", "id": "instagram", "label": "Instagram", "info": "Tambien es el respaldo del boton de chat mientras no haya app instalada." }
+    ]
+  },
+  {
+    "name": "Chat",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Todos los botones de chat del tema llaman a la misma funcion. Para conectar tu app, define window.DropScentsChat = () => tuPlugin.abrir(). Si no hay ninguna, el tema prueba las APIs de Crisp, Tawk, Tidio, Intercom, Zendesk y Shopify Inbox, y si no encuentra ninguna muestra un aviso con el Instagram."
+      }
+    ]
+  }
+]

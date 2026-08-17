@@ -1,0 +1,38 @@
+{%- comment -%}
+  Cabecera. El contenido cae sobre el mismo contenedor que el resto de la
+  página (--edge en el CSS), no de borde a borde de la pantalla.
+{%- endcomment -%}
+
+<header class="nav" id="nav">
+  <a class="nav__brand" href="{{ routes.root_url }}" aria-label="{{ shop.name }}, inicio">
+    <span class="nav__drop" aria-hidden="true"></span>
+    <span>{{ section.settings.wordmark | default: shop.name }}</span>
+  </a>
+
+  {%- if section.settings.menu != blank -%}
+    <nav class="nav__links" aria-label="Principal">
+      {%- for link in section.settings.menu.links -%}
+        <a href="{{ link.url }}">{{ link.title }}</a>
+      {%- endfor -%}
+    </nav>
+  {%- endif -%}
+
+  {%- if section.settings.mostrar_chat -%}
+    <button class="btn btn--ink nav__cta" type="button" data-chat>
+      {% render 'icon-chat' %}
+      {{ section.settings.texto_chat }}
+    </button>
+  {%- endif -%}
+</header>
+
+{% schema %}
+{
+  "name": "Cabecera",
+  "settings": [
+    { "type": "text", "id": "wordmark", "label": "Nombre de la marca", "default": "DropScents" },
+    { "type": "link_list", "id": "menu", "label": "Menú" },
+    { "type": "checkbox", "id": "mostrar_chat", "label": "Mostrar botón de chat", "default": true },
+    { "type": "text", "id": "texto_chat", "label": "Texto del botón", "default": "Abrir el chat" }
+  ]
+}
+{% endschema %}

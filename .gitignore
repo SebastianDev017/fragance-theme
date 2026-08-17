@@ -141,3 +141,17 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# ---------------------------------------------------------------------------
+# DropScents
+# ---------------------------------------------------------------------------
+.DS_Store
+*.local
+.playwright-mcp/
+
+# Capturas de QA: 31 MB de PNG que no aportan al tema.
+# Se quedan en local; el README explica que contienen.
+qa/
+
+# OJO: assets/ NO se ignora. Ahi viven los bundles compilados y las fuentes,
+# y Shopify los necesita en el repositorio para desplegar el tema.

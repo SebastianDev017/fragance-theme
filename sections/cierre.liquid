@@ -1,0 +1,35 @@
+{%- comment -%} El cierre: el unico momento donde el gradiente sube de volumen. {%- endcomment -%}
+
+<section class="cierre" id="{{ section.settings.ancla | default: 'cierre' }}">
+  <div class="cierre__card">
+    <h2 class="h2">{{ section.settings.titulo }}</h2>
+    <p>{{ section.settings.texto }}</p>
+    <div class="cierre__cta">
+      <button class="btn btn--ink btn--lg" type="button" data-chat>
+        {% render 'icon-chat' %}
+        {{ section.settings.cta_chat }}
+      </button>
+      {%- if section.settings.cta2_texto != blank -%}
+        <a class="btn btn--ghost btn--lg" href="{{ section.settings.cta2_url | default: settings.instagram }}" target="_blank" rel="noopener">
+          {{ section.settings.cta2_texto }}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Cierre",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "titulo", "label": "Titular", "default": "Empezamos por uno?" },
+    { "type": "textarea", "id": "texto", "label": "Texto", "default": "Dinos que usas ahora o que te gusta oler, y te decimos cual decant pedir primero. Sin vendedor encima, sin discurso." },
+    { "type": "text", "id": "cta_chat", "label": "Boton de chat", "default": "Abrir el chat" },
+    { "type": "text", "id": "cta2_texto", "label": "Boton secundario", "default": "Ver el Instagram" },
+    { "type": "url", "id": "cta2_url", "label": "Enlace del boton secundario" },
+    { "type": "text", "id": "ancla", "label": "Ancla", "default": "cierre" }
+  ],
+  "presets": [{ "name": "Cierre" }]
+}
+{% endschema %}

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}" data-instagram="{{ settings.instagram | escape }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#F7F5F8">
+  <link rel="canonical" href="{{ canonical_url }}">
+  {%- if settings.favicon != blank -%}
+    <link rel="icon" href="{{ settings.favicon | image_url: width: 64 }}">
+  {%- endif -%}
+
+  <title>{{ page_title }}{% if current_tags %} &ndash; {{ current_tags | join: ', ' }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}</title>
+  {%- if page_description -%}<meta name="description" content="{{ page_description | escape }}">{%- endif -%}
+
+  {%- comment -%}
+    Las @font-face van aquí y no en el CSS empaquetado porque en Shopify los
+    assets no viven en carpetas: la ruta hay que resolverla con `asset_url`.
+    Si añades un peso, tócalo también en src/fonts.css (la maqueta local).
+  {%- endcomment -%}
+  {{ 'clash-600.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
+  {{ 'switzer-400.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
+  <style>
+    {%- assign pesos_clash = '500,600,700' | split: ',' -%}
+    {%- for w in pesos_clash -%}
+      @font-face{font-family:'Clash Display';src:url({{ 'clash-' | append: w | append: '.woff2' | asset_url }}) format('woff2');font-weight:{{ w }};font-display:swap;font-style:normal}
+    {%- endfor -%}
+    {%- assign pesos_switzer = '400,500,600,700' | split: ',' -%}
+    {%- for w in pesos_switzer -%}
+      @font-face{font-family:'Switzer';src:url({{ 'switzer-' | append: w | append: '.woff2' | asset_url }}) format('woff2');font-weight:{{ w }};font-display:swap;font-style:normal}
+    {%- endfor -%}
+  </style>
+
+  <link rel="stylesheet" href="{{ 'dropscents.css' | asset_url }}">
+  {%- comment -%}
+    La escena 3D se carga bajo demanda y su URL tiene que salir de `asset_url`:
+    en el CDN de Shopify un import relativo entre assets del tema no resuelve
+    de forma fiable.
+  {%- endcomment -%}
+  <script>window.DropScentsAssets = { scene: "{{ 'dropscents-scene.js' | asset_url }}" };</script>
+  <script type="module" src="{{ 'dropscents.js' | asset_url }}"></script>
+
+  {{ content_for_header }}
+</head>
+
+<body class="template--{{ template.name | handle }}">
+  <a class="visually-hidden" href="#main">Saltar al contenido</a>
+
+  {%- comment -%} el campo de color de la marca, detrás de todo {%- endcomment -%}
+  <div class="field" aria-hidden="true">
+    <div class="field__blob field__blob--blush"></div>
+    <div class="field__blob field__blob--lav"></div>
+    <div class="field__blob field__blob--sky"></div>
+    <div class="field__grain"></div>
+  </div>
+
+  {% sections 'header-group' %}
+
+  <main id="main" role="main">
+    {{ content_for_layout }}
+  </main>
+
+  {% sections 'footer-group' %}
+</body>
+</html>

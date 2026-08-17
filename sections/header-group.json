@@ -1,0 +1,8 @@
+{
+  "type": "header",
+  "name": "Cabecera",
+  "sections": {
+    "header": { "type": "header", "settings": { "wordmark": "DropScents", "mostrar_chat": true, "texto_chat": "Abrir el chat" } }
+  },
+  "order": ["header"]
+}

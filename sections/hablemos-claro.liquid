@@ -1,0 +1,42 @@
+{%- comment -%} Preguntas honestas. Cada una es un bloque. {%- endcomment -%}
+
+<section class="claro" id="{{ section.settings.ancla | default: 'claro' }}">
+  <header class="sec-head">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="eyebrow"><span class="dot" aria-hidden="true"></span> {{ section.settings.eyebrow }}</p>
+    {%- endif -%}
+    <h2 class="h2">{{ section.settings.titulo }}</h2>
+  </header>
+
+  <div class="qa">
+    {%- for block in section.blocks -%}
+      <details class="qa__item" {% if forloop.first %}open{% endif %} {{ block.shopify_attributes }}>
+        <summary><span>{{ block.settings.pregunta }}</span><i aria-hidden="true"></i></summary>
+        <p>{{ block.settings.respuesta }}</p>
+      </details>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hablemos claro",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetitulo", "default": "Hablemos claro" },
+    { "type": "text", "id": "titulo", "label": "Titular", "default": "Lo que preguntarias si estuvieras aqui." },
+    { "type": "text", "id": "ancla", "label": "Ancla", "default": "claro" }
+  ],
+  "blocks": [
+    {
+      "type": "pregunta",
+      "name": "Pregunta",
+      "settings": [
+        { "type": "text", "id": "pregunta", "label": "Pregunta", "default": "Es original de verdad?" },
+        { "type": "textarea", "id": "respuesta", "label": "Respuesta", "default": "Si." }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Hablemos claro" }]
+}
+{% endschema %}
