@@ -1,64 +1,90 @@
 <!doctype html>
-<!--
-  Banco de pruebas de la galería de la tarjeta.
-
-  Ningún producto de la tienda tiene dos fotos todavía, así que las flechas no
-  se pueden comprobar en vivo. Esta página carga el bundle REAL del tema
-  (assets/dropscents.js y .css, los mismos que sirve Shopify) contra dos
-  tarjetas escritas a mano: una con tres fotos y otra con una sola.
-
-  Lo que tiene que pasar:
-    · la tarjeta de tres fotos enseña flechas y puntos, y pasa de una a otra
-    · la de una sola foto no enseña flechas
-    · pulsar una flecha NO navega al producto
--->
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <title>QA · galería de la tarjeta</title>
-  <link rel="stylesheet" href="../assets/dropscents.css">
-  <style>
-    body { padding: 3rem; }
-    .shelf { --cols: 2; --cols-movil: 1; max-width: 720px; margin: 0 auto; }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QA · galería de la tarjeta</title>
+
+<!--
+  Banco de pruebas de la galería.
+
+  Existe porque la tienda no puede probarlo: mientras ningún producto tenga
+  dos fotos subidas, las flechas no aparecen en vivo y no hay forma de saber
+  si funcionan. Aquí se carga el bundle REAL (assets/dropscents.js) contra el
+  marcado que emite `snippets/card-fragancia.liquid`.
+
+      python -m http.server 8777
+      http://localhost:8777/qa/galeria.html
+
+  Qué hay que ver:
+    · la primera tarjeta tiene 3 fotos → flechas, y ciclan
+    · la segunda tiene 1 → SIN flechas
+    · pulsar una flecha NO navega al producto (el enlace cubre la tarjeta)
+-->
+
+<style>
+  @font-face{font-family:'Clash Display';src:url(../assets/clash-600.woff2) format('woff2');font-weight:600;font-display:swap}
+  @font-face{font-family:'Switzer';src:url(../assets/switzer-400.woff2) format('woff2');font-weight:400;font-display:swap}
+  @font-face{font-family:'Switzer';src:url(../assets/switzer-600.woff2) format('woff2');font-weight:600;font-display:swap}
+  @font-face{font-family:'Switzer';src:url(../assets/switzer-700.woff2) format('woff2');font-weight:700;font-display:swap}
+  .qa-nota { padding: 1.5rem var(--edge); font: 500 .9rem/1.5 'Switzer', system-ui; color: #56296B; }
+  .qa-nota b { color: #2B0F33; }
+</style>
+<link rel="stylesheet" href="../assets/dropscents.css">
 </head>
-<body>
-  <div class="shelf">
-    <article class="card" id="tres" style="--card-ratio: 1/1;">
-      <div class="card__shot card__shot--galeria" data-galeria data-total="3">
-        <a class="card__shot-link" href="/destino-prohibido" tabindex="-1" aria-hidden="true">
-          <img class="card__slide is-on" data-i="0" alt="uno" width="10" height="10"
-            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Crect width='10' height='10' fill='%23E8356F'/%3E%3C/svg%3E">
-          <img class="card__slide" data-i="1" alt="dos" width="10" height="10"
-            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Crect width='10' height='10' fill='%232B0F33'/%3E%3C/svg%3E">
-          <img class="card__slide" data-i="2" alt="tres" width="10" height="10"
-            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Crect width='10' height='10' fill='%234E7BD8'/%3E%3C/svg%3E">
+
+<body class="template--index">
+<main id="main">
+
+<p class="qa-nota">
+  <b>Izquierda:</b> 3 fotos → flechas al pasar por encima, y ciclan.
+  <b>Derecha:</b> 1 foto → sin flechas.
+  Pulsar una flecha no debe navegar a <code>#producto</code>.
+</p>
+
+<section class="portada">
+  <div class="rejilla" style="--cols: 2;">
+
+    <article class="tarjeta" style="--campo:#E1EFEE;--i:1;--marco-ratio:1/1;">
+      <div class="tarjeta__marco tarjeta__marco--galeria" data-galeria data-total="3">
+        <a class="tarjeta__enlace-foto" href="#producto" tabindex="-1" aria-hidden="true">
+          <img class="card__slide is-on" data-i="0" src="frasco-eros.svg" alt="" width="400" height="400">
+          <img class="card__slide" data-i="1" src="frasco-bleu.svg" alt="" width="400" height="400">
+          <img class="card__slide" data-i="2" src="frasco-lavie.svg" alt="" width="400" height="400">
         </a>
-        <button class="card__nav card__nav--prev" type="button" data-galeria-paso="-1" aria-label="Anterior">‹</button>
-        <button class="card__nav card__nav--next" type="button" data-galeria-paso="1" aria-label="Siguiente">›</button>
-        <div class="card__puntos" aria-hidden="true">
-          <span class="card__punto is-on"></span><span class="card__punto"></span><span class="card__punto"></span>
-        </div>
+        <button class="tarjeta__nav tarjeta__nav--prev" type="button" data-galeria-paso="-1" aria-label="Imagen anterior">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5 8 12l7 7"/></svg>
+        </button>
+        <button class="tarjeta__nav tarjeta__nav--next" type="button" data-galeria-paso="1" aria-label="Imagen siguiente">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 5 7 7-7 7"/></svg>
+        </button>
       </div>
-      <div class="card__body">
-        <h3 class="card__name"><a href="/destino-prohibido">Con tres fotos</a></h3>
+      <div class="tarjeta__cuerpo">
+        <p class="tarjeta__marca">Versace</p>
+        <h3 class="tarjeta__nombre"><a href="#producto">Tres fotos</a></h3>
+        <p class="tarjeta__notas">Menta · Manzana verde · Vainilla</p>
+        <p class="tarjeta__precio"><span>Decant 5 ml</span><b>$8</b></p>
       </div>
     </article>
 
-    <article class="card" id="una" style="--card-ratio: 1/1;">
-      <div class="card__shot">
-        <a class="card__shot-link" href="#" tabindex="-1" aria-hidden="true">
-          <img class="card__slide is-on" data-i="0" alt="sola" width="10" height="10"
-            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Crect width='10' height='10' fill='%23866193'/%3E%3C/svg%3E">
+    <article class="tarjeta" style="--campo:#F0DAE0;--i:2;--marco-ratio:1/1;">
+      <div class="tarjeta__marco">
+        <a class="tarjeta__enlace-foto" href="#producto" tabindex="-1" aria-hidden="true">
+          <img class="card__slide is-on" data-i="0" src="frasco-sauvage.svg" alt="" width="400" height="400">
         </a>
       </div>
-      <div class="card__body">
-        <h3 class="card__name"><a href="#">Con una sola</a></h3>
+      <div class="tarjeta__cuerpo">
+        <p class="tarjeta__marca">Dior</p>
+        <h3 class="tarjeta__nombre"><a href="#producto">Una sola foto</a></h3>
+        <p class="tarjeta__notas">Canela · Lavanda · Regaliz</p>
+        <p class="tarjeta__precio"><span>Decant 5 ml</span><b>$19</b></p>
       </div>
     </article>
+
   </div>
+</section>
 
-  <script>window.DropScentsAssets = {}; window.DropScentsTextos = {};</script>
-  <script type="module" src="../assets/dropscents.js"></script>
+</main>
+<script type="module" src="../assets/dropscents.js"></script>
 </body>
 </html>

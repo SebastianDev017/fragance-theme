@@ -129,22 +129,15 @@ export function conectarChat() {
 export function conectarGalerias(raiz = document) {
   $$('[data-galeria]', raiz).forEach((caja) => {
     const fotos = $$('.card__slide', caja);
-    const puntos = $$('.card__punto', caja);
     if (fotos.length < 2) return;
     let i = 0;
 
     const pintar = (n) => {
       i = (n + fotos.length) % fotos.length;
       fotos.forEach((f, k) => f.classList.toggle('is-on', k === i));
-      puntos.forEach((p, k) => p.classList.toggle('is-on', k === i));
     };
 
-    /* En la cartilla las flechas son HERMANAS de la caja de fotos, no hijas:
-       la caja va debajo de todo (se revela en hover) y las flechas tienen que
-       quedar por encima del enlace que cubre la tarjeta. Se buscan, entonces,
-       en la cartilla entera. */
-    const mando = caja.closest('.chip') || caja;
-    $$('[data-galeria-paso]', mando).forEach((boton) => {
+    $$('[data-galeria-paso]', caja).forEach((boton) => {
       boton.addEventListener('click', (e) => {
         // el enlace que cubre la tarjeta entera está debajo: sin esto,
         // pulsar la flecha navegaría al producto
