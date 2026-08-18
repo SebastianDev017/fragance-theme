@@ -9,11 +9,19 @@ construye. Los archivos del tema están en la raíz (`layout/`, `sections/`,
 integración GitHub → Shopify sólo reconoce el tema si está ahí. El código
 fuente de la interfaz vive en `src/` y se compila a `assets/`.
 
-El mundo visual es **El Muestrario**: el abanico de colores de la ferretería.
-Nadie compra un galón sin pegar tres muestras en la pared una semana; el
-decant es la muestra. Está descrito entero en el contrato de dirección que
-`layout/theme.liquid` imprime como comentario HTML al principio del `<body>`,
-y el comp aprobado está en `.impeccable/mocks/comp-b-muralla.png`.
+El mundo visual lo fijó el cliente: **blush → lavanda → cielo, tinta ciruela
+y una geométrica limpia**, con la forma blanda de una app de belleza —vidrio
+esmerilado, esquina redonda, píldoras— y sin nada de más. Está descrito entero
+en el contrato de dirección que `layout/theme.liquid` imprime como comentario
+HTML al principio del `<body>`, y los comps de referencia están en
+`.impeccable/mocks/blush-home.png` y `blush-pdp.png`.
+
+**La regla que manda sobre el gusto: el fondo de página va casi neutro.**
+Encima hay ocho fotos de producto y cada frasco trae ya sus colores; un
+degradado saturado a pantalla completa debajo de eso no es «comprometido», es
+un carnaval, y el producto deja de leerse. El color se gasta donde
+**identifica** algo —el tinte de cada tarjeta, el acento de la resta, la
+gota de la marca— y el fondo se queda en dos lavados suaves.
 
 ```bash
 npm install
@@ -60,13 +68,13 @@ npm run build
 > y a la vez alguien está en el editor, uno de los dos cambios se pierde.
 > Para la portada, el editor es la fuente de verdad.
 
-### El color de cada fragancia
+### El tinte de cada fragancia
 
-El campo de color **no es decorativo ni sinestésico** —no dice a qué huele—:
-se muestrea de la **foto real del frasco y su caja**. Eros es turquesa porque
-el frasco de Eros es turquesa. Es verificable de un vistazo, y hace el
-catálogo navegable por lo único que un comprador novato sí puede ver antes de
-oler.
+El tinte **no es decorativo ni sinestésico** —no dice a qué huele—: sale del
+tono **real del frasco**, rebajado a la familia del degradado. Eros es menta
+porque el frasco de Eros es turquesa. Ordena el catálogo por lo único que un
+comprador novato sí puede ver antes de oler, y deja que el que grite sea el
+frasco recortado encima.
 
 Lo decide `snippets/campo.liquid`, y sólo ese archivo, en tres pasos:
 
@@ -74,9 +82,9 @@ Lo decide `snippets/campo.liquid`, y sólo ese archivo, en tres pasos:
 
    | etiqueta        | qué hace                                        |
    |-----------------|-------------------------------------------------|
-   | `campo:7`       | usa el campo 7 de la paleta (1–8)               |
-   | `campo:#2E4A1F` | un color propio, el que sea                     |
-   | `sobre:oscuro`  | fuerza tinta oscura encima (por defecto, clara) |
+   | `campo:7`       | usa el tinte 7 de la paleta (1–8)               |
+   | `campo:#E8F0DC` | un color propio, el que sea                     |
+   | `sobre:claro`   | fuerza tinta clara encima (por defecto, ciruela)|
 
    `dropscents-productos.csv` **ya trae** `campo:1` … `campo:8` escritas.
    Reimportar el CSV con «actualizar productos existentes» las aplica.
@@ -97,17 +105,29 @@ repetir: es el problema del cumpleaños. Medido con los handles reales, la suma
 de caracteres daba 5 colores distintos de 8 y el mejor polinómico 6. Por eso
 existe el mapa, y por eso la etiqueta es el camino bueno.
 
-### Contraste sobre campo
+### Las fotos vienen con fondo blanco
 
-El texto pequeño sobre un campo saturado se tiñe del color de encima
-(`color-mix`), **nunca de gris**: un gris sobre burdeos se lee sucio. El
-porcentaje de la mezcla no es una decisión estética, es el suelo de contraste:
-medido en el navegador, al 85% el campo turquesa daba 4.23:1 y no pasaba. Está
-al 90%, y los ocho campos superan 4.5:1. La jerarquía la ponen el tamaño y el
-espaciado, no el gris.
+Y no recortadas. Un rectángulo blanco encima del tinte lo parte por la mitad y
+mata el efecto de frasco flotando. La foto lleva `mix-blend-mode: multiply`,
+que funde ese blanco con el tinte; el contenedor lleva `isolation: isolate`
+para que la mezcla no se cuele hasta el fondo de página. Si algún día se suben
+recortes con transparencia sigue funcionando: sobre un tinte claro, multiply
+apenas toca los píxeles opacos.
 
-Si tocas un campo de la paleta, **vuelve a medir**: hay un medidor listo para
-pegar en la consola en la §6.
+### Contraste, medido
+
+El acento heredado `#E8356F` daba **4.16:1** y no pasaba ni como texto sobre
+blanco ni como fondo de la burbuja del carrito. Está en `#D42060`, con
+`--punch-2: #B01B4E` para texto de 11 px, donde el rosa vivo se queda en 4.45.
+
+Si tocas un color, **vuelve a medir**: hay un medidor listo para pegar en la
+consola en la §6. Y ojo con dos trampas que ya costaron una ronda:
+
+- `color-mix()` computa a `color(srgb r g b)` con valores **0–1**, no a
+  `rgb()`. Un medidor escrito para `rgb()` devuelve ratios de 1.2 sobre texto
+  que está a 13:1.
+- el vidrio es **semitransparente**: hay que componer las capas hasta el
+  `body` para saber el fondo real, no leer el `background-color` del padre.
 
 ### La convención que sostiene todo
 
@@ -219,18 +239,36 @@ nada a un tercero en runtime.
 
 ### El primer viewport
 
-`sections/muestrario.liquid` es la portada: una rejilla a sangre, sin
-canalones, donde **la primera celda es la cabecera** —negra, con el titular,
-la mecánica y el botón— y todas las demás son fragancias. Con 8 productos son
-9 celdas y encaja exacto en 3×3.
+`sections/muestrario.liquid` es la portada: un titular centrado con aire, dos
+píldoras y una fila de tarjetas de vidrio con el frasco flotando sobre su
+tinte y **una** línea de precio, la de entrada. El precio del frasco completo
+vive en la ficha y en el comparador.
+
+El archivo conserva el nombre `muestrario` a propósito, aunque la clase CSS
+sea `.portada`: `templates/index.json` lo referencia por tipo y el editor de
+temas manda sobre ese archivo, así que renombrarlo puede dejar la portada sin
+sección si el editor reescribe una versión vieja.
 
 Sustituyó a los heroes de foto a pantalla completa. `hero-vitrina` y
 `hero-indice` siguen en el tema por si hacen falta en otra página; la escena
-3D (750 KB de WebGL) se eliminó: un abanico son transforms de CSS.
+3D (750 KB de WebGL) se eliminó.
 
 Sin colección elegida, la sección cae a `collections.all` en vez de dejar la
 portada en blanco esperando al comerciante.
 
+### La home no repite el catálogo
+
+`estanteria` salió del orden de la portada: enseñaba las **mismas** ocho
+fragancias que la sección de arriba. La sección sigue existiendo para otras
+páginas.
+
+### Nada de antetítulos
+
+«EL RITUAL» encima de «Nadie se casa en la primera cita» es ruido: el titular
+se sostiene solo. Los `eyebrow` cableados en el código se quitaron, y el
+**ajuste** se conserva sin valor por defecto por si el comerciante quiere uno.
+El único que se queda es el de `hero-indice`, donde el titular no lleva
+contexto y forma parte de su entrada.
 
 ### Idiomas
 
@@ -413,17 +451,30 @@ realidad está a 13:1, y se acaba «arreglando» lo que no estaba roto. Este
 recorre el DOM real y sólo mira los elementos con texto propio:
 
 ```js
-const toRGB = (s) => {
+const toRGBA = (s) => {
   let m = s.match(/^color\(srgb\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)(?:\s*\/\s*([\d.]+))?/);
-  if (m) return (m[4] !== undefined && +m[4] === 0) ? null : [+m[1]*255, +m[2]*255, +m[3]*255];
+  if (m) { const a = m[4] === undefined ? 1 : +m[4];
+           return a === 0 ? null : { c: [+m[1]*255, +m[2]*255, +m[3]*255], a }; }
   m = s.match(/^rgba?\(([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)(?:[,\s/]+([\d.]+))?/);
-  if (m) return (m[4] !== undefined && +m[4] === 0) ? null : [+m[1], +m[2], +m[3]];
+  if (m) { const a = m[4] === undefined ? 1 : +m[4];
+           return a === 0 ? null : { c: [+m[1], +m[2], +m[3]], a }; }
   return null;
 };
+const toRGB = (s) => { const p = toRGBA(s); return p && p.c; };
 const lum = (c) => { const v = c.map(x => (x/=255, x <= .03928 ? x/12.92 : ((x+.055)/1.055)**2.4));
                      return .2126*v[0] + .7152*v[1] + .0722*v[2]; };
-const bg = (el) => { for (let n = el; n && n !== document.documentElement; n = n.parentElement) {
-                       const c = toRGB(getComputedStyle(n).backgroundColor); if (c) return c; } return [255,255,255]; };
+// el vidrio es semitransparente: hay que componer las capas hasta el body
+const over = (f, b, a) => f.map((v, i) => v * a + b[i] * (1 - a));
+const bg = (el) => {
+  const capas = [];
+  for (let n = el; n && n !== document.documentElement; n = n.parentElement) {
+    const p = toRGBA(getComputedStyle(n).backgroundColor);
+    if (p) { capas.push(p); if (p.a >= 0.999) break; }
+  }
+  let base = [242, 240, 245];                     // --pearl
+  for (let i = capas.length - 1; i >= 0; i--) base = over(capas[i].c, base, capas[i].a);
+  return base;
+};
 
 console.table([...document.querySelectorAll('main *, header *')].filter(el =>
   [...el.childNodes].some(c => c.nodeType === 3 && c.textContent.trim())).map(el => {
@@ -436,6 +487,13 @@ console.table([...document.querySelectorAll('main *, header *')].filter(el =>
   }).filter(Boolean));
 ```
 
-Un `console.table` vacío es el resultado bueno. Ojo: los reveals dejan
-elementos en `opacity: 0`, y medir con ellos apagados da falsos positivos —
-mide con la sección ya visible, no con una captura `fullPage`.
+Un `console.table` vacío es el resultado bueno.
+
+Dos formas de medir mal, las dos ya cometidas aquí:
+
+- **Los reveals** dejan elementos en `opacity: 0`. Medir con ellos apagados da
+  falsos positivos. Hay que recorrer la página antes.
+- **`window.scrollTo` no mueve nada**: Lenis se queda el scroll. Para recorrer
+  la página de verdad, `window.DropScentsLenis.scrollTo(y, { immediate: true })`
+  en pasos, con una pausa entre uno y otro para que los `IntersectionObserver`
+  disparen. Una captura `fullPage` tampoco los dispara.
