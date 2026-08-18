@@ -131,7 +131,18 @@
     "promesa_original": "Frasco original sellado, sin réplicas",
     "quitar_uno": "Quitar uno",
     "ver_imagen": "Ver la imagen {{ n }}",
-    "llevate": "Llévate la muestra"
+    "llevate": "Llévate la muestra",
+    "resta": {
+      "titulo": "Si te quedas con el frasco",
+      "decant": "{{ variante }}, ya pagado",
+      "pagar": "Te queda por pagar",
+      "nota": "Vale igual con el decant de 10 ml: el crédito es lo que pagaste, completo. No caduca y no hay letra pequeña."
+    },
+    "etapas": {
+      "1": "Llévate la muestra",
+      "2": "Vívela una semana. Si no es la tuya, ahí acaba.",
+      "3": "El frasco, menos lo que pagaste"
+    }
   },
   "secciones": {
     "carrusel": {

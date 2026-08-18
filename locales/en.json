@@ -131,7 +131,18 @@
     "promesa_original": "Sealed original bottle — never a clone",
     "quitar_uno": "Remove one",
     "ver_imagen": "View image {{ n }}",
-    "llevate": "Take the sample"
+    "llevate": "Take the sample",
+    "resta": {
+      "titulo": "If you keep the bottle",
+      "decant": "{{ variante }}, already paid",
+      "pagar": "Left to pay",
+      "nota": "Same with the 10 ml decant: the credit is what you paid, in full. It does not expire and there is no fine print."
+    },
+    "etapas": {
+      "1": "Take the sample",
+      "2": "Live with it for a week. If it is not yours, it ends there.",
+      "3": "The bottle, minus what you paid"
+    }
   },
   "secciones": {
     "carrusel": {

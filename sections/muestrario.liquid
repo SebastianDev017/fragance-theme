@@ -18,13 +18,19 @@
 {%- liquid
   assign col = section.settings.coleccion
   assign productos = col.products
-  assign tope = section.settings.cantidad
-  assign n = productos.size
 
   comment
-    En el editor, una colección sin elegir no puede quedar en blanco: se dice
-    qué falta, en lugar de dejar un hueco que parece un error del tema.
+    Sin colección elegida NO se deja la portada en blanco: se cae al catálogo
+    entero, que es lo que el comerciante habría elegido de todos modos. Sólo
+    si la tienda no tiene ni un producto se dibujan las cartillas marcadoras,
+    y entonces el hueco sí es información: dice qué falta.
   endcomment
+  unless productos.size > 0
+    assign productos = collections.all.products
+  endunless
+
+  assign tope = section.settings.cantidad
+  assign n = productos.size
 -%}
 
 <section class="muestrario">

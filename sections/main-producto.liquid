@@ -1,5 +1,14 @@
 {%- comment -%}
-  Ficha de producto.
+  Ficha de producto — la cartilla a tamaño completo.
+
+  La mitad izquierda es el CAMPO de la fragancia (el mismo color que su
+  cartilla en el catálogo, ver snippets/campo.liquid), con el nombre reversado
+  a escala de campo y la foto del frasco dentro. La derecha es el riel
+  técnico: precios tabulares, la resta y las tres etapas.
+
+  La resta es el producto. Un descuento se anuncia; un crédito se ASIENTA:
+  las tres líneas están impresas, y cada número se puede caminar hacia atrás
+  hasta la variante que lo produjo.
 
   El selector de presentación son RADIOS con name="id" dentro del formulario
   de compra: así funciona sin una línea de JavaScript — el navegador envía la
@@ -18,54 +27,95 @@
   if p.has_only_default_variant == false and p.options.size == 1
     assign una_opcion = true
   endif
+
+  comment
+    Misma convención de nombres que la cartilla: la posición de la variante no
+    significa nada, el nombre sí.
+  endcomment
+  assign v_d5 = null
+  assign v_full = null
+  for x in p.variants
+    if x.title contains 'Decant 5'
+      assign v_d5 = x
+    elsif x.title contains 'Decant 10'
+      comment
+        el de 10 ml no entra en la resta impresa: se nombra en la nota
+      endcomment
+    else
+      assign v_full = x
+    endif
+  endfor
+
+  comment
+    La resta sólo se imprime si existen las dos puntas: una muestra que pagar
+    y un frasco al que descontársela. Si falta cualquiera, no hay asiento que
+    enseñar y la sección desaparece en vez de inventarse un número.
+  endcomment
+  assign hay_resta = false
+  if v_d5 and v_full and v_full.price > v_d5.price
+    assign hay_resta = true
+    assign resto = v_full.price | minus: v_d5.price
+  endif
 -%}
 
-<section class="pdp" data-pdp>
-  <div class="pdp__media">
-    {%- if p.images.size > 0 -%}
-      <div class="pdp__visor">
-        {%- for imagen in p.images -%}
-          <img class="pdp__img{% if forloop.first %} is-on{% endif %}" data-i="{{ forloop.index0 }}"
-            src="{{ imagen | image_url: width: 1200 }}"
-            srcset="{{ imagen | image_url: width: 600 }} 600w,
-                    {{ imagen | image_url: width: 900 }} 900w,
-                    {{ imagen | image_url: width: 1400 }} 1400w"
-            sizes="(min-width: 900px) 46vw, 92vw"
-            alt="{{ imagen.alt | default: p.title | escape }}"
-            width="{{ imagen.width }}" height="{{ imagen.height }}"
-            {% if forloop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
-            decoding="async">
-        {%- endfor -%}
-      </div>
+{%- capture campo -%}{% render 'campo', producto: p %}{%- endcapture -%}
+{%- assign campo = campo | strip | split: '|' -%}
 
-      {%- if p.images.size > 1 -%}
-        <ul class="pdp__miniaturas" role="list">
-          {%- for imagen in p.images -%}
-            <li>
-              <button class="pdp__mini{% if forloop.first %} is-on{% endif %}" type="button"
-                data-pdp-mini="{{ forloop.index0 }}"
-                aria-label="{{ 'productos.ver_imagen' | t: n: forloop.index }}">
-                <img src="{{ imagen | image_url: width: 200 }}" alt="" width="80" height="80"
-                  loading="lazy" decoding="async">
-              </button>
-            </li>
-          {%- endfor -%}
-        </ul>
-      {%- endif -%}
-    {%- else -%}
-      <div class="pdp__visor"><span class="card__sinfoto" aria-hidden="true"></span></div>
-    {%- endif -%}
-  </div>
+<section class="pdp" data-pdp
+  style="--campo: {{ campo[0] }}; --sobre: {{ campo[1] }};">
 
-  <div class="pdp__info">
-    {%- if p.vendor != blank -%}
-      <p class="pdp__marca">{{ p.vendor }}</p>
-    {%- endif -%}
+  <div class="pdp__campo">
+    <p class="pdp__ref">
+      {%- if p.vendor != blank -%}{{ p.vendor }} · {% endif -%}{{ campo[2] }}
+    </p>
+
     <h1 class="pdp__titulo">{{ p.title }}</h1>
+
     {%- if p.type != blank -%}
       <p class="pdp__notas">{{ p.type }}</p>
     {%- endif -%}
 
+    <div class="pdp__media">
+      {%- if p.images.size > 0 -%}
+        <div class="pdp__visor">
+          {%- for imagen in p.images -%}
+            <img class="pdp__img{% if forloop.first %} is-on{% endif %}" data-i="{{ forloop.index0 }}"
+              src="{{ imagen | image_url: width: 1200 }}"
+              srcset="{{ imagen | image_url: width: 600 }} 600w,
+                      {{ imagen | image_url: width: 900 }} 900w,
+                      {{ imagen | image_url: width: 1400 }} 1400w"
+              sizes="(min-width: 900px) 46vw, 92vw"
+              alt="{{ imagen.alt | default: p.title | escape }}"
+              width="{{ imagen.width }}" height="{{ imagen.height }}"
+              {% if forloop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
+              decoding="async">
+          {%- endfor -%}
+        </div>
+
+        {%- if p.images.size > 1 -%}
+          <ul class="pdp__miniaturas" role="list">
+            {%- for imagen in p.images -%}
+              <li>
+                <button class="pdp__mini{% if forloop.first %} is-on{% endif %}" type="button"
+                  data-pdp-mini="{{ forloop.index0 }}"
+                  aria-label="{{ 'productos.ver_imagen' | t: n: forloop.index }}">
+                  <img src="{{ imagen | image_url: width: 200 }}" alt="" width="80" height="80"
+                    loading="lazy" decoding="async">
+                </button>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      {%- else -%}
+        {%- comment -%}
+          Sin foto el campo se queda solo, y está bien: el color ES la muestra.
+          Un marcador gris aquí sería peor que el silencio.
+        {%- endcomment -%}
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="pdp__riel">
     <p class="pdp__precio">
       <strong data-pdp-precio>{{ v.price | money }}</strong>
       {%- if v.compare_at_price > v.price -%}
@@ -140,6 +190,43 @@
         </button>
       </div>
     {%- endform -%}
+
+    {%- if hay_resta -%}
+      {%- comment -%}
+        El asiento. Tres renglones y ningún adjetivo: lo que cuesta el frasco,
+        lo que ya pagaste, y lo que te queda. La cifra grande es la última,
+        que es la única que el comprador tiene que decidir.
+      {%- endcomment -%}
+      <div class="resta">
+        <h2 class="resta__h">{{ 'productos.resta.titulo' | t }}</h2>
+        <dl class="resta__filas">
+          <div>
+            <dt>{{ v_full.title }}</dt>
+            <dd>{{ v_full.price | money }}</dd>
+          </div>
+          <div class="resta__credito">
+            <dt>{{ 'productos.resta.decant' | t: variante: v_d5.title }}</dt>
+            <dd>−{{ v_d5.price | money }}</dd>
+          </div>
+          <div class="resta__total">
+            <dt>{{ 'productos.resta.pagar' | t }}</dt>
+            <dd>{{ resto | money }}</dd>
+          </div>
+        </dl>
+        <p class="resta__nota">{{ 'productos.resta.nota' | t }}</p>
+      </div>
+    {%- endif -%}
+
+    {%- comment -%}
+      Las tres etapas. Las dos primeras son reversibles; sólo la tercera está
+      sellada, y por eso lleva la marca. Es el recorrido real, no un adorno de
+      «cómo funciona»: dice dónde puedes echarte atrás.
+    {%- endcomment -%}
+    <ol class="etapas" role="list">
+      <li><span class="etapas__n">01</span><span>{{ 'productos.etapas.1' | t }}</span></li>
+      <li><span class="etapas__n">02</span><span>{{ 'productos.etapas.2' | t }}</span></li>
+      <li class="etapas__sellada"><span class="etapas__n">03</span><span>{{ 'productos.etapas.3' | t }}</span></li>
+    </ol>
 
     <ul class="pdp__promesas" role="list">
       <li>{% render 'icono', tipo: 'camion', tam: 18 %}<span>{{ 'productos.promesa_envio' | t }}</span></li>

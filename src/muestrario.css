@@ -415,3 +415,252 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
   max-width: 24ch;
   color: var(--sobre, var(--cream));
 }
+
+/* ---------------------------------------------------------------------------
+   5. el chrome — la cabecera del estándar
+
+   En el comp la barra superior es cartulina opaca con un filete debajo, el
+   wordmark a la izquierda y etiquetas diminutas en versalitas espaciadas a la
+   derecha. Nada de vidrio: la primera sección de la portada es un campo
+   saturado a sangre, y una barra translúcida encima dejaría la tinta oscura
+   sobre burdeos.
+
+   `sticky` y no `fixed`: así ocupa su sitio en el flujo y la muralla empieza
+   justo debajo, en vez de quedar medio tapada.
+   --------------------------------------------------------------------------- */
+.nav,
+.nav.is-stuck {
+  position: sticky;
+  top: 0;
+  background: var(--stock);
+  border-bottom: 1px solid var(--ink);
+  box-shadow: none;
+  backdrop-filter: none;
+  padding-block: .8rem;
+  transition: none;
+}
+
+.nav__brand { font-size: 1.05rem; letter-spacing: .01em; text-transform: uppercase; }
+
+/* La marca deja de ser una gota: es una tira de tres muestras, que es lo que
+   este negocio vende. Tres superficies con el elemento y sus dos pseudos. */
+.nav__drop {
+  position: relative;
+  width: 21px;
+  height: 14px;
+  clip-path: none;
+  background: var(--campo-7);
+}
+.nav__drop::before,
+.nav__drop::after { content: ''; position: absolute; top: 0; bottom: 0; width: 7px; }
+.nav__drop::before { left: 0; background: var(--campo-1); }
+.nav__drop::after  { right: 0; background: var(--campo-4); }
+
+.nav__links {
+  gap: 1.4rem;
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+/* El subrayado que crece pasa a ser un filete de tinta, del grosor del resto */
+.nav__links a::after { height: 1px; background: var(--ink); }
+.nav__ico:hover { background: var(--stock-2); }
+.nav__cuenta-carrito { border-radius: 0; }
+.nav__cta { padding: .62rem 1rem; min-height: 40px; font-size: .68rem; }
+
+/* El menú lateral es una cartilla: cartulina opaca, canto vivo, filete. */
+.drawer__panel {
+  background: var(--stock);
+  border-left: 1px solid var(--ink);
+  border-radius: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+.drawer__fondo { background: color-mix(in srgb, var(--ink) 62%, transparent); backdrop-filter: none; }
+.drawer__cerrar { border-radius: 0; }
+.drawer__cerrar:hover { background: var(--stock-2); border-color: var(--ink); }
+.drawer__links a {
+  font-family: var(--font-d);
+  text-transform: uppercase;
+  letter-spacing: -.02em;
+}
+.drawer__links a:hover svg { color: var(--ink); }
+
+/* ---------------------------------------------------------------------------
+   6. la ficha de producto — la cartilla a tamaño completo
+
+   Izquierda: el campo de la fragancia, a sangre por su lado, con el nombre
+   reversado y la foto dentro. Derecha: el riel técnico sobre cartulina.
+   --------------------------------------------------------------------------- */
+.pdp {
+  gap: 0;
+  padding: 0 0 clamp(3rem, 8vh, 5rem);
+  align-items: stretch;
+}
+@media (min-width: 900px) {
+  .pdp { grid-template-columns: 1.1fr .9fr; align-items: stretch; }
+  .pdp__campo { position: sticky; top: 4.2rem; align-self: start; }
+}
+
+.pdp__campo {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1.6rem, 3vw, 2.8rem);
+  /* a sangre por la izquierda: el campo llega al canto de la ventana */
+  padding-left: max(var(--edge), clamp(1.6rem, 3vw, 2.8rem));
+  margin-left: calc(var(--edge) * -1);
+  background: var(--campo, var(--ink));
+  color: var(--sobre, var(--cream));
+  min-height: 62vh;
+}
+@media (max-width: 899px) {
+  .pdp__campo { margin-inline: calc(var(--edge) * -1); padding-inline: var(--edge); }
+}
+
+.pdp__ref {
+  font-size: .7rem;
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--sobre, var(--cream)) 74%, var(--campo, var(--ink)));
+}
+.pdp .pdp__titulo {
+  font-size: clamp(2.6rem, 6vw, 5rem);
+  line-height: .9;
+  letter-spacing: -.045em;
+  text-transform: uppercase;
+  text-wrap: balance;
+  margin: .5rem 0 0;
+  color: inherit;
+}
+.pdp .pdp__notas {
+  margin: .8rem 0 0;
+  font-size: .82rem;
+  color: color-mix(in srgb, var(--sobre, var(--cream)) 62%, var(--campo, var(--ink)));
+}
+
+.pdp__media { margin-top: auto; padding-top: 2rem; }
+.pdp .pdp__visor {
+  aspect-ratio: 4 / 3;
+  border: 0;
+  border-radius: 0;
+  background: transparent;   /* la foto vive DENTRO del campo, sin caja propia */
+}
+.pdp .pdp__img { padding: 0; }
+
+.pdp .pdp__mini {
+  border-radius: 0;
+  border-color: color-mix(in srgb, var(--sobre, var(--cream)) 35%, transparent);
+  background: transparent;
+}
+.pdp .pdp__mini.is-on,
+.pdp .pdp__mini:hover { border-color: var(--sobre, var(--cream)); }
+
+.pdp__riel {
+  padding: clamp(2rem, 4vh, 3.2rem) 0 0 clamp(1.6rem, 3vw, 3rem);
+  padding-right: max(var(--edge), 1rem);
+}
+@media (max-width: 899px) {
+  .pdp__riel { padding-inline: var(--edge); }
+}
+
+.pdp .pdp__precio strong { font-size: clamp(2.2rem, 4vw, 3rem); }
+
+/* Las presentaciones: filas de un formulario impreso, no fichas flotantes */
+.pres__cuerpo {
+  border-radius: 0;
+  background: transparent;
+  border-color: var(--line);
+}
+.pres input:checked + .pres__cuerpo {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--cream);
+  box-shadow: none;
+}
+.pres input:checked + .pres__cuerpo .pres__estado { color: color-mix(in srgb, var(--cream) 70%, var(--ink)); }
+.pdp__select select, .orden select { border-radius: 0; background-color: var(--stock); }
+
+/* ---------- la resta: el asiento del crédito ---------- */
+.resta {
+  margin-top: 2.4rem;
+  padding: 1.4rem 1.5rem 1.2rem;
+  background: var(--ink);
+  color: var(--cream);
+}
+.resta__h {
+  font-family: var(--font-b);
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--cream) 62%, var(--ink));
+  margin: 0 0 1rem;
+}
+.resta__filas { margin: 0; display: grid; }
+.resta__filas > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .55rem 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--cream) 20%, transparent);
+}
+.resta__filas dt { margin: 0; font-size: .84rem; color: color-mix(in srgb, var(--cream) 76%, var(--ink)); }
+.resta__filas dd { margin: 0; font-size: .95rem; font-weight: 600; }
+.resta__credito dd { color: var(--campo-5); }
+
+/* La escala es el argumento: el único número que el comprador tiene que
+   decidir recibe un tamaño que ningún otro de la página recibe. */
+.resta__total { border-bottom: 0 !important; padding-top: .9rem !important; align-items: baseline; }
+.resta__total dt { font-weight: 600; color: var(--cream) !important; }
+.resta__total dd {
+  font-family: var(--font-d);
+  font-weight: 600;
+  font-size: clamp(2.4rem, 5vw, 3.4rem) !important;
+  letter-spacing: -.04em;
+  line-height: 1;
+}
+.resta__nota {
+  margin-top: 1rem;
+  font-size: .74rem;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--cream) 58%, var(--ink));
+}
+
+/* ---------- las tres etapas ---------- */
+.etapas { margin: 2rem 0 0; padding: 0; list-style: none; display: grid; }
+.etapas li {
+  display: flex;
+  align-items: baseline;
+  gap: .9rem;
+  padding: .7rem 0;
+  border-bottom: 1px solid var(--line-soft);
+  font-size: .88rem;
+}
+.etapas li:last-child { border-bottom: 0; }
+.etapas__n {
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  color: var(--ink-3);
+  flex: none;
+  width: 1.6rem;
+}
+/* Sólo la tercera está sellada: es el único paso del que no se vuelve, y por
+   eso lleva la marca del formulario. */
+.etapas__sellada { position: relative; font-weight: 600; }
+.etapas__sellada::before {
+  content: '';
+  position: absolute;
+  left: -1.1rem;
+  top: 1.15rem;
+  width: 7px;
+  height: 7px;
+  background: var(--ink);
+}
+.etapas__sellada .etapas__n { color: var(--ink); }
+
+.pdp__promesas { margin-top: 1.8rem; }
