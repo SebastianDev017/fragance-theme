@@ -46,11 +46,24 @@ function conectarPanel(raiz) {
     panel.classList.contains('is-on') ? cerrar() : abrir();
   });
   $$('[data-facetas-cerrar]', panel).forEach((b) => b.addEventListener('click', cerrar));
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && panel.classList.contains('is-on')) cerrar();
-  });
 
+  /* El cierre con Escape se guarda aqui en vez de registrar un listener por
+     panel: el panel se vuelve a pintar en cada filtrado, y un listener nuevo
+     en `document` por cada pasada seria una fuga que solo se nota despues de
+     veinte clics. */
+  panel.__cerrar = cerrar;
   return cerrar;
+}
+
+/* Un unico oyente de Escape para toda la pagina, sea cual sea el panel que
+   este puesto ahora mismo. */
+if (typeof document !== 'undefined' && !document.__facetasEsc) {
+  document.__facetasEsc = true;
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    const abierto = document.querySelector('[data-facetas-panel].is-on');
+    abierto?.__cerrar?.();
+  });
 }
 
 /* ===========================================================================
