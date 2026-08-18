@@ -184,6 +184,38 @@ algo, manda lo que escribió. Así el tema recién instalado ya se lee entero en
 los dos idiomas sin que nadie tenga que traducir nada, y quien quiera su propia
 voz sólo tiene que escribirla.
 
+### Dos reglas de schema que `theme check` no mira
+
+Shopify rechaza el **archivo de sección entero** si el `{% schema %}` incumple
+alguna de estas dos, y no avisa por ningún sitio: la sección simplemente no se
+instala. Y como deja de existir, cualquier plantilla JSON que la use se
+descarta también — lo que en una ruta de colección se ve como un **404**.
+
+1. **Un valor de preset tiene que caer en el paso de su `range`.** `tamano: 15`
+   con `min 14, step 2` es inválido. Por eso la cinta no apareció nunca.
+2. **Un `range` necesita al menos tres pasos.** `min 1, max 2, step 1` son dos
+   pasos: parece de lo más razonable y no se instala jamás. Por eso el catálogo,
+   la búsqueda y la colección se quedaron semanas sirviendo copias viejas.
+
+```bash
+python tools/check-presets.py   # las dos reglas + los tipos de cada preset
+python tools/check-locales.py   # ninguna clave de idioma sin traducir
+```
+
+Las dos se pasan antes de cada push. `theme check` no sustituye a ninguna.
+
+### Dos caminos de despliegue, y cuál manda
+
+El tema está conectado por GitHub, así que **el repositorio es la fuente de
+verdad**: lo que se empuje con `shopify theme push` lo acaba pisando la
+sincronización. El push por CLI sirve para ver un cambio en segundos —
+sobre todo plantillas JSON, que la sincronización tarda más en aplicar— pero
+hay que commitear igual, o se pierde.
+
+Y al revés: el **editor de temas** manda sobre `templates/*.json`. Mientras
+alguien lo tenga abierto, los cambios de esos archivos en el repo no llegan.
+Para la portada, el editor es la fuente de verdad.
+
 ## 4. Decisiones que conviene no deshacer sin querer
 
 **El color lo pone el producto, no el fondo.** El gradiente blush → lavanda →
