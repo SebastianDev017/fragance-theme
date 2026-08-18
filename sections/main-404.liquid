@@ -1,32 +1,39 @@
 {%- comment -%}
-  404. No es un callejón sin salida: se ofrece el buscador y el catálogo.
+  404 — la cartilla sin código.
+
+  No es un callejón sin salida: es una muestra que no existe en el estándar, y
+  encima lleva impreso lo que sí se puede hacer (buscar, o ir al índice).
 
   El botón NO va a `/collections/all`: esa ruta solo responde si la tienda
   tiene productos publicados en el canal Tienda online, y si no los tiene el
   botón de la 404 lleva a otra 404. El índice de colecciones responde siempre.
 {%- endcomment -%}
 
-<section class="pagina pagina--404">
-  <header class="sec-head sec-head--center">
-    <p class="eyebrow"><span class="dot" aria-hidden="true"></span> 404</p>
-    <h1 class="h2">{{ 'general.404.titulo' | t }}</h1>
-    <p class="sec-head__p">{{ 'general.404.texto' | t }}</p>
-  </header>
+<section class="err">
+  <div class="err__campo">
+    <p class="err__ref">{{ 'general.vacio.campo' | t }} · &mdash;&mdash;&mdash;</p>
+    <p class="err__n" aria-hidden="true">404</p>
+  </div>
 
-  <form class="buscador" action="{{ routes.search_url }}" method="get" role="search">
-    <label class="visually-hidden" for="q404">{{ 'general.buscar.etiqueta' | t }}</label>
-    {% render 'icono', tipo: 'buscar', tam: 20 %}
-    <input id="q404" type="search" name="q" placeholder="{{ 'general.buscar.placeholder' | t }}">
-    <input type="hidden" name="type" value="product">
-    <button class="btn btn--ink" type="submit">{{ 'general.buscar.boton' | t }}</button>
-  </form>
+  <div class="err__riel">
+    <h1 class="err__h">{{ 'general.404.titulo' | t }}</h1>
+    <p class="err__p">{{ 'general.404.texto' | t }}</p>
 
-  <p class="pagina__cta">
-    <a class="btn btn--ghost btn--lg" href="{{ section.settings.cta_url | default: routes.collections_url }}">
-      {{ 'general.404.cta' | t }}
-      {% render 'icono', tipo: 'flecha' %}
-    </a>
-  </p>
+    <form class="buscador" action="{{ routes.search_url }}" method="get" role="search">
+      <label class="visually-hidden" for="q404">{{ 'general.buscar.etiqueta' | t }}</label>
+      {% render 'icono', tipo: 'buscar', tam: 20 %}
+      <input id="q404" type="search" name="q" placeholder="{{ 'general.buscar.placeholder' | t }}">
+      <input type="hidden" name="type" value="product">
+      <button class="btn btn--ink" type="submit">{{ 'general.buscar.boton' | t }}</button>
+    </form>
+
+    <p class="err__cta">
+      <a class="btn btn--ghost btn--lg" href="{{ section.settings.cta_url | default: routes.collections_url }}">
+        {{ 'general.404.cta' | t }}
+        {% render 'icono', tipo: 'flecha' %}
+      </a>
+    </p>
+  </div>
 </section>
 
 {% schema %}

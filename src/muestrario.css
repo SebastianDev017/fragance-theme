@@ -748,3 +748,66 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
 .step--3 strong { color: var(--cream); }
 .step--3 .step__n { color: var(--campo-5); }
 .is-free { color: var(--campo-7) !important; }
+
+/* ---------------------------------------------------------------------------
+   10. estados vacíos y 404
+
+   La cartilla en blanco conserva la forma exacta de una llena: se lee «falta
+   llenar esto», no «esto está roto».
+   --------------------------------------------------------------------------- */
+.cartilla--vacia { border: 1px dashed var(--line); }
+.cartilla--vacia .cartilla__name { color: var(--ink-3); }
+.cartilla--vacia::before { border-color: transparent !important; }
+
+/* 404: una muestra que no existe en el estándar. */
+.err {
+  display: grid;
+  gap: 0;
+  align-items: stretch;
+  min-height: 68vh;
+  padding-bottom: clamp(3rem, 8vh, 5rem);
+}
+@media (min-width: 900px) { .err { grid-template-columns: 1fr 1fr; } }
+
+.err__campo {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(1.6rem, 3vw, 2.8rem);
+  padding-left: max(var(--gutter), clamp(1.6rem, 3vw, 2.8rem));
+  background: var(--ink);
+  color: var(--cream);
+  min-height: 40vh;
+}
+.err__ref {
+  font-size: .7rem;
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--cream) 90%, var(--ink));
+}
+.err__n {
+  font-family: var(--font-d);
+  font-weight: 600;
+  font-size: clamp(5rem, 15vw, 12rem);
+  line-height: .8;
+  letter-spacing: -.06em;
+  margin: 0;
+}
+.err__riel {
+  padding: clamp(2rem, 5vh, 3.4rem) max(var(--gutter), 1rem) 0 clamp(1.6rem, 3vw, 3rem);
+}
+@media (max-width: 899px) { .err__riel { padding-inline: var(--gutter); } }
+.err__h {
+  font-family: var(--font-d);
+  font-weight: 600;
+  font-size: clamp(1.9rem, 4vw, 3rem);
+  line-height: .95;
+  letter-spacing: -.035em;
+  text-transform: uppercase;
+  margin: 0 0 1rem;
+}
+.err__p { color: var(--ink-2); max-width: 46ch; margin-bottom: 1.8rem; }
+.err__cta { margin-top: 1.2rem; }
+.buscador { border-radius: 0; }
+.buscador input { border-radius: 0; }
