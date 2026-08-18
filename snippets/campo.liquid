@@ -18,8 +18,16 @@
       campo:#2E4A1F    → un color propio, el que sea
       sobre:oscuro     → fuerza tinta oscura encima (por defecto: clara)
 
-  Sin etiqueta, el campo sale del id del producto: siempre el mismo para el
-  mismo producto, nunca un hueco gris.
+  Se resuelve en tres pasos, y el primero que responde gana:
+
+    1. la etiqueta del producto — es el mecanismo de verdad;
+    2. el MAPA de abajo, con el catálogo que hay hoy en la tienda;
+    3. un hash del handle, para cualquier producto nuevo.
+
+  El mapa existe porque ocho colores en ocho productos no los reparte ningún
+  hash sin repetir (es el problema del cumpleaños, no una mala función), y dos
+  cartillas contiguas del mismo color se leen como un error. Al añadir un
+  producto: ponle la etiqueta `campo:N` y no toques el mapa.
 
   Devuelve UNA línea, para partir por «|»:
 
@@ -42,6 +50,13 @@
   assign tintas = 'claro,claro,claro,claro,oscuro,claro,oscuro,oscuro' | split: ','
   assign letras = 'A,B,C,D,E,F,G,H' | split: ','
 
+  comment
+    El catálogo de hoy, con el color muestreado de la foto real de cada frasco
+    y su caja. Mismo orden en las dos listas.
+  endcomment
+  assign mapa_handles = 'sauvage-elixir,bleu,lemale-elixir,goodgirl,lavieestbelle,stronger,eros,libre' | split: ','
+  assign mapa_campos  = '1,2,3,4,5,6,7,8' | split: ','
+
   assign hex = ''
   assign idx = 0
   assign tinta = ''
@@ -61,11 +76,43 @@
   endfor
 
   comment
-    `modulo` sobre el id: determinista y estable. El +1 evita el índice 0, y
-    el `at_most` protege de una etiqueta campo:99 escrita a mano.
+    Paso 2: el mapa del catálogo actual.
   endcomment
   if idx < 1 or idx > 8
-    assign idx = producto.id | modulo: 8 | plus: 1
+    for h in mapa_handles
+      if h == producto.handle
+        assign idx = mapa_campos[forloop.index0] | times: 1
+        break
+      endif
+    endfor
+  endif
+
+  comment
+    Paso 3: el respaldo cuando no hay ni etiqueta ni mapa.
+
+    Aquí había un bug de los caros: `producto.id | modulo: 8`. Los ids que
+    Shopify asigna en una importación por CSV avanzan con un paso múltiplo de
+    8, así que los OCHO productos caían en el mismo resto y el catálogo entero
+    salía del mismo color. El id parece aleatorio y no lo es.
+
+    Se deriva del handle con un hash polinómico: `abc | split: ch | first |
+    size` devuelve cuántos caracteres hay antes de `ch`, o sea su posición, y
+    el acumulador se multiplica por 31 en cada vuelta para que el ORDEN de las
+    letras cuente. Sumar a secas daba el mismo número para anagramas.
+
+    Reparte, pero no garantiza colores distintos. Para que el color sea el
+    REAL del frasco —que es de lo que va todo esto— va la etiqueta `campo:N`;
+    el CSV de importación ya las trae escritas.
+  endcomment
+  assign semilla = 0
+  if idx < 1 or idx > 8
+    assign abc = 'abcdefghijklmnopqrstuvwxyz0123456789-'
+    assign letras_handle = producto.handle | split: ''
+    for ch in letras_handle
+      assign pos = abc | split: ch | first | size
+      assign semilla = semilla | times: 31 | plus: pos | modulo: 1000003
+    endfor
+    assign idx = semilla | modulo: 8 | plus: 1
   endif
 
   comment
@@ -98,7 +145,15 @@
     índice del campo y del id, así que es estable y no se repite dentro de la
     misma columna.
   endcomment
-  assign dd = producto.id | modulo: 89 | plus: 10
+  comment
+    El número de la referencia sale de la misma semilla que el color cuando la
+    hay, así el código sobrevive a una reimportación que cambie el id.
+  endcomment
+  if semilla > 0
+    assign dd = semilla | modulo: 89 | plus: 10
+  else
+    assign dd = producto.id | modulo: 89 | plus: 10
+  endif
   assign letra = letras[j]
   assign codigo = idx | append: letra | append: '-' | append: dd
 -%}
