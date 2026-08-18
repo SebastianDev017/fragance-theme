@@ -8,6 +8,9 @@
  * ------------------------------------------------------------
  */
 {
+  "colecciones": {
+    "ordenar": "Order"
+  },
   "comun": {
     "alineacion": "Alignment",
     "alineaciones": {
@@ -156,12 +159,30 @@
       "respuesta": "Answer"
     },
     "coleccion": {
+      "cabecera": "Header",
+      "cabeceras": {
+        "centrada": "Centred",
+        "foto": "With the collection image",
+        "simple": "Plain"
+      },
+      "migas": "Show breadcrumb",
       "mostrar_orden": "Show sorting",
       "nombre": "Collection",
       "por_pagina": "Fragrances per page"
     },
     "colecciones": {
-      "nombre": "All collections"
+      "mostrar_n": "Show how many fragrances",
+      "nombre": "All collections",
+      "ordenes": {
+        "alfabetico": "Alphabetical",
+        "productos": "Most fragrances first"
+      },
+      "presentacion": "Layout",
+      "presentaciones": {
+        "mosaico": "Editorial mosaic",
+        "rejilla": "Even grid"
+      },
+      "vacias": "Include empty collections"
     },
     "cuenta": {
       "ayuda_bloques": "Each tab of the comparison is a “Fragrance” block: add one per perfume you want to compare and pick the product right there.",

@@ -11,6 +11,7 @@
 --------------------------------------------------------------------------- */
 
 import { gsap } from 'gsap';
+import { conectarFacetas } from './facetas.js';
 
 export const REDUCIDO = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $ = (s, c = document) => c.querySelector(s);
@@ -386,6 +387,10 @@ export function conectarCantidades(raiz = document) {
 
 export function conectarSelects(raiz = document) {
   $$('[data-envia-al-cambiar]', raiz).forEach((select) => {
+    /* El orden de una coleccion filtrada NO: ese lo intercepta facetas.js para
+       cambiar solo la rejilla. `form.submit()` no dispara el evento submit, asi
+       que si se enviara aqui la pagina se recargaria entera. */
+    if (select.closest('[data-facetas-orden]')) return;
     select.addEventListener('change', () => select.form?.submit());
   });
 }
@@ -395,6 +400,7 @@ export function conectarSelects(raiz = document) {
    =========================================================================== */
 
 export function conectarTienda(raiz = document) {
+  conectarFacetas(raiz);
   conectarGalerias(raiz);
   conectarCarruseles(raiz);
   conectarIndice(raiz);

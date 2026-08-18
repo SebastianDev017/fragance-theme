@@ -1,10 +1,24 @@
 {%- comment -%}
-  Buscador. El formulario es un GET normal: la búsqueda queda en la URL y se
-  puede compartir o guardar. `type=product` porque en esta tienda lo que se
-  busca son fragancias, no artículos del blog.
+  Buscador.
+
+  El formulario es un GET normal: la búsqueda queda en la URL y se puede
+  compartir o guardar. `type=product` porque en esta tienda lo que se busca son
+  fragancias, no artículos del blog.
+
+  Los filtros son los mismos que los de colección: `search.filters` tiene la
+  misma forma que `collection.filters`, así que se reutiliza el snippet en vez
+  de mantener dos versiones que acaban divergiendo.
 {%- endcomment -%}
 
-<section class="busqueda" style="--cols: {{ section.settings.columnas }}; --cols-movil: 2;">
+{%- liquid
+  assign cols = section.settings.columnas | default: 4
+  assign cols_movil = section.settings.columnas_movil | default: 2
+-%}
+
+<section class="busqueda" id="busqueda-{{ section.id }}"
+  style="--cols: {{ cols }}; --cols-movil: {{ cols_movil }};"
+  data-seccion-id="{{ section.id }}">
+
   <header class="sec-head sec-head--center">
     <p class="eyebrow"><span class="dot" aria-hidden="true"></span> {{ 'general.buscar.titulo' | t }}</p>
     <h1 class="h2">{{ 'general.buscar.encabezado' | t }}</h1>
@@ -20,43 +34,41 @@
   </form>
 
   {%- if search.performed -%}
-    {%- paginate search.results by 24 -%}
+    <div data-facetas-resultados>
       {%- if search.results_count > 0 -%}
-        <p class="busqueda__cuenta">
-          {{ 'general.buscar.resultados' | t: count: search.results_count, terms: search.terms }}
-        </p>
-        <div class="shelf">
-          {%- for item in search.results -%}
-            {%- if item.object_type == 'product' -%}
-              {% render 'card-fragancia', producto: item, ratio: section.settings.ratio %}
-            {%- endif -%}
-          {%- endfor -%}
-        </div>
+        {% render 'facetas',
+          filtros: search.filters,
+          url: routes.search_url,
+          terminos: search.terms,
+          orden: search.sort_by,
+          orden_por_defecto: search.default_sort_by,
+          opciones_orden: search.sort_options,
+          total: search.results_count,
+          id_seccion: section.id %}
+      {%- endif -%}
 
-        {%- if paginate.pages > 1 -%}
-          <nav class="paginacion" aria-label="{{ 'general.paginacion' | t }}">
-            {%- if paginate.previous -%}
-              <a href="{{ paginate.previous.url }}" rel="prev">{{ 'general.anterior' | t }}</a>
-            {%- endif -%}
-            {%- for parte in paginate.parts -%}
-              {%- if parte.is_link -%}
-                <a href="{{ parte.url }}">{{ parte.title }}</a>
-              {%- else -%}
-                <span {% if parte.title == paginate.current_page %}aria-current="page" class="is-actual"{% endif %}>{{ parte.title }}</span>
+      {%- paginate search.results by section.settings.por_pagina -%}
+        {%- if search.results_count > 0 -%}
+          <div class="shelf" data-facetas-rejilla>
+            {%- for item in search.results -%}
+              {%- if item.object_type == 'product' -%}
+                {% render 'card-fragancia', producto: item, ratio: section.settings.ratio %}
               {%- endif -%}
             {%- endfor -%}
-            {%- if paginate.next -%}
-              <a href="{{ paginate.next.url }}" rel="next">{{ 'general.siguiente' | t }}</a>
-            {%- endif -%}
-          </nav>
+          </div>
+
+          {% render 'paginacion', paginate: paginate %}
+        {%- else -%}
+          <div class="vacio-pagina">
+            <p class="vacio-pagina__t">{{ 'general.buscar.sin_resultados' | t: terms: search.terms }}</p>
+            <button class="btn btn--ink" type="button" data-chat>
+              {% render 'icono', tipo: 'chat', tam: 16 %}
+              {{ 'general.buscar.pregunta' | t }}
+            </button>
+          </div>
         {%- endif -%}
-      {%- else -%}
-        <div class="vacio-pagina">
-          <p class="vacio-pagina__t">{{ 'general.buscar.sin_resultados' | t: terms: search.terms }}</p>
-          <button class="btn btn--ink" type="button" data-chat>{{ 'general.buscar.pregunta' | t }}</button>
-        </div>
-      {%- endif -%}
-    {%- endpaginate -%}
+      {%- endpaginate -%}
+    </div>
   {%- endif -%}
 </section>
 
@@ -66,6 +78,8 @@
   "tag": "section",
   "settings": [
     { "type": "range", "id": "columnas", "min": 2, "max": 6, "step": 1, "label": "t:comun.columnas", "default": 4 },
+    { "type": "range", "id": "columnas_movil", "min": 1, "max": 2, "step": 1, "label": "t:comun.columnas_movil", "default": 2 },
+    { "type": "range", "id": "por_pagina", "min": 8, "max": 48, "step": 4, "label": "t:secciones.coleccion.por_pagina", "default": 24 },
     {
       "type": "select",
       "id": "ratio",

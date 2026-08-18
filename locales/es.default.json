@@ -31,10 +31,18 @@
   },
   "colecciones": {
     "aplicar": "Aplicar",
+    "cerrar_filtros": "Cerrar los filtros",
     "cuenta": "{{ count }} fragancias",
     "eyebrow": "Catálogo",
+    "filtrar": "Filtrar",
+    "limpiar": "Quitar los filtros",
     "ordenar": "Ordenar por",
+    "precio_desde": "Desde",
+    "precio_hasta": "Hasta",
+    "precio_max": "Precio máximo",
+    "precio_min": "Precio mínimo",
     "sin_productos": "Esta colección todavía no tiene fragancias.",
+    "sin_resultados_filtro": "Con esos filtros no queda ninguna fragancia. Prueba a quitar alguno.",
     "todas": "Todas las colecciones",
     "ver_todo": "Ver todo el catálogo"
   },
@@ -82,6 +90,9 @@
       "etiqueta": "Idioma",
       "ir": "Cambiar"
     },
+    "inicio": "Inicio",
+    "migas": "Migas de pan",
+    "pagina": "Página {{ n }}",
     "paginacion": "Paginación",
     "siguiente": "Siguiente",
     "vacio": {

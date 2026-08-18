@@ -27,17 +27,7 @@
         {%- endfor -%}
       </div>
 
-      {%- if paginate.pages > 1 -%}
-        <nav class="paginacion" aria-label="{{ 'general.paginacion' | t }}">
-          {%- for parte in paginate.parts -%}
-            {%- if parte.is_link -%}
-              <a href="{{ parte.url }}">{{ parte.title }}</a>
-            {%- else -%}
-              <span {% if parte.title == paginate.current_page %}aria-current="page" class="is-actual"{% endif %}>{{ parte.title }}</span>
-            {%- endif -%}
-          {%- endfor -%}
-        </nav>
-      {%- endif -%}
+      {% render 'paginacion', paginate: paginate %}
     {%- else -%}
       <div class="vacio-pagina">
         <p class="vacio-pagina__t">{{ 'blogs.vacio' | t }}</p>

@@ -2,10 +2,108 @@
   "sections": {
     "main": {
       "type": "main-coleccion",
-      "settings": {}
+      "settings": {
+        "cabecera": "foto",
+        "migas": true,
+        "columnas": 4,
+        "columnas_movil": 2,
+        "por_pagina": 24,
+        "ratio": "1/1"
+      }
+    },
+    "promesas": {
+      "type": "ticker",
+      "settings": {
+        "estilo": "claro",
+        "tamano": 16,
+        "velocidad": 3,
+        "separador": "gota"
+      },
+      "blocks": {
+        "p1": {
+          "type": "frase",
+          "settings": {
+            "texto": "Frasco original sellado",
+            "icono": "escudo"
+          }
+        },
+        "p2": {
+          "type": "frase",
+          "settings": {
+            "texto": "Envío gratis desde $20",
+            "icono": "camion"
+          }
+        },
+        "p3": {
+          "type": "frase",
+          "settings": {
+            "texto": "Te descontamos el decant del frasco",
+            "icono": "gota"
+          }
+        },
+        "p4": {
+          "type": "frase",
+          "settings": {
+            "texto": "Caracas en 24 a 48 h",
+            "icono": "check"
+          }
+        }
+      },
+      "block_order": [
+        "p1",
+        "p2",
+        "p3",
+        "p4"
+      ]
+    },
+    "claro": {
+      "type": "hablemos-claro",
+      "settings": {
+        "disposicion": "dos",
+        "primera_abierta": false,
+        "eyebrow": "Antes de pedir",
+        "texto": ""
+      },
+      "blocks": {
+        "q1": {
+          "type": "pregunta",
+          "settings": {}
+        },
+        "q2": {
+          "type": "pregunta",
+          "settings": {}
+        },
+        "q3": {
+          "type": "pregunta",
+          "settings": {}
+        },
+        "q4": {
+          "type": "pregunta",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4"
+      ]
+    },
+    "cierre": {
+      "type": "cierre",
+      "settings": {
+        "estilo": "gradiente",
+        "titulo": "¿No sabes por cuál empezar?",
+        "texto": "Dinos qué usas ahora y te decimos cuál decant pedir primero. Sin vendedor encima.",
+        "cta_chat": "Que me recomienden uno",
+        "cta2_texto": ""
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "promesas",
+    "claro",
+    "cierre"
   ]
 }

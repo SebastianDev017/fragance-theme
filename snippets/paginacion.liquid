@@ -1,0 +1,55 @@
+{%- comment -%}
+  Paginación.
+
+  Una sola implementación para colección, búsqueda y blog: son la misma cosa y
+  tres copias acaban divergiendo.
+
+  Los enlaces llevan `data-facetas-enlace` para que, donde haya filtros vivos,
+  el JS los intercepte y cambie sólo la rejilla. Donde no lo haya, siguen
+  siendo enlaces normales.
+
+  Uso: {% render 'paginacion', paginate: paginate %}
+{%- endcomment -%}
+
+{%- if paginate.pages > 1 -%}
+  <nav class="paginacion" aria-label="{{ 'general.paginacion' | t }}">
+    {%- if paginate.previous -%}
+      <a class="paginacion__flecha" href="{{ paginate.previous.url }}" rel="prev" data-facetas-enlace>
+        {% render 'icono', tipo: 'izquierda', tam: 16 %}
+        <span>{{ 'general.anterior' | t }}</span>
+      </a>
+    {%- else -%}
+      <span class="paginacion__flecha is-muerta" aria-hidden="true">
+        {% render 'icono', tipo: 'izquierda', tam: 16 %}
+        <span>{{ 'general.anterior' | t }}</span>
+      </span>
+    {%- endif -%}
+
+    <ol class="paginacion__nums">
+      {%- for parte in paginate.parts -%}
+        <li>
+          {%- if parte.is_link -%}
+            <a href="{{ parte.url }}" data-facetas-enlace
+              aria-label="{{ 'general.pagina' | t: n: parte.title }}">{{ parte.title }}</a>
+          {%- elsif parte.title == paginate.current_page -%}
+            <span class="is-actual" aria-current="page">{{ parte.title }}</span>
+          {%- else -%}
+            <span class="is-hueco" aria-hidden="true">{{ parte.title }}</span>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ol>
+
+    {%- if paginate.next -%}
+      <a class="paginacion__flecha" href="{{ paginate.next.url }}" rel="next" data-facetas-enlace>
+        <span>{{ 'general.siguiente' | t }}</span>
+        {% render 'icono', tipo: 'derecha', tam: 16 %}
+      </a>
+    {%- else -%}
+      <span class="paginacion__flecha is-muerta" aria-hidden="true">
+        <span>{{ 'general.siguiente' | t }}</span>
+        {% render 'icono', tipo: 'derecha', tam: 16 %}
+      </span>
+    {%- endif -%}
+  </nav>
+{%- endif -%}

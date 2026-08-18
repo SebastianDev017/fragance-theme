@@ -8,6 +8,9 @@
  * ------------------------------------------------------------
  */
 {
+  "colecciones": {
+    "ordenar": "Orden"
+  },
   "comun": {
     "alineacion": "Alineación",
     "alineaciones": {
@@ -156,12 +159,30 @@
       "respuesta": "Respuesta"
     },
     "coleccion": {
+      "cabecera": "Cabecera",
+      "cabeceras": {
+        "centrada": "Centrada",
+        "foto": "Con la foto de la colección",
+        "simple": "Simple"
+      },
+      "migas": "Mostrar migas de pan",
       "mostrar_orden": "Mostrar el orden",
       "nombre": "Colección",
       "por_pagina": "Fragancias por página"
     },
     "colecciones": {
-      "nombre": "Todas las colecciones"
+      "mostrar_n": "Mostrar cuántas fragancias tiene",
+      "nombre": "Todas las colecciones",
+      "ordenes": {
+        "alfabetico": "Alfabético",
+        "productos": "Las que más fragancias tienen"
+      },
+      "presentacion": "Presentación",
+      "presentaciones": {
+        "mosaico": "Mosaico editorial",
+        "rejilla": "Rejilla pareja"
+      },
+      "vacias": "Incluir las colecciones vacías"
     },
     "cuenta": {
       "ayuda_bloques": "Cada pestaña del comparador es un bloque «Fragancia»: añade uno por cada perfume que quieras comparar y elige el producto ahí mismo.",

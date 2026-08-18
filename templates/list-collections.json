@@ -11,10 +11,27 @@
   "sections": {
     "main": {
       "type": "lista-colecciones",
-      "settings": {}
+      "settings": {
+        "presentacion": "mosaico",
+        "columnas": 3,
+        "mostrar_n": true,
+        "vacias": false,
+        "orden": "alfabetico",
+        "eyebrow": "El catálogo",
+        "titulo": "Todas las colecciones",
+        "texto": "Cada una es una manera distinta de empezar. Todas en decant de 5 o 10 ml, y el frasco completo cuando ya sabes cuál es el tuyo."
+      }
+    },
+    "cierre": {
+      "type": "cierre",
+      "settings": {
+        "estilo": "tinta",
+        "cta2_texto": ""
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "cierre"
   ]
 }

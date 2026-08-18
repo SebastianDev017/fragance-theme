@@ -31,10 +31,18 @@
   },
   "colecciones": {
     "aplicar": "Apply",
+    "cerrar_filtros": "Close filters",
     "cuenta": "{{ count }} fragrances",
     "eyebrow": "Catalogue",
+    "filtrar": "Filter",
+    "limpiar": "Clear filters",
     "ordenar": "Sort by",
+    "precio_desde": "From",
+    "precio_hasta": "To",
+    "precio_max": "Maximum price",
+    "precio_min": "Minimum price",
     "sin_productos": "This collection has no fragrances yet.",
+    "sin_resultados_filtro": "No fragrance matches those filters. Try removing one.",
     "todas": "All collections",
     "ver_todo": "Browse the full catalogue"
   },
@@ -82,6 +90,9 @@
       "etiqueta": "Language",
       "ir": "Change"
     },
+    "inicio": "Home",
+    "migas": "Breadcrumb",
+    "pagina": "Page {{ n }}",
     "paginacion": "Pagination",
     "siguiente": "Next",
     "vacio": {

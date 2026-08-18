@@ -1,26 +1,100 @@
-{%- comment -%} Todas las colecciones de la tienda. {%- endcomment -%}
+{%- comment -%}
+  Todas las colecciones.
 
-<section class="colecciones" style="--cols: {{ section.settings.columnas }}; --cols-movil: 1;">
-  <header class="sec-head">
-    <h1 class="h2">{{ 'colecciones.todas' | t }}</h1>
+  No es una rejilla de miniaturas: cada colección es una puerta, así que la
+  tarjeta ocupa espacio y enseña la foto grande. El mosaico alterna tamaños
+  (la primera y cada cuarta van a doble ancho) para que la página tenga ritmo
+  en vez de parecer una hoja de cálculo.
+
+  Si una colección no tiene foto propia, se toma la del primer producto: mejor
+  una foto de fragancia que un hueco gris.
+{%- endcomment -%}
+
+{%- liquid
+  assign cols = section.settings.columnas | default: 3
+  assign lista = collections
+  if section.settings.orden == 'productos'
+    assign lista = collections | sort: 'all_products_count' | reverse
+  endif
+-%}
+
+<section class="colecciones colecciones--{{ section.settings.presentacion }}"
+  style="--cols: {{ cols }}; --cols-movil: 1;">
+
+  <header class="sec-head sec-head--row">
+    <div>
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="eyebrow"><span class="dot" aria-hidden="true"></span> {{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      <h1 class="h2">{{ section.settings.titulo | default: shop.name }}</h1>
+    </div>
+    {%- if section.settings.texto != blank -%}
+      <p class="sec-head__p">{{ section.settings.texto }}</p>
+    {%- endif -%}
   </header>
-  <div class="shelf">
-    {%- for coleccion in collections -%}
-      <a class="coleccion-card" href="{{ coleccion.url }}">
-        <span class="coleccion-card__foto">
-          {%- if coleccion.featured_image -%}
-            <img src="{{ coleccion.featured_image | image_url: width: 700 }}" alt=""
-              width="{{ coleccion.featured_image.width }}" height="{{ coleccion.featured_image.height }}"
+
+  {%- assign pintadas = 0 -%}
+  <div class="col-lista">
+    {%- for coleccion in lista -%}
+      {%- liquid
+        assign n = coleccion.all_products_count | default: 0 | plus: 0
+        unless section.settings.vacias
+          if n == 0
+            continue
+          endif
+        endunless
+        assign pintadas = pintadas | plus: 1
+
+        comment
+          La foto: la de la colección manda; si no hay, la del primer producto.
+        endcomment
+        assign foto = coleccion.image
+        unless foto
+          assign foto = coleccion.products.first.featured_image
+        endunless
+
+        comment
+          El mosaico: la primera y cada cuarta ocupan dos columnas.
+        endcomment
+        assign resto = pintadas | modulo: 4
+        assign ancha = false
+        if section.settings.presentacion == 'mosaico' and resto == 1
+          assign ancha = true
+        endif
+      -%}
+      <a class="col-card{% if ancha %} col-card--ancha{% endif %}" href="{{ coleccion.url }}">
+        <span class="col-card__foto">
+          {%- if foto -%}
+            <img src="{{ foto | image_url: width: 1200 }}"
+              srcset="{{ foto | image_url: width: 500 }} 500w,
+                      {{ foto | image_url: width: 800 }} 800w,
+                      {{ foto | image_url: width: 1200 }} 1200w"
+              sizes="(min-width: 900px) 45vw, 92vw"
+              alt="" width="{{ foto.width }}" height="{{ foto.height }}"
               loading="lazy" decoding="async">
           {%- else -%}
-            <span class="card__sinfoto"></span>
+            <span class="card__sinfoto" aria-hidden="true"></span>
+          {%- endif -%}
+          <span class="col-card__velo" aria-hidden="true"></span>
+        </span>
+
+        <span class="col-card__txt">
+          <span class="col-card__tit">{{ coleccion.title }}</span>
+          {%- if section.settings.mostrar_n -%}
+            <span class="col-card__n">{{ 'colecciones.cuenta' | t: count: n }}</span>
           {%- endif -%}
         </span>
-        <span class="coleccion-card__tit">{{ coleccion.title }}</span>
-        <span class="coleccion-card__n">{{ 'colecciones.cuenta' | t: count: coleccion.products_count }}</span>
+
+        <span class="col-card__ir" aria-hidden="true">
+          {% render 'icono', tipo: 'flecha', tam: 18 %}
+        </span>
       </a>
     {%- endfor -%}
   </div>
+
+  {%- if pintadas == 0 -%}
+    <p class="aviso-vacio">{{ 'colecciones.sin_productos' | t }}</p>
+  {%- endif -%}
 </section>
 
 {% schema %}
@@ -28,7 +102,33 @@
   "name": "t:secciones.colecciones.nombre",
   "tag": "section",
   "settings": [
-    { "type": "range", "id": "columnas", "min": 2, "max": 5, "step": 1, "label": "t:comun.columnas", "default": 3 }
+    {
+      "type": "select",
+      "id": "presentacion",
+      "label": "t:secciones.colecciones.presentacion",
+      "default": "mosaico",
+      "options": [
+        { "value": "mosaico", "label": "t:secciones.colecciones.presentaciones.mosaico" },
+        { "value": "rejilla", "label": "t:secciones.colecciones.presentaciones.rejilla" }
+      ]
+    },
+    { "type": "range", "id": "columnas", "min": 2, "max": 4, "step": 1, "label": "t:comun.columnas", "default": 3 },
+    { "type": "checkbox", "id": "mostrar_n", "label": "t:secciones.colecciones.mostrar_n", "default": true },
+    { "type": "checkbox", "id": "vacias", "label": "t:secciones.colecciones.vacias", "default": false },
+    {
+      "type": "select",
+      "id": "orden",
+      "label": "t:colecciones.ordenar",
+      "default": "alfabetico",
+      "options": [
+        { "value": "alfabetico", "label": "t:secciones.colecciones.ordenes.alfabetico" },
+        { "value": "productos", "label": "t:secciones.colecciones.ordenes.productos" }
+      ]
+    },
+    { "type": "header", "content": "t:comun.textos" },
+    { "type": "text", "id": "eyebrow", "label": "t:comun.antetitulo", "default": "El catálogo" },
+    { "type": "text", "id": "titulo", "label": "t:comun.titular", "default": "Todas las colecciones" },
+    { "type": "textarea", "id": "texto", "label": "t:comun.texto" }
   ]
 }
 {% endschema %}

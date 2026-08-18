@@ -1,0 +1,271 @@
+{%- comment -%}
+  Filtros de colección y de búsqueda.
+
+  Los mismos para las dos páginas: Shopify expone `collection.filters` y
+  `search.filters` con la misma forma, así que no hay dos implementaciones que
+  se desincronicen.
+
+  Es un <form method="get"> de verdad. Sin JavaScript, marcar una casilla y
+  pulsar «Aplicar» recarga la página con los filtros puestos, que es
+  exactamente lo que hace el JS pero sin la transición. Por eso el botón de
+  aplicar existe y sólo se esconde cuando el JS está vivo.
+
+  Los filtros los define el comerciante en la app Search & Discovery. Si no ha
+  configurado ninguno, `filtros.size` es 0 y aquí no se pinta nada: una barra
+  lateral vacía es peor que ninguna.
+
+  Uso:
+    {% render 'facetas', filtros: collection.filters, url: collection.url,
+       orden: collection.sort_by, opciones_orden: collection.sort_options,
+       total: collection.products_count, id_seccion: section.id %}
+{%- endcomment -%}
+
+{%- liquid
+  assign n_filtros = filtros.size | default: 0 | plus: 0
+
+  comment
+    Cuántos filtros hay puestos ahora mismo. Se usa para el contador del botón
+    de móvil y para decidir si se enseña la fila de chips.
+  endcomment
+  assign activos = 0
+  for f in filtros
+    if f.type == 'price_range'
+      if f.min_value.value != nil or f.max_value.value != nil
+        assign activos = activos | plus: 1
+      endif
+    else
+      assign activos = activos | plus: f.active_values.size
+    endif
+  endfor
+-%}
+
+<div class="facetas" data-facetas data-seccion="{{ id_seccion }}">
+
+  {%- comment -%} ---------- barra: cuántos hay, filtrar y ordenar ---------- {%- endcomment -%}
+  <div class="barra-filtros">
+    <p class="barra-filtros__cuenta" data-facetas-cuenta>
+      {{ 'colecciones.cuenta' | t: count: total }}
+    </p>
+
+    <div class="barra-filtros__mandos">
+      {%- if n_filtros > 0 -%}
+        <button class="btn btn--ghost barra-filtros__abrir" type="button"
+          data-facetas-abrir aria-expanded="false" aria-controls="panel-filtros">
+          {% render 'icono', tipo: 'filtro', tam: 17 %}
+          {{ 'colecciones.filtrar' | t }}
+          {%- if activos > 0 -%}
+            <span class="barra-filtros__n">{{ activos }}</span>
+          {%- endif -%}
+        </button>
+      {%- endif -%}
+
+      {%- if opciones_orden.size > 0 -%}
+        {%- assign orden_actual = orden | default: orden_por_defecto -%}
+        <form class="orden" method="get" action="{{ url }}" data-facetas-orden>
+          {%- comment -%}
+            El orden va en su propio formulario, pero tiene que arrastrar los
+            filtros que ya estén puestos o al cambiarlo se perderían.
+          {%- endcomment -%}
+          {%- if terminos != blank -%}
+            <input type="hidden" name="q" value="{{ terminos | escape }}">
+            <input type="hidden" name="type" value="product">
+          {%- endif -%}
+          {%- for f in filtros -%}
+            {%- if f.type == 'price_range' -%}
+              {%- if f.min_value.value != nil -%}
+                <input type="hidden" name="{{ f.min_value.param_name }}" value="{{ f.min_value.value }}">
+              {%- endif -%}
+              {%- if f.max_value.value != nil -%}
+                <input type="hidden" name="{{ f.max_value.param_name }}" value="{{ f.max_value.value }}">
+              {%- endif -%}
+            {%- else -%}
+              {%- for v in f.active_values -%}
+                <input type="hidden" name="{{ v.param_name }}" value="{{ v.value | escape }}">
+              {%- endfor -%}
+            {%- endif -%}
+          {%- endfor -%}
+
+          <label for="orden-{{ id_seccion }}">{{ 'colecciones.ordenar' | t }}</label>
+          <select id="orden-{{ id_seccion }}" name="sort_by" data-envia-al-cambiar>
+            {%- for opcion in opciones_orden -%}
+              {%- if opcion.value != blank -%}
+                <option value="{{ opcion.value }}" {% if opcion.value == orden_actual %}selected{% endif %}>
+                  {{ opcion.name }}
+                </option>
+              {%- endif -%}
+            {%- endfor -%}
+          </select>
+          <noscript><button type="submit" class="orden__ir">{{ 'colecciones.aplicar' | t }}</button></noscript>
+        </form>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- comment -%} ---------- lo que está puesto ahora ---------- {%- endcomment -%}
+  {%- if activos > 0 -%}
+    <div class="chips-activos">
+      {%- for f in filtros -%}
+        {%- if f.type == 'price_range' -%}
+          {%- if f.min_value.value != nil or f.max_value.value != nil -%}
+            <a class="chip-activo" href="{{ f.url_to_remove }}" data-facetas-enlace>
+              <span>
+                {{ f.min_value.value | default: 0 | money }}
+                &ndash;
+                {{ f.max_value.value | default: f.range_max | money }}
+              </span>
+              {% render 'icono', tipo: 'cerrar', tam: 13, grosor: 2.4 %}
+            </a>
+          {%- endif -%}
+        {%- else -%}
+          {%- for v in f.active_values -%}
+            <a class="chip-activo" href="{{ v.url_to_remove }}" data-facetas-enlace>
+              <span>{{ v.label }}</span>
+              {% render 'icono', tipo: 'cerrar', tam: 13, grosor: 2.4 %}
+            </a>
+          {%- endfor -%}
+        {%- endif -%}
+      {%- endfor -%}
+
+      <a class="chips-activos__limpiar" href="{{ url }}{% if terminos != blank %}?q={{ terminos | url_encode }}&type=product{% endif %}" data-facetas-enlace>
+        {{ 'colecciones.limpiar' | t }}
+      </a>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} ---------- el panel ---------- {%- endcomment -%}
+  {%- if n_filtros > 0 -%}
+    <div class="panel-filtros" id="panel-filtros" data-facetas-panel>
+      <div class="panel-filtros__fondo" data-facetas-cerrar></div>
+
+      <form class="panel-filtros__caja" method="get" action="{{ url }}" data-facetas-form>
+        <div class="panel-filtros__top">
+          <h2>{{ 'colecciones.filtrar' | t }}</h2>
+          <button class="drawer__cerrar" type="button" data-facetas-cerrar
+            aria-label="{{ 'colecciones.cerrar_filtros' | t }}">
+            {% render 'icono', tipo: 'cerrar', tam: 20 %}
+          </button>
+        </div>
+
+        {%- comment -%}
+          El orden y los términos de búsqueda viajan como campos ocultos: si no,
+          aplicar un filtro los borraría.
+        {%- endcomment -%}
+        {%- if terminos != blank -%}
+          <input type="hidden" name="q" value="{{ terminos | escape }}">
+          <input type="hidden" name="type" value="product">
+        {%- endif -%}
+        {%- if orden != blank -%}
+          <input type="hidden" name="sort_by" value="{{ orden }}">
+        {%- endif -%}
+
+        <div class="panel-filtros__cuerpo">
+          {%- for f in filtros -%}
+            <details class="faceta" {% if forloop.index <= 2 %}open{% endif %}>
+              <summary>
+                <span>{{ f.label }}</span>
+                {%- if f.type == 'price_range' -%}
+                  {%- if f.min_value.value != nil or f.max_value.value != nil -%}
+                    <b class="faceta__n">1</b>
+                  {%- endif -%}
+                {%- elsif f.active_values.size > 0 -%}
+                  <b class="faceta__n">{{ f.active_values.size }}</b>
+                {%- endif -%}
+                <i aria-hidden="true"></i>
+              </summary>
+
+              <div class="faceta__cuerpo">
+                {%- case f.type -%}
+                  {%- when 'price_range' -%}
+                    {%- liquid
+                      assign tope = f.range_max | divided_by: 100.0 | ceil
+                      assign desde = 0
+                      if f.min_value.value != nil
+                        assign desde = f.min_value.value | divided_by: 100.0 | floor
+                      endif
+                      assign hasta = tope
+                      if f.max_value.value != nil
+                        assign hasta = f.max_value.value | divided_by: 100.0 | ceil
+                      endif
+                    -%}
+                    <div class="precio" data-precio data-tope="{{ tope }}"
+                      style="--desde: {{ desde }}; --hasta: {{ hasta }}; --tope: {{ tope }};">
+                      <div class="precio__pista" aria-hidden="true"><span data-precio-relleno></span></div>
+
+                      {%- comment -%}
+                        Dos deslizadores superpuestos. La pista no recibe
+                        puntero (si lo recibiera, el de arriba taparía al de
+                        abajo y sólo se podría mover uno); los pulgares sí.
+                      {%- endcomment -%}
+                      <input class="precio__rango precio__rango--min" type="range"
+                        min="0" max="{{ tope }}" value="{{ desde }}" step="1"
+                        data-precio-rango="min"
+                        aria-label="{{ 'colecciones.precio_min' | t }}">
+                      <input class="precio__rango precio__rango--max" type="range"
+                        min="0" max="{{ tope }}" value="{{ hasta }}" step="1"
+                        data-precio-rango="max"
+                        aria-label="{{ 'colecciones.precio_max' | t }}">
+
+                      <div class="precio__campos">
+                        <label>
+                          <span>{{ 'colecciones.precio_desde' | t }}</span>
+                          <input type="number" name="{{ f.min_value.param_name }}"
+                            value="{{ f.min_value.value | divided_by: 100.0 | floor }}"
+                            min="0" max="{{ tope }}" placeholder="0" data-precio-campo="min">
+                        </label>
+                        <label>
+                          <span>{{ 'colecciones.precio_hasta' | t }}</span>
+                          <input type="number" name="{{ f.max_value.param_name }}"
+                            value="{{ f.max_value.value | divided_by: 100.0 | ceil }}"
+                            min="0" max="{{ tope }}" placeholder="{{ tope }}" data-precio-campo="max">
+                        </label>
+                      </div>
+                    </div>
+
+                  {%- when 'boolean' -%}
+                    {%- for v in f.values -%}
+                      <label class="casilla{% if v.count == 0 and v.active == false %} casilla--vacia{% endif %}">
+                        <input type="checkbox" name="{{ v.param_name }}" value="{{ v.value | escape }}"
+                          {% if v.active %}checked{% endif %}
+                          {% if v.count == 0 and v.active == false %}disabled{% endif %}>
+                        <span class="casilla__marca" aria-hidden="true">
+                          {% render 'icono', tipo: 'check', tam: 12, grosor: 3 %}
+                        </span>
+                        <span class="casilla__txt">{{ v.label }}</span>
+                        {%- if v.count -%}<span class="casilla__n">{{ v.count }}</span>{%- endif -%}
+                      </label>
+                    {%- endfor -%}
+
+                  {%- else -%}
+                    {%- comment -%}
+                      Los valores sin resultados NO se esconden: se dejan
+                      apagados. Que desaparezca una talla al filtrar por otra
+                      cosa hace pensar que se rompió algo.
+                    {%- endcomment -%}
+                    {%- for v in f.values -%}
+                      <label class="casilla{% if v.count == 0 and v.active == false %} casilla--vacia{% endif %}">
+                        <input type="checkbox" name="{{ v.param_name }}" value="{{ v.value | escape }}"
+                          {% if v.active %}checked{% endif %}
+                          {% if v.count == 0 and v.active == false %}disabled{% endif %}>
+                        <span class="casilla__marca" aria-hidden="true">
+                          {% render 'icono', tipo: 'check', tam: 12, grosor: 3 %}
+                        </span>
+                        <span class="casilla__txt">{{ v.label }}</span>
+                        <span class="casilla__n">{{ v.count }}</span>
+                      </label>
+                    {%- endfor -%}
+                {%- endcase -%}
+              </div>
+            </details>
+          {%- endfor -%}
+        </div>
+
+        <div class="panel-filtros__pie">
+          <a class="btn btn--ghost" href="{{ url }}{% if terminos != blank %}?q={{ terminos | url_encode }}&type=product{% endif %}" data-facetas-enlace>
+            {{ 'colecciones.limpiar' | t }}
+          </a>
+          <button class="btn btn--ink" type="submit">{{ 'colecciones.aplicar' | t }}</button>
+        </div>
+      </form>
+    </div>
+  {%- endif -%}
+</div>
