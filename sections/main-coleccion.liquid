@@ -12,6 +12,16 @@
 {%- endcomment -%}
 
 {%- liquid
+  comment
+    La cabecera «con foto» pone el texto en claro porque va sobre la imagen.
+    Si la coleccion NO tiene imagen, ese blanco cae sobre el fondo palido de la
+    pagina y el titulo casi no se lee. Sin foto se cae a la cabecera simple.
+  endcomment
+  assign cabecera = section.settings.cabecera
+  if cabecera == 'foto' and collection.image == blank
+    assign cabecera = 'simple'
+  endif
+
   assign cols = section.settings.columnas | default: 4
   assign cols_movil = section.settings.columnas_movil | default: 2
   assign por_pagina = section.settings.por_pagina | default: 24
@@ -22,8 +32,8 @@
   data-seccion-id="{{ section.id }}">
 
   {%- comment -%} ---------- cabecera ---------- {%- endcomment -%}
-  <header class="col-cab col-cab--{{ section.settings.cabecera }}">
-    {%- if section.settings.cabecera == 'foto' and collection.image -%}
+  <header class="col-cab col-cab--{{ cabecera }}">
+    {%- if cabecera == 'foto' -%}
       <div class="col-cab__foto">
         <img src="{{ collection.image | image_url: width: 2000 }}"
           srcset="{{ collection.image | image_url: width: 800 }} 800w,
