@@ -105,13 +105,18 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
   letter-spacing: .14em;
   text-transform: uppercase;
   /* Sobre un campo de color el texto secundario se tiñe del propio color de
-     encima, nunca de gris: un gris sobre burdeos se lee sucio. */
-  color: color-mix(in srgb, var(--sobre, var(--cream)) 74%, var(--campo, var(--ink)));
+     encima, nunca de gris: un gris sobre burdeos se lee sucio.
+
+     El porcentaje NO es estético, es el suelo de contraste. Medido contra el
+     campo más claro (rosa #E09CAB), el turquesa #219B91 y el peor de los
+     oscuros (bronce #77562B): medido en el navegador, al 85% el turquesa
+     daba 4.23:1. Al 90% pasan los ocho. La jerarquía la ponen el tamaño y el espaciado, no el gris. */
+  color: color-mix(in srgb, var(--sobre, var(--cream)) 92%, var(--campo, var(--ink)));
 }
 .cartilla__notas {
   margin-top: .3rem;
   font-size: .74rem;
-  color: color-mix(in srgb, var(--sobre, var(--cream)) 58%, var(--campo, var(--ink)));
+  color: color-mix(in srgb, var(--sobre, var(--cream)) 90%, var(--campo, var(--ink)));
 }
 
 .cartilla__pie {
@@ -126,10 +131,20 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
 
 /* La aritmética, alineada en columna */
 .cartilla__precios { margin: 0; display: grid; gap: .12rem; font-size: .78rem; }
-.cartilla__precios > div { display: grid; grid-template-columns: 4.6rem auto; gap: .6rem; }
+.cartilla__precios > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.2rem;
+  min-width: 11rem;
+  max-width: 15rem;
+}
+/* «Frasco 100 ml» no cabía en una columna fija y se partía en dos renglones,
+   que en una tabla de precios se lee como un error de maquetación. */
+.cartilla__precios dt { white-space: nowrap; }
 .cartilla__precios dt {
   margin: 0;
-  color: color-mix(in srgb, var(--sobre, var(--cream)) 66%, var(--campo, var(--ink)));
+  color: color-mix(in srgb, var(--sobre, var(--cream)) 90%, var(--campo, var(--ink)));
   text-transform: lowercase;
 }
 .cartilla__precios dd { margin: 0; font-weight: 600; text-align: right; }
@@ -167,7 +182,12 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
   text-transform: uppercase;
   white-space: nowrap;
 }
-.cartilla--agotada { --campo: var(--stock-2); --sobre: var(--ink-2); }
+/* Agotada: el campo NO cambia de color —el `style` inline de la cartilla gana
+   siempre a un token, y además el color es la identidad de la fragancia—, se
+   apaga con un velo de cartulina por encima. La fragancia se sigue
+   reconociendo; lo que se ve es que hoy no se puede llevar. */
+.cartilla--agotada::before { background: color-mix(in srgb, var(--stock) 42%, transparent); }
+.cartilla--agotada .cartilla__precios { opacity: .8; }
 
 /* El filete de hover: 2px por DENTRO del borde, como en el comp. Va en un
    pseudo-elemento y no en `border` para que no mueva ni un píxel el interior
@@ -246,9 +266,9 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
   display: grid;
   grid-template-columns: repeat(var(--muro-cols, 3), 1fr);
   gap: 0;
-  /* a sangre: rompe el contenedor de la página a lo ancho de la ventana */
-  width: 100vw;
-  margin-inline: calc(50% - 50vw);
+  /* La sección ya ocupa todo el ancho: un `100vw` aquí mide MÁS que el cuerpo
+     cuando hay barra de scroll, y eso mete desplazamiento horizontal. */
+  width: 100%;
   background: var(--stock);
 }
 .muro > * { min-width: 0; }
@@ -310,8 +330,7 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: 1fr;
-  width: 100vw;
-  margin-inline: calc(50% - 50vw);
+  width: 100%;
   border-top: 1px solid var(--ink);
 }
 .muro__indice a {
@@ -332,7 +351,10 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
 @media (max-width: 900px) { .muro { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 560px) {
   .muro { grid-template-columns: 1fr; }
-  .muro__indice { grid-auto-flow: row; grid-auto-columns: auto; }
+  /* Ocho barras apiladas en una columna son media pantalla de índice. En
+     cuatro columnas siguen leyéndose como la franja de códigos del comp. */
+  .muro__indice { grid-auto-flow: row; grid-template-columns: repeat(4, 1fr); }
+  .muro__indice a { text-align: center; font-size: .58rem; letter-spacing: .08em; }
 }
 
 /* El momento de movimiento del mundo: la muralla se reparte, campo a campo,
@@ -507,16 +529,18 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
 .pdp__campo {
   display: flex;
   flex-direction: column;
+  /* El campo llega al canto izquierdo de la ventana por sí solo: la rejilla
+     de .pdp ya no tiene padding lateral. Un margen negativo de --edge aquí lo
+     empujaba FUERA de la pantalla, porque --edge se resuelve contra el ancho
+     de la columna, no contra el de la página. */
   padding: clamp(1.6rem, 3vw, 2.8rem);
-  /* a sangre por la izquierda: el campo llega al canto de la ventana */
-  padding-left: max(var(--edge), clamp(1.6rem, 3vw, 2.8rem));
-  margin-left: calc(var(--edge) * -1);
+  padding-left: max(var(--gutter), clamp(1.6rem, 3vw, 2.8rem));
   background: var(--campo, var(--ink));
   color: var(--sobre, var(--cream));
   min-height: 62vh;
 }
 @media (max-width: 899px) {
-  .pdp__campo { margin-inline: calc(var(--edge) * -1); padding-inline: var(--edge); }
+  .pdp__campo { padding-inline: var(--gutter); min-height: auto; }
 }
 
 .pdp__ref {
@@ -524,7 +548,7 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
   font-weight: 500;
   letter-spacing: .14em;
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--sobre, var(--cream)) 74%, var(--campo, var(--ink)));
+  color: color-mix(in srgb, var(--sobre, var(--cream)) 92%, var(--campo, var(--ink)));
 }
 .pdp .pdp__titulo {
   font-size: clamp(2.6rem, 6vw, 5rem);
@@ -538,7 +562,7 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
 .pdp .pdp__notas {
   margin: .8rem 0 0;
   font-size: .82rem;
-  color: color-mix(in srgb, var(--sobre, var(--cream)) 62%, var(--campo, var(--ink)));
+  color: color-mix(in srgb, var(--sobre, var(--cream)) 90%, var(--campo, var(--ink)));
 }
 
 .pdp__media { margin-top: auto; padding-top: 2rem; }
@@ -596,7 +620,7 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
   font-weight: 700;
   letter-spacing: .14em;
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--cream) 62%, var(--ink));
+  color: color-mix(in srgb, var(--cream) 78%, var(--ink));
   margin: 0 0 1rem;
 }
 .resta__filas { margin: 0; display: grid; }
@@ -608,7 +632,7 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
   padding: .55rem 0;
   border-bottom: 1px solid color-mix(in srgb, var(--cream) 20%, transparent);
 }
-.resta__filas dt { margin: 0; font-size: .84rem; color: color-mix(in srgb, var(--cream) 76%, var(--ink)); }
+.resta__filas dt { margin: 0; font-size: .84rem; color: color-mix(in srgb, var(--cream) 85%, var(--ink)); }
 .resta__filas dd { margin: 0; font-size: .95rem; font-weight: 600; }
 .resta__credito dd { color: var(--campo-5); }
 
@@ -627,7 +651,7 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
   margin-top: 1rem;
   font-size: .74rem;
   line-height: 1.5;
-  color: color-mix(in srgb, var(--cream) 58%, var(--ink));
+  color: color-mix(in srgb, var(--cream) 78%, var(--ink));
 }
 
 /* ---------- las tres etapas ---------- */

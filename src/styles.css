@@ -27,7 +27,8 @@
   --cream:    #F5EFDD;   /* la tinta clara: texto reversado sobre campo */
   --ink:      #1A191E;
   --ink-2:    #46454B;
-  --ink-3:    #6E6C74;   /* 4.9:1 sobre --stock; sólo etiquetas */
+  --ink-3:    #656369;   /* 4.7:1 sobre --stock, medido; sólo etiquetas.
+                            #6E6C74 se quedaba en 4.22 y no pasaba. */
   --alerta:   #8E2318;   /* agotado y errores; vive en la familia del burdeos */
 
   /* alias heredados, remapeados */
