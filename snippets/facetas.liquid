@@ -205,17 +205,23 @@
                         data-precio-rango="max"
                         aria-label="{{ 'colecciones.precio_max' | t }}">
 
+                      {%- comment -%}
+                        Los campos van VACIOS si no hay filtro de precio puesto.
+                        `nil | divided_by: 100` da 0, y un «hasta: 0» se lee
+                        como que el maximo es cero, no como «sin limite». El
+                        placeholder ya dice cual es el tope real.
+                      {%- endcomment -%}
                       <div class="precio__campos">
                         <label>
                           <span>{{ 'colecciones.precio_desde' | t }}</span>
                           <input type="number" name="{{ f.min_value.param_name }}"
-                            value="{{ f.min_value.value | divided_by: 100.0 | floor }}"
+                            {% if f.min_value.value %}value="{{ desde }}"{% endif %}
                             min="0" max="{{ tope }}" placeholder="0" data-precio-campo="min">
                         </label>
                         <label>
                           <span>{{ 'colecciones.precio_hasta' | t }}</span>
                           <input type="number" name="{{ f.max_value.param_name }}"
-                            value="{{ f.max_value.value | divided_by: 100.0 | ceil }}"
+                            {% if f.max_value.value %}value="{{ hasta }}"{% endif %}
                             min="0" max="{{ tope }}" placeholder="{{ tope }}" data-precio-campo="max">
                         </label>
                       </div>
