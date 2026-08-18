@@ -2,9 +2,6 @@
 
 <article class="articulo">
   <header class="sec-head">
-    <p class="eyebrow"><span class="dot" aria-hidden="true"></span>
-      {{ article.published_at | date: format: 'date' }}
-    </p>
     <h1 class="h2">{{ article.title }}</h1>
     {%- if article.author != blank -%}
       <p class="sec-head__p">{{ 'blogs.por' | t: autor: article.author }}</p>

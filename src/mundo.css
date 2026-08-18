@@ -570,3 +570,18 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
   color: var(--ink);
   background: linear-gradient(96deg, var(--blush), var(--lavender) 52%, var(--sky));
 }
+
+/* ---------------------------------------------------------------------------
+   8. estados vacíos de página
+
+   El titular iba a la izquierda y el bloque de debajo centrado: dos ejes en
+   la misma pantalla, y se lee como si faltara algo. Van los dos alineados a
+   la izquierda, que es donde empieza a leer todo lo demás del tema.
+   --------------------------------------------------------------------------- */
+.vacio-pagina {
+  text-align: left;
+  justify-items: start;
+  padding: 1.5rem var(--edge) clamp(4rem, 10vh, 7rem);
+  gap: 1.6rem;
+}
+.vacio-pagina__t { font-size: 1.05rem; max-width: 40ch; }
