@@ -61,7 +61,7 @@
       "settings": {
         "disposicion": "dos",
         "primera_abierta": false,
-        "eyebrow": "Antes de pedir",
+        "eyebrow": "",
         "texto": ""
       },
       "blocks": {

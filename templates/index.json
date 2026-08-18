@@ -12,13 +12,12 @@
     "muestrario": {
       "type": "muestrario",
       "settings": {
-        "cantidad": 8,
-        "columnas": 3,
-        "mostrar_indice": true,
-        "titulo": "Nadie pinta la casa sin la muestra",
-        "texto": "Decant de 5 o 10 ml. Lo que pagas por la muestra se te descuenta del frasco completo.",
-        "cta_texto": "Empieza por una muestra",
-        "cta2_texto": "Pregúntanos",
+        "cantidad": 4,
+        "columnas": 4,
+        "titulo": "Pruébalo en 5 ml. Cómpralo cuando estés seguro.",
+        "texto": "Los perfumes que ya conoces, en decant para vivirlos una semana en tu piel.",
+        "cta_texto": "Ver los decants",
+        "cta2_texto": "Pregúntanos por el chat",
         "cta2_chat": true
       }
     },
@@ -61,7 +60,7 @@
       "settings": {
         "disposicion": "escalera",
         "alinear": "offset",
-        "eyebrow": "El ritual",
+        "eyebrow": "",
         "titulo": "Nadie se casa en la primera cita.",
         "texto": "Un perfume no se decide en el papelito de la tienda. Se decide a las seis horas, cuando ya se mezcló contigo y alguien te pregunta qué te pusiste.",
         "ancla": "ritual"
@@ -109,7 +108,7 @@
         "courier": 24,
         "coleccion": "frontpage",
         "limite": 6,
-        "eyebrow": "La cuenta clara",
+        "eyebrow": "",
         "titulo": "El frasco cuesta lo mismo. Lo que te ahorras es todo lo demás.",
         "texto": "No inventamos precios de boutique. Ponemos el mismo número que verías en Amazon. Elige una y mira la cuenta completa.",
         "col_aqui": "Aquí",
@@ -173,18 +172,6 @@
         "b4"
       ]
     },
-    "estanteria": {
-      "type": "estanteria",
-      "settings": {
-        "coleccion": "frontpage",
-        "limite": 4,
-        "eyebrow": "La estantería",
-        "titulo": "Los que siempre nos piden.",
-        "texto": "Nada raro, nada de nicho imposible de conseguir. Los que reconoces cuando pasan por al lado — y algunos que deberías conocer.",
-        "ver_todo": "Ver el catálogo completo",
-        "ancla": "estanteria"
-      }
-    },
     "claro": {
       "type": "hablemos-claro",
       "blocks": {
@@ -239,7 +226,7 @@
       "settings": {
         "disposicion": "ancha",
         "primera_abierta": true,
-        "eyebrow": "Hablemos claro",
+        "eyebrow": "",
         "titulo": "Lo que preguntarías si estuvieras aquí.",
         "texto": "",
         "pie": "¿Te queda una duda que no está aquí?",
@@ -266,7 +253,6 @@
     "ritual",
     "cuenta",
     "cinta",
-    "estanteria",
     "claro",
     "cierre"
   ]

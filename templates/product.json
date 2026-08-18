@@ -21,7 +21,7 @@
         "limite": 8,
         "ratio": "1/1",
         "sangrar": false,
-        "eyebrow": "Sigue probando",
+        "eyebrow": "",
         "titulo": "",
         "ver_todo": "Ver el catálogo completo",
         "ancla": "relacionados",
@@ -33,7 +33,7 @@
       "settings": {
         "disposicion": "dos",
         "primera_abierta": false,
-        "eyebrow": "Antes de pedir"
+        "eyebrow": ""
       },
       "blocks": {
         "q1": {
