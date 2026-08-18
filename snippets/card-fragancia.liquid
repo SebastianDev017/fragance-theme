@@ -1,14 +1,17 @@
 {%- comment -%}
-  La cartilla — la tarjeta del catálogo.
+  La tarjeta del catálogo.
 
-  No es una foto con un pie de texto: es un CAMPO DE COLOR, del color real del
-  frasco (ver snippets/campo.liquid), con el nombre a escala de campo, la
-  referencia debajo y los tres precios anclados abajo. Es la misma pieza que se
-  amplía en la ficha de producto y la misma que se apila en el carrito.
+  Vidrio esmerilado sobre el degradado, esquina blanda y sombra suave. Dentro,
+  el frasco recortado flotando sobre el TINTE de su fragancia (ver
+  snippets/campo.liquid): el color ordena el catálogo y el producto es lo que
+  grita, no el fondo.
 
-  La foto no desaparece: aparece DENTRO del campo al pasar el ratón o al
-  enfocar con el teclado. Si el producto tiene más de una imagen salen las
-  flechas para recorrerlas; con una sola no hay flechas que estorben.
+  Una sola línea de precio, la de entrada. El precio del frasco completo vive
+  en la ficha y en el comparador: aquí sobraría. Lo que esta tarjeta tiene que
+  responder es «cuánto me cuesta probarlo».
+
+  Si el producto tiene más de una imagen salen las flechas al pasar por
+  encima; con una sola no hay flechas que estorben.
 
   Convención de variantes (es la que hace que todo esto funcione sin metafields):
     · "Decant 5 ml"   → la muestra, el precio de entrada
@@ -16,8 +19,8 @@
     · cualquier otra  → el frasco completo (p. ej. "Frasco 100 ml")
 
   Parámetros opcionales:
-    indice → posición en la rejilla; alimenta el escalonado del reparto
-    nivel  → nivel del encabezado (2 en la muralla, 3 dentro de una sección
+    indice → posición en la rejilla; alimenta el escalonado de la entrada
+    nivel  → nivel del encabezado (2 en la portada, 3 dentro de una sección
              que ya tiene su propio h2). Por defecto, 3.
 
   Uso: {% render 'card-fragancia', producto: producto, indice: forloop.index %}
@@ -26,18 +29,21 @@
 {%- liquid
   assign v_d5 = null
   assign v_d10 = null
-  assign v_full = null
   for v in producto.variants
     if v.title contains 'Decant 5'
       assign v_d5 = v
     elsif v.title contains 'Decant 10'
       assign v_d10 = v
-    else
-      assign v_full = v
     endif
   endfor
-  unless v_full
-    assign v_full = producto.selected_or_first_available_variant
+
+  comment
+    La variante de entrada: la muestra más pequeña que exista. Si el producto
+    no sigue la convención, el precio mínimo sirve igual.
+  endcomment
+  assign entrada = v_d5
+  unless entrada
+    assign entrada = v_d10
   endunless
 
   assign tam = tam | default: '(min-width: 1100px) 24vw, (min-width: 750px) 33vw, 88vw'
@@ -50,99 +56,71 @@
 {%- capture campo -%}{% render 'campo', producto: producto %}{%- endcapture -%}
 {%- assign campo = campo | strip | split: '|' -%}
 
-<article class="cartilla{% unless producto.available %} cartilla--agotada{% endunless %}"
+<article class="tarjeta{% unless producto.available %} tarjeta--agotada{% endunless %}"
   data-reveal-card
-  style="--campo: {{ campo[0] }}; --sobre: {{ campo[1] }}; --i: {{ indice }};">
+  style="--campo: {{ campo[0] }}; --i: {{ indice }};">
 
-  {%- comment -%}
-    La foto va DEBAJO de todo lo demás y sólo se revela en hover/focus, así el
-    nombre nunca compite con ella. Es decoración de refuerzo: el texto de al
-    lado ya dice lo mismo, por eso `aria-hidden`.
-  {%- endcomment -%}
-  {%- if n_img > 0 -%}
-    <div class="cartilla__foto{% if n_img > 1 %} cartilla__foto--galeria{% endif %}"
-      aria-hidden="true"
-      {% if n_img > 1 %}data-galeria data-total="{{ n_img }}"{% endif %}>
-      {%- for imagen in imagenes -%}
-        <img class="card__slide{% if forloop.first %} is-on{% endif %}"
-          data-i="{{ forloop.index0 }}"
-          src="{{ imagen | image_url: width: 700 }}"
-          srcset="{{ imagen | image_url: width: 400 }} 400w,
-                  {{ imagen | image_url: width: 700 }} 700w,
-                  {{ imagen | image_url: width: 1000 }} 1000w"
-          sizes="{{ tam }}"
-          alt=""
-          width="{{ imagen.width }}" height="{{ imagen.height }}"
-          loading="lazy" decoding="async">
-      {%- endfor -%}
-    </div>
-  {%- endif -%}
+  <div class="tarjeta__marco{% if n_img > 1 %} tarjeta__marco--galeria{% endif %}"
+    {% if n_img > 1 %}data-galeria data-total="{{ n_img }}"{% endif %}>
 
-  <div class="cartilla__cabeza">
-    <h{{ nivel }} class="cartilla__name">
+    <a class="tarjeta__enlace-foto" href="{{ producto.url }}" tabindex="-1" aria-hidden="true">
+      {%- if n_img > 0 -%}
+        {%- for imagen in imagenes -%}
+          <img class="card__slide{% if forloop.first %} is-on{% endif %}"
+            data-i="{{ forloop.index0 }}"
+            src="{{ imagen | image_url: width: 700 }}"
+            srcset="{{ imagen | image_url: width: 400 }} 400w,
+                    {{ imagen | image_url: width: 700 }} 700w,
+                    {{ imagen | image_url: width: 1000 }} 1000w"
+            sizes="{{ tam }}"
+            alt=""
+            width="{{ imagen.width }}" height="{{ imagen.height }}"
+            loading="lazy" decoding="async">
+        {%- endfor -%}
+      {%- else -%}
+        <span class="tarjeta__sinfoto" aria-hidden="true"></span>
+      {%- endif -%}
+    </a>
+
+    {%- if n_img > 1 -%}
       {%- comment -%}
-        El enlace se estira sobre toda la cartilla con ::after. Las flechas
-        viven por encima (z-index), si no el clic se lo come la navegación.
+        Las flechas viven por encima del enlace que cubre la tarjeta entera
+        (z-index + stopPropagation en el JS), si no el clic navega al producto.
       {%- endcomment -%}
-      <a href="{{ producto.url }}">{{ producto.title }}</a>
-    </h{{ nivel }}>
-    <p class="cartilla__ref">
-      {%- if producto.vendor != blank -%}{{ producto.vendor }} · {% endif -%}
-      {{ campo[2] }}
-    </p>
-    {%- if producto.type != blank -%}
-      <p class="cartilla__notas">{{ producto.type }}</p>
+      <button class="tarjeta__nav tarjeta__nav--prev" type="button" data-galeria-paso="-1"
+        aria-label="{{ 'general.accesibilidad.imagen_anterior' | t }}">
+        {% render 'icono', tipo: 'izquierda', tam: 15, grosor: 2 %}
+      </button>
+      <button class="tarjeta__nav tarjeta__nav--next" type="button" data-galeria-paso="1"
+        aria-label="{{ 'general.accesibilidad.imagen_siguiente' | t }}">
+        {% render 'icono', tipo: 'derecha', tam: 15, grosor: 2 %}
+      </button>
     {%- endif -%}
+
+    {%- unless producto.available -%}
+      <span class="tarjeta__sello">{{ 'productos.agotado' | t }}</span>
+    {%- endunless -%}
   </div>
 
-  {%- if n_img > 1 -%}
-    <button class="cartilla__nav cartilla__nav--prev" type="button" data-galeria-paso="-1"
-      aria-label="{{ 'general.accesibilidad.imagen_anterior' | t }}">
-      {% render 'icono', tipo: 'izquierda', tam: 15, grosor: 2 %}
-    </button>
-    <button class="cartilla__nav cartilla__nav--next" type="button" data-galeria-paso="1"
-      aria-label="{{ 'general.accesibilidad.imagen_siguiente' | t }}">
-      {% render 'icono', tipo: 'derecha', tam: 15, grosor: 2 %}
-    </button>
-  {%- endif -%}
-
-  <div class="cartilla__pie">
-    {%- comment -%}
-      Los tres precios en cifras tabulares, alineados en columna: la aritmética
-      se lee como campo de datos, no como etiqueta de oferta. `dl` y no `table`
-      porque son pares etiqueta/valor, no una tabla de datos con cabeceras.
-    {%- endcomment -%}
-    <dl class="cartilla__precios">
-      {%- if v_d5 -%}
-        <div{% unless v_d5.available %} class="is-off"{% endunless %}>
-          <dt>{{ v_d5.title | remove: 'Decant ' | remove: 'decant ' }}</dt>
-          <dd>{{ v_d5.price | money }}</dd>
-        </div>
-      {%- endif -%}
-      {%- if v_d10 -%}
-        <div{% unless v_d10.available %} class="is-off"{% endunless %}>
-          <dt>{{ v_d10.title | remove: 'Decant ' | remove: 'decant ' }}</dt>
-          <dd>{{ v_d10.price | money }}</dd>
-        </div>
-      {%- endif -%}
-      {%- if v_full and v_full != v_d5 and v_full != v_d10 -%}
-        <div class="is-frasco{% unless v_full.available %} is-off{% endunless %}">
-          <dt>{{ v_full.title }}</dt>
-          <dd>{{ v_full.price | money }}</dd>
-        </div>
-      {%- endif -%}
-      {%- unless v_d5 or v_d10 or v_full -%}
-        <div>
-          <dt>{{ 'productos.desde' | t }}</dt>
-          <dd>{{ producto.price_min | money }}</dd>
-        </div>
-      {%- endunless -%}
-    </dl>
-
-    {%- if producto.available -%}
-      <span class="cartilla__accion" aria-hidden="true">{{ 'productos.llevate' | t }}</span>
-    {%- else -%}
-      <span class="cartilla__sello">{{ 'productos.agotado' | t }}</span>
+  <div class="tarjeta__cuerpo">
+    {%- if producto.vendor != blank -%}
+      <p class="tarjeta__marca">{{ producto.vendor }}</p>
     {%- endif -%}
+
+    <h{{ nivel }} class="tarjeta__nombre">
+      <a href="{{ producto.url }}">{{ producto.title }}</a>
+    </h{{ nivel }}>
+
+    {%- if producto.type != blank -%}
+      <p class="tarjeta__notas">{{ producto.type }}</p>
+    {%- endif -%}
+
+    <p class="tarjeta__precio">
+      {%- if entrada -%}
+        <span>{{ entrada.title }}</span><b>{{ entrada.price | money }}</b>
+      {%- else -%}
+        <span>{{ 'productos.desde' | t }}</span><b>{{ producto.price_min | money }}</b>
+      {%- endif -%}
+    </p>
   </div>
 </article>

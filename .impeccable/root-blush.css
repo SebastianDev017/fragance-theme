@@ -1,0 +1,81 @@
+/* ===========================================================================
+   DropScents — sistema visual
+
+   El degradado blush → lavanda → cielo, comprometido a escala de página, con
+   tinta ciruela y una geométrica limpia. Se parece más a cómo se siente una
+   app de belleza que a una perfumería tradicional: suave, moderno, con aire,
+   y sin nada de más.
+
+   El degradado NO está lavado. En la primera versión estaba bajado casi a
+   cero «para que no compitiera con las fotos»; el resultado era un gris rosa.
+   Aquí ocupa la página entera y el producto se recorta sobre él.
+
+   Los NOMBRES de los tokens no se tocan aunque cambien de mundo: medio tema
+   los nombra. Se remapean los VALORES.
+   =========================================================================== */
+
+:root {
+  /* el degradado de la marca, en sus valores plenos */
+  --blush:        #FFD7E4;
+  --lavender:     #D8C9FF;
+  --sky:          #C4E3FF;
+
+  /* los fondos base sobre los que descansa */
+  --pearl:        #F7F5F8;
+  --paper:        #FDFCFD;
+  --stock:        #F7F5F8;   /* alias heredado */
+  --stock-2:      #EDE8F2;   /* rebajes: filas alternas, pistas, barras */
+
+  /* tinta */
+  --ink:      #2B0F33;   /* ciruela profundo — 16:1 sobre el fondo */
+  --ink-2:    #56296B;   /* secundario — 8.4:1 */
+  --ink-3:    #6E4680;   /* meta — 5.5:1 medido; sólo etiquetas */
+  --punch:    #E8356F;   /* único acento saturado, dosis mínima */
+  --alerta:   #C0245A;
+  --cream:    #FFF7FB;   /* la tinta reversada sobre ciruela */
+
+  /* Los ocho campos: un tinte por fragancia, del tono real de su frasco pero
+     rebajado a la familia del degradado. El color identifica y ordena el
+     catálogo; el que grita es el frasco recortado encima, no el fondo. */
+  --campo-1: #F6D9DF;   /* Dior · Sauvage Elixir      — rosa polvo   */
+  --campo-2: #D8E4F8;   /* Chanel · Bleu de Chanel    — cielo        */
+  --campo-3: #F3E6D4;   /* JPG · Le Male Elixir       — arena        */
+  --campo-4: #DEDDF8;   /* Herrera · Good Girl        — lavanda azul */
+  --campo-5: #FCDFE8;   /* Lancôme · La Vie Est Belle — blush        */
+  --campo-6: #F8E2D2;   /* Armani · Stronger With You — durazno      */
+  --campo-7: #D5F0EB;   /* Versace · Eros             — menta        */
+  --campo-8: #FAEDD2;   /* YSL · Libre                — crema dorada */
+
+  /* superficies: vidrio esmerilado sobre el degradado */
+  --surface:       rgba(255, 255, 255, .58);
+  --surface-solid: rgba(255, 255, 255, .82);
+  --line:      rgba(43, 15, 51, .12);
+  --line-soft: rgba(43, 15, 51, .06);
+
+  /* Sombra con desplazamiento Y desenfoque: un halo sin desplazamiento es
+     decoración, no profundidad. Van tintadas de ciruela, nunca de negro. */
+  --shadow-s: 0 1px 2px rgba(43,15,51,.04), 0 4px 14px -8px rgba(43,15,51,.16);
+  --shadow-m: 0 2px 6px rgba(43,15,51,.05), 0 18px 44px -22px rgba(43,15,51,.26);
+  --shadow-l: 0 4px 10px rgba(43,15,51,.05), 0 40px 90px -40px rgba(43,15,51,.34);
+
+  --r-sm: 12px;
+  --r-md: 18px;
+  --r-lg: 26px;
+  --r-xl: 38px;
+  --r-pill: 999px;
+
+  /* UN SOLO contenedor para toda la página: nav, secciones y footer caen
+     exactamente sobre la misma línea izquierda y derecha. --edge es el
+     "margen" que hay que dejar: el canalón cuando la ventana es angosta, o
+     lo que sobre a los lados cuando ya se alcanzó el ancho máximo. */
+  --maxw: 1360px;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+  --edge: max(var(--gutter), (100% - var(--maxw)) / 2);
+  --pad: var(--edge);   /* alias heredado */
+
+  --ease: cubic-bezier(.22, 1, .36, 1);
+  --t: .28s var(--ease);
+
+  --font-d: 'Clash Display', 'Trebuchet MS', system-ui, sans-serif;
+  --font-b: 'Switzer', ui-sans-serif, system-ui, -apple-system, sans-serif;
+}

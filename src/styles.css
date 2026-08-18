@@ -1,69 +1,92 @@
 /* ===========================================================================
-   DropScents — sistema visual: EL MUESTRARIO
+   DropScents — sistema visual
 
-   El abanico de colores de la ferretería. Nadie compra un galón sin pegar
-   tres muestras en la pared una semana; el decant es la muestra.
+   Blush → lavanda → cielo, tinta ciruela y una geométrica limpia. Se parece
+   más a cómo se siente una app de belleza que a una perfumería tradicional:
+   suave, moderno, con aire, y sin nada de más.
 
-   La página NO es clara ni oscura: es el color. Los campos saturados ocupan
-   regiones enteras y la cartulina sólo es lo que queda entre ellos.
+   REGLA DE CARGA DE COLOR, y es la que manda sobre el gusto: el fondo de
+   página es CASI NEUTRO. Encima van ocho fotos de producto, y cada frasco
+   trae ya sus propios colores (turquesa, burdeos, oro, rosa). Un degradado
+   saturado a pantalla completa debajo de eso no es «comprometido», es un
+   carnaval, y el producto deja de leerse.
+
+   Así que el color se gasta donde IDENTIFICA algo —el tinte de cada tarjeta,
+   el acento de la resta, la gota de la marca— y el fondo se queda en dos
+   lavados suavísimos. La forma blanda (vidrio, esquina redonda, sombra
+   tintada) es la que carga el carácter, no la saturación.
+
+   Los NOMBRES de los tokens no se tocan aunque cambien de mundo: medio tema
+   los nombra. Se remapean los VALORES.
    =========================================================================== */
 
 :root {
-  /* ---------------------------------------------------------------------
-     El Muestrario — el abanico de colores de la ferretería.
+  /* La familia de la marca, muestreada del comp (.impeccable/mocks/
+     blush-home.png). Se usa a plena saturación SÓLO en piezas pequeñas —la
+     gota del logotipo, la cinta si el comerciante la enciende—; en el fondo
+     de página va en los lavados de abajo, a un tercio de su fuerza. */
+  --blush:        #FDD9DE;
+  --lavender:     #DCD0FD;
+  --sky:          #C6E1FE;
 
-     Ninguno de estos valores está estimado: salen muestreados píxel a píxel
-     del comp aprobado (.impeccable/mocks/comp-b-muralla.png). El adjetivo
-     no es un registro: "crema" cubre desde el casi blanco hasta el beige,
-     y donde no hay número el color se va solo hacia el sitio de siempre.
+  /* Los dos lavados del fondo. Dos, no cinco: cada parada más es una
+     competencia más contra la foto del producto. */
+  --lavado-1: rgba(253, 217, 222, .40);   /* blush, arriba a la izquierda */
+  --lavado-2: rgba(198, 225, 254, .34);   /* cielo, abajo a la derecha    */
 
-     Los NOMBRES no se tocan aunque suenen al mundo anterior (--pearl,
-     --punch): medio tema los nombra. Se remapean los VALORES.
-     --------------------------------------------------------------------- */
+  /* los fondos base sobre los que descansa */
+  /* El fondo baja un punto para que el vidrio BLANCO de las tarjetas tenga
+     de qué separarse. Al quitarle color al fondo, blanco sobre casi-blanco
+     deja de leerse y la rejilla se convierte en una lista de sombras. */
+  --pearl:        #F2F0F5;
+  --paper:        #FDFCFD;
+  --stock:        #F2F0F5;   /* alias heredado */
+  --stock-2:      #EFECF2;   /* rebajes: filas alternas, pistas, barras */
 
-  /* cartulina y tinta */
-  --stock:    #E9E8E3;   /* la cartulina de muestra: gris FRÍO, no crema */
-  --stock-2:  #DFDED8;   /* rebaje: filas alternas, barras, campos inertes */
-  --cream:    #F5EFDD;   /* la tinta clara: texto reversado sobre campo */
-  --ink:      #1A191E;
-  --ink-2:    #46454B;
-  --ink-3:    #656369;   /* 4.7:1 sobre --stock, medido; sólo etiquetas.
-                            #6E6C74 se quedaba en 4.22 y no pasaba. */
-  --alerta:   #8E2318;   /* agotado y errores; vive en la familia del burdeos */
+  /* tinta */
+  --ink:      #2B0F33;   /* ciruela profundo — 16:1 sobre el fondo */
+  --ink-2:    #56296B;   /* secundario — 8.4:1 */
+  --ink-3:    #6E4680;   /* meta — 5.5:1 medido; sólo etiquetas */
+  /* El único acento saturado, y en dosis mínima. #E8356F, que era el valor
+     heredado, daba 4.16:1 medido: no llegaba ni como texto sobre blanco ni
+     como fondo de la burbuja del carrito. A #D42060 pasan los dos casos
+     (5.1:1) y sigue siendo rosa vivo. */
+  --punch:    #D42060;
+  /* La versión oscura, para texto MUY pequeño sobre claro: a 11 px el rosa
+     vivo se queda en 4.45:1 y no llega. */
+  --punch-2:  #B01B4E;
+  --alerta:   #B01B4E;
+  --cream:    #FFF7FB;   /* la tinta reversada sobre ciruela */
 
-  /* alias heredados, remapeados */
-  --pearl:  #E9E8E3;
-  --paper:  #E9E8E3;
-  --punch:  #1A191E;     /* en este mundo el énfasis es la tinta, no un color */
+  /* Los ocho campos: un tinte por fragancia, del tono real de su frasco pero
+     rebajado a la familia del degradado. El color identifica y ordena el
+     catálogo; el que grita es el frasco recortado encima, no el fondo. */
+  --campo-1: #F0DAE0;   /* Dior · Sauvage Elixir      — rosa polvo   */
+  --campo-2: #DDE0FB;   /* Chanel · Bleu de Chanel    — periwinkle   */
+  --campo-3: #F3E9DE;   /* JPG · Le Male Elixir       — arena        */
+  --campo-4: #E5E2F8;   /* Herrera · Good Girl        — lavanda      */
+  --campo-5: #F5E5E7;   /* Lancôme · La Vie Est Belle — blush rosa   */
+  --campo-6: #F5E5DB;   /* Armani · Stronger With You — durazno      */
+  --campo-7: #E1EFEE;   /* Versace · Eros             — menta        */
+  --campo-8: #F4ECDC;   /* YSL · Libre                — crema dorada */
 
-  /* Los ocho campos. Se muestrean de la FOTO REAL del frasco y su caja: es
-     lo que hace que el color no mienta. El orden es el del catálogo. */
-  --campo-1: #460E1B;   /* Dior · Sauvage Elixir      */
-  --campo-2: #121A2D;   /* Chanel · Bleu de Chanel    */
-  --campo-3: #77562B;   /* JPG · Le Male Elixir       */
-  --campo-4: #263F9C;   /* Herrera · Good Girl        */
-  --campo-5: #E09CAB;   /* Lancôme · La Vie Est Belle */
-  --campo-6: #89491F;   /* Armani · Stronger With You */
-  --campo-7: #219B91;   /* Versace · Eros             */
-  --campo-8: #C9922B;   /* YSL · Libre — aclarado del muestreo #A47625: no llegaba a 4.5:1 */
+  /* superficies: vidrio esmerilado sobre el degradado */
+  --surface:       rgba(255, 255, 255, .78);
+  --surface-solid: rgba(255, 255, 255, .92);
+  --line:      rgba(43, 15, 51, .12);
+  --line-soft: rgba(43, 15, 51, .06);
 
-  /* superficies: tinta plana. Ni vidrio, ni desenfoque, ni translúcidos. */
-  --surface:       #F1F0EC;
-  --surface-solid: #F5F4F0;
-  --line:      rgba(26, 25, 30, .20);
-  --line-soft: rgba(26, 25, 30, .09);
+  /* Sombra con desplazamiento Y desenfoque: un halo sin desplazamiento es
+     decoración, no profundidad. Van tintadas de ciruela, nunca de negro. */
+  --shadow-s: 0 1px 2px rgba(43,15,51,.04), 0 4px 14px -8px rgba(43,15,51,.16);
+  --shadow-m: 0 2px 6px rgba(43,15,51,.05), 0 18px 44px -22px rgba(43,15,51,.26);
+  --shadow-l: 0 4px 10px rgba(43,15,51,.05), 0 40px 90px -40px rgba(43,15,51,.34);
 
-  /* Un impreso no proyecta sombra sobre sí mismo. La elevación de este mundo
-     es el filete y la inversión de campo, no un halo. */
-  --shadow-s: none;
-  --shadow-m: none;
-  --shadow-l: none;
-
-  /* La cartilla tiene esquina viva. Cero es una decisión, no un descuido. */
-  --r-md: 0px;
-  --r-lg: 0px;
-  --r-xl: 0px;
-  --r-pill: 0px;
+  --r-sm: 12px;
+  --r-md: 18px;
+  --r-lg: 26px;
+  --r-xl: 38px;
+  --r-pill: 999px;
 
   /* UN SOLO contenedor para toda la página: nav, secciones y footer caen
      exactamente sobre la misma línea izquierda y derecha. --edge es el
@@ -94,7 +117,16 @@ body {
   font-size: 1rem;
   line-height: 1.6;
   color: var(--ink);
-  background: var(--pearl);
+
+  /* Dos lavados sobre perla, y nada más. Va aquí y no en tres divs
+     desenfocados a 120px: ese desenfoque repinta en cada scroll y no aporta
+     nada que estas dos paradas no den. */
+  background-color: var(--pearl);
+  background-image:
+    radial-gradient(72% 58% at 4% 0%,    var(--lavado-1) 0%, transparent 64%),
+    radial-gradient(76% 62% at 98% 100%, var(--lavado-2) 0%, transparent 66%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
   overflow-x: clip;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;

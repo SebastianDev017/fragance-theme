@@ -1,18 +1,13 @@
 {%- comment -%}
-  EL MUESTRARIO — la muralla de cartillas.
+  La portada: el titular y las fragancias.
 
-  Es el primer viewport de la portada, y sustituye a los heroes. No hay foto de
-  frasco a pantalla completa ni titular sobre una imagen: hay una rejilla a
-  sangre, sin canalones, donde la primera celda es negra y carga el titular, la
-  mecánica y el botón, y todas las demás son fragancias.
+  Un titular centrado con aire de sobra, dos botones, y debajo una fila de
+  tarjetas de vidrio sobre el degradado. Nada más. La pregunta que tiene que
+  responder esta pantalla es «cuánto me cuesta probar uno», y todo lo que no
+  ayude a responderla sobra.
 
-  Por qué así: el catálogo entero cabe en la primera pantalla. El comprador
-  novato no tiene que creerse una promesa antes de ver el precio — ve los ocho
-  campos, los tres precios de cada uno y la resta, todo a la vez.
-
-  Con 8 productos son 9 celdas y encaja exacto en 3×3. Si el comerciante pone
-  otra cantidad, la rejilla sigue funcionando: la cabecera es siempre la
-  primera celda y el resto fluye detrás.
+  El escalonado de la entrada (`--i`) hace que las tarjetas aparezcan una
+  detrás de otra en orden de lectura, una sola vez al cargar.
 {%- endcomment -%}
 
 {%- liquid
@@ -22,7 +17,7 @@
   comment
     Sin colección elegida NO se deja la portada en blanco: se cae al catálogo
     entero, que es lo que el comerciante habría elegido de todos modos. Sólo
-    si la tienda no tiene ni un producto se dibujan las cartillas marcadoras,
+    si la tienda no tiene ni un producto se dibujan las tarjetas marcadoras,
     y entonces el hueco sí es información: dice qué falta.
   endcomment
   unless productos.size > 0
@@ -33,124 +28,91 @@
   assign n = productos.size
 -%}
 
-<section class="muestrario">
-  <div class="muro"
-    style="--muro-cols: {{ section.settings.columnas }};"
-    data-muro>
+<section class="portada">
+  <header class="portada__cabecera">
+    {%- if section.index == 1 -%}
+      <h1 class="portada__h">{{ section.settings.titulo }}</h1>
+    {%- else -%}
+      <h2 class="portada__h">{{ section.settings.titulo }}</h2>
+    {%- endif -%}
 
-    <div class="muro__cabecera" style="--i: 0;">
-      <div>
-        {%- if section.index == 1 -%}
-          <h1 class="muro__h">{{ section.settings.titulo }}</h1>
+    {%- if section.settings.texto != blank -%}
+      <p class="portada__p">{{ section.settings.texto }}</p>
+    {%- endif -%}
+
+    <div class="portada__acciones">
+      {%- if section.settings.cta_texto != blank -%}
+        <a class="btn btn--ink btn--lg" href="{{ section.settings.cta_url | default: routes.all_products_collection_url }}">
+          {{ section.settings.cta_texto }}
+        </a>
+      {%- endif -%}
+      {%- if section.settings.cta2_texto != blank -%}
+        {%- if section.settings.cta2_chat -%}
+          <button class="btn btn--ghost btn--lg" type="button" data-chat>
+            {% render 'icono', tipo: 'chat', tam: 17 %}
+            <span>{{ section.settings.cta2_texto }}</span>
+          </button>
         {%- else -%}
-          <h2 class="muro__h">{{ section.settings.titulo }}</h2>
-        {%- endif -%}
-        {%- if section.settings.texto != blank -%}
-          <p class="muro__p">{{ section.settings.texto }}</p>
-        {%- endif -%}
-      </div>
-
-      <div class="muro__acciones">
-        {%- if section.settings.cta_texto != blank -%}
-          <a class="btn--muro" href="{{ section.settings.cta_url | default: routes.all_products_collection_url }}">
-            {{ section.settings.cta_texto }}
+          <a class="btn btn--ghost btn--lg" href="{{ section.settings.cta2_url | default: routes.root_url }}">
+            {{ section.settings.cta2_texto }}
           </a>
         {%- endif -%}
-        {%- if section.settings.cta2_texto != blank -%}
-          {%- if section.settings.cta2_chat -%}
-            <button class="btn--muro btn--muro-2" type="button" data-chat>
-              {{ section.settings.cta2_texto }}
-            </button>
-          {%- else -%}
-            <a class="btn--muro btn--muro-2" href="{{ section.settings.cta2_url | default: routes.root_url }}">
-              {{ section.settings.cta2_texto }}
-            </a>
-          {%- endif -%}
-        {%- endif -%}
-      </div>
+      {%- endif -%}
     </div>
+  </header>
 
+  <div class="rejilla" style="--cols: {{ section.settings.columnas }};">
     {%- if n > 0 -%}
       {%- for producto in productos limit: tope -%}
         {% render 'card-fragancia', producto: producto, indice: forloop.index, nivel: 2 %}
       {%- endfor -%}
     {%- else -%}
-      {%- comment -%}
-        Sin colección elegida (o vacía) se dibujan cartillas en blanco con los
-        colores del muestrario: la rejilla se entiende igual y el editor lee
-        exactamente qué le falta.
-      {%- endcomment -%}
-      {%- assign campos = '#460E1B,#121A2D,#77562B,#263F9C,#E09CAB,#89491F,#219B91,#C9922B' | split: ',' -%}
-      {%- assign tintas = '#F5EFDD,#F5EFDD,#F5EFDD,#F5EFDD,#1A191E,#F5EFDD,#1A191E,#1A191E' | split: ',' -%}
-      {%- for i in (1..5) -%}
-        <article class="cartilla cartilla--marcador"
-          style="--campo: {{ campos[forloop.index0] }}; --sobre: {{ tintas[forloop.index0] }}; --i: {{ forloop.index }};">
-          <div class="cartilla__cabeza">
-            <p class="cartilla__ref">{{ 'general.vacio.campo' | t }}</p>
-          </div>
-          {%- if forloop.first -%}
-            <p class="cartilla__marcador-nota">{{ 'general.vacio.elige_coleccion' | t }}</p>
-          {%- endif -%}
-        </article>
+      {%- for i in (1..4) -%}
+        {% render 'card-vacia', indice: forloop.index %}
       {%- endfor -%}
     {%- endif -%}
   </div>
-
-  {%- if section.settings.mostrar_indice and n > 0 -%}
-    {%- comment -%}
-      La franja de códigos: el índice del estándar. Es navegación real, no
-      adorno — cada barra lleva a su fragancia.
-    {%- endcomment -%}
-    <nav class="muro__indice" aria-label="{{ 'general.accesibilidad.indice_campos' | t }}">
-      {%- for producto in productos limit: tope -%}
-        {%- capture c -%}{% render 'campo', producto: producto %}{%- endcapture -%}
-        {%- assign c = c | strip | split: '|' -%}
-        <a href="{{ producto.url }}" style="--campo: {{ c[0] }}; --sobre: {{ c[1] }};">{{ c[2] }}</a>
-      {%- endfor -%}
-    </nav>
-  {%- endif -%}
 </section>
 
 {% schema %}
 {
   "name": "t:secciones.muestrario.nombre",
   "tag": "div",
-  "class": "seccion-muestrario",
+  "class": "seccion-portada",
   "settings": [
     { "type": "collection", "id": "coleccion", "label": "t:comun.coleccion" },
-    { "type": "range", "id": "cantidad", "min": 3, "max": 24, "step": 1, "label": "t:comun.numero", "default": 8 },
-    { "type": "range", "id": "columnas", "min": 2, "max": 5, "step": 1, "label": "t:comun.columnas", "default": 3, "info": "t:secciones.muestrario.columnas_info" },
-    { "type": "checkbox", "id": "mostrar_indice", "label": "t:secciones.muestrario.indice", "default": true },
+    { "type": "range", "id": "cantidad", "min": 3, "max": 24, "step": 1, "label": "t:comun.numero", "default": 4 },
+    { "type": "range", "id": "columnas", "min": 2, "max": 5, "step": 1, "label": "t:comun.columnas", "default": 4 },
     { "type": "header", "content": "t:comun.textos" },
     { "type": "paragraph", "content": "t:comun.vacio_traduce" },
-    { "type": "text", "id": "titulo", "label": "t:comun.titular", "default": "Nadie pinta la casa sin la muestra" },
-    { "type": "textarea", "id": "texto", "label": "t:comun.texto", "default": "Decant de 5 o 10 ml. Lo que pagas por la muestra se te descuenta del frasco completo." },
-    { "type": "text", "id": "cta_texto", "label": "t:comun.boton", "default": "Empieza por una muestra" },
+    { "type": "text", "id": "titulo", "label": "t:comun.titular", "default": "Pruébalo en 5 ml. Cómpralo cuando estés seguro." },
+    { "type": "textarea", "id": "texto", "label": "t:comun.texto", "default": "Los perfumes que ya conoces, en decant para vivirlos una semana en tu piel." },
+    { "type": "text", "id": "cta_texto", "label": "t:comun.boton", "default": "Ver los decants" },
     { "type": "url", "id": "cta_url", "label": "t:comun.boton_enlace" },
-    { "type": "text", "id": "cta2_texto", "label": "t:comun.boton_2" },
+    { "type": "text", "id": "cta2_texto", "label": "t:comun.boton_2", "default": "Pregúntanos por el chat" },
     { "type": "url", "id": "cta2_url", "label": "t:comun.boton_2_enlace" },
-    { "type": "checkbox", "id": "cta2_chat", "label": "t:comun.boton_2_chat", "default": false }
+    { "type": "checkbox", "id": "cta2_chat", "label": "t:comun.boton_2_chat", "default": true }
   ],
   "presets": [
     {
       "name": "t:secciones.muestrario.presets.muralla",
-      "settings": { "cantidad": 8, "columnas": 3, "mostrar_indice": true }
+      "settings": { "cantidad": 4, "columnas": 4 }
     },
     {
       "name": "t:secciones.muestrario.presets.ancha",
-      "settings": { "cantidad": 11, "columnas": 4, "mostrar_indice": true }
+      "settings": { "cantidad": 8, "columnas": 4 }
     },
     {
       "name": "t:secciones.muestrario.presets.corta",
-      "settings": { "cantidad": 6, "columnas": 3, "mostrar_indice": false, "titulo": "Seis por probar", "texto": "El decant que pagas se te descuenta del frasco. Empieza por el que te llame el color." }
+      "settings": { "cantidad": 3, "columnas": 3, "titulo": "Empieza por 5 ml.", "texto": "Tres para probar esta semana. Lo que pagas por el decant se te descuenta del frasco." }
     },
     {
       "name": "t:secciones.muestrario.presets.chat",
-      "settings": { "cantidad": 8, "columnas": 3, "mostrar_indice": true, "cta_texto": "Ver el catálogo", "cta2_texto": "Pregúntanos", "cta2_chat": true }
+      "settings": { "cantidad": 4, "columnas": 4, "cta_texto": "Ver el catálogo", "cta2_texto": "Pregúntanos", "cta2_chat": true }
     },
     {
       "name": "t:secciones.muestrario.presets.columna",
-      "settings": { "cantidad": 5, "columnas": 2, "mostrar_indice": false }
+      "settings": { "cantidad": 6, "columnas": 3 }
     }
   ]
 }

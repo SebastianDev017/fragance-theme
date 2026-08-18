@@ -1,29 +1,24 @@
 {%- comment -%}
-  Cartilla en blanco: la del muestrario que todavía no tiene fragancia.
+  Tarjeta en blanco: la del catálogo que todavía no tiene fragancia.
 
   Una sección sin contenido tiene que leerse como «falta llenar esto», no como
-  «esto está roto». Por eso conserva la forma exacta de una cartilla —el
-  nombre a escala de campo, la referencia, la tabla de tres precios— y sólo
-  cambia lo que dice: campo sin asignar, y rayas donde irían las cifras.
-
-  Va sobre cartulina y no sobre un color: un campo saturado prometería una
-  fragancia que no existe.
+  «esto está roto». Por eso conserva la forma exacta de una tarjeta llena —el
+  marco cuadrado, la marca, el nombre, la línea de precio— y sólo cambia lo
+  que dice.
 
   Uso: {% render 'card-vacia', indice: forloop.index %}
 {%- endcomment -%}
 
-<article class="cartilla cartilla--vacia"
-  style="--campo: var(--stock-2); --sobre: var(--ink); --i: {{ indice | default: 0 }};">
-  <div class="cartilla__cabeza">
-    <h3 class="cartilla__name">{{ 'general.vacio.nombre' | t }}</h3>
-    <p class="cartilla__ref">{{ 'general.vacio.marca' | t }} · {{ 'general.vacio.campo' | t }}</p>
-    <p class="cartilla__notas">{{ 'general.vacio.notas' | t }}</p>
+<article class="tarjeta tarjeta--vacia" style="--i: {{ indice | default: 0 }};">
+  <div class="tarjeta__marco">
+    <span class="tarjeta__sinfoto" aria-hidden="true"></span>
   </div>
-
-  <div class="cartilla__pie">
-    <dl class="cartilla__precios">
-      <div><dt>{{ 'general.vacio.decant' | t }}</dt><dd>&mdash;</dd></div>
-      <div class="is-frasco"><dt>{{ 'general.vacio.frasco' | t }}</dt><dd>&mdash;</dd></div>
-    </dl>
+  <div class="tarjeta__cuerpo">
+    <p class="tarjeta__marca">{{ 'general.vacio.marca' | t }}</p>
+    <h3 class="tarjeta__nombre">{{ 'general.vacio.nombre' | t }}</h3>
+    <p class="tarjeta__notas">{{ 'general.vacio.notas' | t }}</p>
+    <p class="tarjeta__precio">
+      <span>{{ 'general.vacio.decant' | t }}</span><b>&mdash;</b>
+    </p>
   </div>
 </article>

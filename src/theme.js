@@ -13,7 +13,7 @@
 import './styles.css';
 import './tienda.css';
 import './coleccion.css';
-import './muestrario.css';   /* la capa del mundo: va LA ÚLTIMA */
+import './mundo.css';        /* la capa del mundo: va LA ÚLTIMA */
 import { iniciar, conectarEditorDeTemas } from './ui.js';
 
 iniciar();

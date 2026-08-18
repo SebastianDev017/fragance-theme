@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>QA · El Muestrario</title>
+<title>QA · DropScents</title>
 
 <!--
   Banco de pruebas del mundo visual.
@@ -11,20 +11,21 @@
   Carga el bundle REAL de assets/ contra marcado escrito a mano que reproduce
   exactamente lo que emite Liquid: mismas clases, mismos data-*, mismas
   variables inline. Sirve para lo que la tienda no puede probar rápido — la
-  sincronización de GitHub tarda minutos y el editor de temas manda sobre
-  templates/*.json.
+  sincronización de GitHub tarda minutos, el editor de temas manda sobre
+  templates/*.json y la portada se sirve cacheada del lado del servidor.
 
   Se abre con `python -m http.server 8777` desde la raíz del repo:
       http://localhost:8777/qa/mundo.html
 
   Los precios y nombres son los REALES del catálogo (dropscents-productos.csv).
+  Los frascos son SVG de relleno: en la tienda son las fotos del comerciante.
 -->
 
 <style>
   /* Las @font-face viven en theme.liquid porque en Shopify la ruta sale de
      `asset_url`. Aquí se resuelven a mano contra assets/. */
-  @font-face{font-family:'Clash Display';src:url(../assets/clash-600.woff2) format('woff2');font-weight:600;font-display:swap}
   @font-face{font-family:'Clash Display';src:url(../assets/clash-500.woff2) format('woff2');font-weight:500;font-display:swap}
+  @font-face{font-family:'Clash Display';src:url(../assets/clash-600.woff2) format('woff2');font-weight:600;font-display:swap}
   @font-face{font-family:'Clash Display';src:url(../assets/clash-700.woff2) format('woff2');font-weight:700;font-display:swap}
   @font-face{font-family:'Switzer';src:url(../assets/switzer-400.woff2) format('woff2');font-weight:400;font-display:swap}
   @font-face{font-family:'Switzer';src:url(../assets/switzer-500.woff2) format('woff2');font-weight:500;font-display:swap}
@@ -61,174 +62,102 @@
 
 <main id="main">
 
-<!-- ===================== LA MURALLA ===================== -->
-<section class="muestrario">
-  <div class="muro" style="--muro-cols: 3;">
-
-    <div class="muro__cabecera" style="--i: 0;">
-      <div>
-        <h1 class="muro__h">Nadie pinta la casa sin la muestra</h1>
-        <p class="muro__p">Decant de 5 o 10 ml. Lo que pagas por la muestra se te descuenta del frasco completo.</p>
-      </div>
-      <div class="muro__acciones">
-        <a class="btn--muro" href="#">Empieza por una muestra</a>
-        <button class="btn--muro btn--muro-2" type="button">Pregúntanos</button>
-      </div>
+<!-- ===================== LA PORTADA ===================== -->
+<section class="portada">
+  <header class="portada__cabecera">
+    <h1 class="portada__h">Pruébalo en 5 ml. Cómpralo cuando estés seguro.</h1>
+    <p class="portada__p">Los perfumes que ya conoces, en decant para vivirlos una semana en tu piel.</p>
+    <div class="portada__acciones">
+      <a class="btn btn--ink btn--lg" href="#">Ver los decants</a>
+      <button class="btn btn--ghost btn--lg" type="button">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 12a8 8 0 1 1-3.2-6.4"/><path d="M8 11h8M8 15h5"/></svg>
+        <span>Pregúntanos por el chat</span>
+      </button>
     </div>
+  </header>
 
-    <article class="cartilla" style="--campo:#460E1B;--sobre:#F5EFDD;--i:1;">
-      <div class="cartilla__cabeza">
-        <h2 class="cartilla__name"><a href="#">Sauvage Elixir</a></h2>
-        <p class="cartilla__ref">Dior · 1A-12</p>
-        <p class="cartilla__notas">Canela · Lavanda · Regaliz</p>
+  <div class="rejilla" style="--cols: 4;">
+
+    <article class="tarjeta" style="--campo:#E1EFEE;--i:1;">
+      <div class="tarjeta__marco">
+        <a class="tarjeta__enlace-foto" href="#" tabindex="-1" aria-hidden="true">
+          <img class="card__slide is-on" src="../qa/frasco-eros.svg" alt="" width="400" height="400">
+        </a>
       </div>
-      <div class="cartilla__pie">
-        <dl class="cartilla__precios">
-          <div><dt>5 ml</dt><dd>$19</dd></div>
-          <div><dt>10 ml</dt><dd>$34</dd></div>
-          <div class="is-frasco"><dt>Frasco 60 ml</dt><dd>$165</dd></div>
-        </dl>
-        <span class="cartilla__accion" aria-hidden="true">Llévate la muestra</span>
+      <div class="tarjeta__cuerpo">
+        <p class="tarjeta__marca">Versace</p>
+        <h2 class="tarjeta__nombre"><a href="#">Eros</a></h2>
+        <p class="tarjeta__notas">Menta · Manzana verde · Vainilla</p>
+        <p class="tarjeta__precio"><span>Decant 5 ml</span><b>$8</b></p>
       </div>
     </article>
 
-    <article class="cartilla" style="--campo:#121A2D;--sobre:#F5EFDD;--i:2;">
-      <div class="cartilla__cabeza">
-        <h2 class="cartilla__name"><a href="#">Bleu de Chanel</a></h2>
-        <p class="cartilla__ref">Chanel · 2B-27</p>
-        <p class="cartilla__notas">Cítricos · Incienso · Sándalo</p>
+    <article class="tarjeta" style="--campo:#F0DAE0;--i:2;">
+      <div class="tarjeta__marco">
+        <a class="tarjeta__enlace-foto" href="#" tabindex="-1" aria-hidden="true">
+          <img class="card__slide is-on" src="../qa/frasco-sauvage.svg" alt="" width="400" height="400">
+        </a>
       </div>
-      <div class="cartilla__pie">
-        <dl class="cartilla__precios">
-          <div><dt>5 ml</dt><dd>$13</dd></div>
-          <div><dt>10 ml</dt><dd>$23</dd></div>
-          <div class="is-frasco"><dt>Frasco 100 ml</dt><dd>$145</dd></div>
-        </dl>
-        <span class="cartilla__accion" aria-hidden="true">Llévate la muestra</span>
+      <div class="tarjeta__cuerpo">
+        <p class="tarjeta__marca">Dior</p>
+        <h2 class="tarjeta__nombre"><a href="#">Sauvage Elixir</a></h2>
+        <p class="tarjeta__notas">Canela · Lavanda · Regaliz</p>
+        <p class="tarjeta__precio"><span>Decant 5 ml</span><b>$19</b></p>
       </div>
     </article>
 
-    <article class="cartilla" style="--campo:#77562B;--sobre:#F5EFDD;--i:3;">
-      <div class="cartilla__cabeza">
-        <h2 class="cartilla__name"><a href="#">Le Male Elixir</a></h2>
-        <p class="cartilla__ref">Jean Paul Gaultier · 3C-41</p>
-        <p class="cartilla__notas">Miel · Lavanda · Haba tonka</p>
+    <article class="tarjeta" style="--campo:#DDE0FB;--i:3;">
+      <div class="tarjeta__marco">
+        <a class="tarjeta__enlace-foto" href="#" tabindex="-1" aria-hidden="true">
+          <img class="card__slide is-on" src="../qa/frasco-bleu.svg" alt="" width="400" height="400">
+        </a>
       </div>
-      <div class="cartilla__pie">
-        <dl class="cartilla__precios">
-          <div><dt>5 ml</dt><dd>$14</dd></div>
-          <div><dt>10 ml</dt><dd>$25</dd></div>
-          <div class="is-frasco"><dt>Frasco 100 ml</dt><dd>$128</dd></div>
-        </dl>
-        <span class="cartilla__accion" aria-hidden="true">Llévate la muestra</span>
+      <div class="tarjeta__cuerpo">
+        <p class="tarjeta__marca">Chanel</p>
+        <h2 class="tarjeta__nombre"><a href="#">Bleu de Chanel</a></h2>
+        <p class="tarjeta__notas">Cítricos · Incienso · Sándalo</p>
+        <p class="tarjeta__precio"><span>Decant 5 ml</span><b>$13</b></p>
       </div>
     </article>
 
-    <article class="cartilla" style="--campo:#263F9C;--sobre:#F5EFDD;--i:4;">
-      <div class="cartilla__cabeza">
-        <h2 class="cartilla__name"><a href="#">Good Girl</a></h2>
-        <p class="cartilla__ref">Carolina Herrera · 4D-58</p>
-        <p class="cartilla__notas">Jazmín · Tonka · Cacao</p>
+    <article class="tarjeta tarjeta--agotada" style="--campo:#F5E5E7;--i:4;">
+      <div class="tarjeta__marco">
+        <a class="tarjeta__enlace-foto" href="#" tabindex="-1" aria-hidden="true">
+          <img class="card__slide is-on" src="../qa/frasco-lavie.svg" alt="" width="400" height="400">
+        </a>
+        <span class="tarjeta__sello">Agotado</span>
       </div>
-      <div class="cartilla__pie">
-        <dl class="cartilla__precios">
-          <div><dt>5 ml</dt><dd>$10</dd></div>
-          <div><dt>10 ml</dt><dd>$18</dd></div>
-          <div class="is-frasco"><dt>Frasco 80 ml</dt><dd>$112</dd></div>
-        </dl>
-        <span class="cartilla__accion" aria-hidden="true">Llévate la muestra</span>
-      </div>
-    </article>
-
-    <article class="cartilla" style="--campo:#E09CAB;--sobre:#1A191E;--i:5;">
-      <div class="cartilla__cabeza">
-        <h2 class="cartilla__name"><a href="#">La Vie Est Belle</a></h2>
-        <p class="cartilla__ref">Lancôme · 5E-33</p>
-        <p class="cartilla__notas">Iris · Praliné · Pachulí</p>
-      </div>
-      <div class="cartilla__pie">
-        <dl class="cartilla__precios">
-          <div><dt>5 ml</dt><dd>$12</dd></div>
-          <div><dt>10 ml</dt><dd>$21</dd></div>
-          <div class="is-frasco"><dt>Frasco 100 ml</dt><dd>$128</dd></div>
-        </dl>
-        <span class="cartilla__accion" aria-hidden="true">Llévate la muestra</span>
+      <div class="tarjeta__cuerpo">
+        <p class="tarjeta__marca">Lancôme</p>
+        <h2 class="tarjeta__nombre"><a href="#">La Vie Est Belle</a></h2>
+        <p class="tarjeta__notas">Iris · Praliné · Pachulí</p>
+        <p class="tarjeta__precio"><span>Decant 5 ml</span><b>$12</b></p>
       </div>
     </article>
 
-    <article class="cartilla" style="--campo:#89491F;--sobre:#F5EFDD;--i:6;">
-      <div class="cartilla__cabeza">
-        <h2 class="cartilla__name"><a href="#">Stronger With You</a></h2>
-        <p class="cartilla__ref">Giorgio Armani · 6F-19</p>
-        <p class="cartilla__notas">Cardamomo · Castaña · Vainilla</p>
-      </div>
-      <div class="cartilla__pie">
-        <dl class="cartilla__precios">
-          <div><dt>5 ml</dt><dd>$9</dd></div>
-          <div><dt>10 ml</dt><dd>$16</dd></div>
-          <div class="is-frasco"><dt>Frasco 100 ml</dt><dd>$96</dd></div>
-        </dl>
-        <span class="cartilla__accion" aria-hidden="true">Llévate la muestra</span>
-      </div>
-    </article>
-
-    <article class="cartilla" style="--campo:#219B91;--sobre:#1A191E;--i:7;">
-      <div class="cartilla__cabeza">
-        <h2 class="cartilla__name"><a href="#">Eros</a></h2>
-        <p class="cartilla__ref">Versace · 7G-64</p>
-        <p class="cartilla__notas">Menta · Manzana verde · Vainilla</p>
-      </div>
-      <div class="cartilla__pie">
-        <dl class="cartilla__precios">
-          <div><dt>5 ml</dt><dd>$8</dd></div>
-          <div><dt>10 ml</dt><dd>$14</dd></div>
-          <div class="is-frasco"><dt>Frasco 100 ml</dt><dd>$78</dd></div>
-        </dl>
-        <span class="cartilla__accion" aria-hidden="true">Llévate la muestra</span>
-      </div>
-    </article>
-
-    <article class="cartilla cartilla--agotada" style="--campo:#C9922B;--sobre:#1A191E;--i:8;">
-      <div class="cartilla__cabeza">
-        <h2 class="cartilla__name"><a href="#">Libre</a></h2>
-        <p class="cartilla__ref">Yves Saint Laurent · 8H-05</p>
-        <p class="cartilla__notas">Lavanda · Azahar · Vainilla</p>
-      </div>
-      <div class="cartilla__pie">
-        <dl class="cartilla__precios">
-          <div><dt>5 ml</dt><dd>$12</dd></div>
-          <div class="is-off"><dt>10 ml</dt><dd>$22</dd></div>
-          <div class="is-frasco"><dt>Frasco 90 ml</dt><dd>$135</dd></div>
-        </dl>
-        <span class="cartilla__sello">Agotado</span>
-      </div>
-    </article>
   </div>
-
-  <nav class="muro__indice" aria-label="Índice de campos del muestrario">
-    <a href="#" style="--campo:#460E1B;--sobre:#F5EFDD;">1A-12</a>
-    <a href="#" style="--campo:#121A2D;--sobre:#F5EFDD;">2B-27</a>
-    <a href="#" style="--campo:#77562B;--sobre:#F5EFDD;">3C-41</a>
-    <a href="#" style="--campo:#263F9C;--sobre:#F5EFDD;">4D-58</a>
-    <a href="#" style="--campo:#E09CAB;--sobre:#1A191E;">5E-33</a>
-    <a href="#" style="--campo:#89491F;--sobre:#F5EFDD;">6F-19</a>
-    <a href="#" style="--campo:#219B91;--sobre:#1A191E;">7G-64</a>
-    <a href="#" style="--campo:#C9922B;--sobre:#1A191E;">8H-05</a>
-  </nav>
 </section>
 
 <!-- ===================== LA FICHA ===================== -->
-<section class="pdp" data-pdp style="--campo:#219B91;--sobre:#1A191E;">
+<section class="pdp" data-pdp style="--campo:#E1EFEE;">
   <div class="pdp__campo">
-    <p class="pdp__ref">Versace · 7G-64</p>
-    <h1 class="pdp__titulo">Eros</h1>
-    <p class="pdp__notas">Menta · Manzana verde · Vainilla</p>
     <div class="pdp__media">
-      <div class="pdp__visor"></div>
+      <div class="pdp__visor">
+        <img class="pdp__img is-on" src="../qa/frasco-eros.svg" alt="Frasco de Versace Eros" width="600" height="600">
+      </div>
+      <ul class="pdp__miniaturas" role="list">
+        <li><button class="pdp__mini is-on" type="button"><img src="../qa/frasco-eros.svg" alt="" width="80" height="80"></button></li>
+        <li><button class="pdp__mini" type="button"><img src="../qa/frasco-bleu.svg" alt="" width="80" height="80"></button></li>
+        <li><button class="pdp__mini" type="button"><img src="../qa/frasco-lavie.svg" alt="" width="80" height="80"></button></li>
+      </ul>
     </div>
   </div>
 
   <div class="pdp__riel">
+    <p class="pdp__marca-riel">Versace</p>
+    <h1 class="pdp__titulo-riel">Eros</h1>
+    <p class="pdp__notas-riel">Menta · Manzana verde · Vainilla</p>
+
     <p class="pdp__precio">
       <strong data-pdp-precio>$8</strong>
       <s data-pdp-antes hidden></s>
@@ -277,6 +206,12 @@
       <li><span class="etapas__n">02</span><span>Vívela una semana. Si no es la tuya, ahí acaba.</span></li>
       <li class="etapas__sellada"><span class="etapas__n">03</span><span>El frasco, menos lo que pagaste</span></li>
     </ol>
+
+    <ul class="pdp__promesas" role="list">
+      <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.8"/><circle cx="17.5" cy="18" r="1.8"/></svg><span>Envío gratis desde $20</span></li>
+      <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/></svg><span>100% originales</span></li>
+      <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3c3 4 5 6.5 5 9a5 5 0 0 1-10 0c0-2.5 2-5 5-9Z"/></svg><span>Pagas en dólares o en bolívares</span></li>
+    </ul>
   </div>
 </section>
 

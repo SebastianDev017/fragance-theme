@@ -14,7 +14,7 @@ import './fonts.css';
 import './styles.css';
 import './tienda.css';
 import './coleccion.css';
-import './muestrario.css';   /* la capa del mundo: va LA ÚLTIMA */
+import './mundo.css';        /* la capa del mundo: va LA ÚLTIMA */
 import { FRAGANCIAS, ENVIO_AFUERA, dol, desde, foto } from './data.js';
 import { iniciar, $, $$ } from './ui.js';
 

@@ -1,22 +1,22 @@
 {%- comment -%}
-  El campo de color de una fragancia.
+  El tinte de una fragancia.
 
   Este snippet es el ÚNICO sitio donde se decide de qué color es una fragancia.
-  Lo consumen la cartilla del catálogo, la ficha de producto, el carrito y el
-  muestrario de la portada: si el color se calculara en cada uno, el mismo
-  perfume saldría de dos colores distintos en dos páginas.
+  Lo consumen la tarjeta del catálogo, la ficha de producto y el carrito: si el
+  color se calculara en cada uno, el mismo perfume saldría de dos colores
+  distintos en dos páginas.
 
-  Por qué existe el color: en este tema el campo NO es decorativo ni sinestésico
-  —no dice «a qué huele»—, se muestrea de la FOTO REAL del frasco y su caja.
-  Eros es turquesa porque el frasco de Eros es turquesa. Es verificable de un
-  vistazo, y hace el catálogo navegable por lo único que el comprador novato sí
-  puede ver antes de oler.
+  Por qué existe el color: el tinte NO es decorativo ni sinestésico —no dice
+  «a qué huele»—, sale del tono REAL del frasco, rebajado a la familia del
+  degradado de la marca. Eros es menta porque el frasco de Eros es turquesa.
+  Ordena el catálogo por lo único que el comprador novato sí puede ver antes
+  de oler, y deja que el que grite sea el frasco recortado encima.
 
   Cómo lo controla el comerciante, sin metafields, con etiquetas del producto:
 
-      campo:7          → usa el campo número 7 de la paleta (1–8)
-      campo:#2E4A1F    → un color propio, el que sea
-      sobre:oscuro     → fuerza tinta oscura encima (por defecto: clara)
+      campo:7          → usa el tinte número 7 de la paleta (1–8)
+      campo:#E8F0DC    → un color propio, el que sea
+      sobre:claro      → fuerza tinta clara encima (por defecto: ciruela)
 
   Se resuelve en tres pasos, y el primero que responde gana:
 
@@ -46,8 +46,14 @@
     (.impeccable/mocks/comp-b-muralla.png). El oro se aclaró de #A47625 a
     #C9922B: el muestreado daba 4.37:1 contra la tinta y no llegaba a 4.5.
   endcomment
-  assign campos = '#460E1B,#121A2D,#77562B,#263F9C,#E09CAB,#89491F,#219B91,#C9922B' | split: ','
-  assign tintas = 'claro,claro,claro,claro,oscuro,claro,oscuro,oscuro' | split: ','
+  comment
+    Los ocho tintes, muestreados del comp aprobado (.impeccable/mocks/
+    blush-home.png). Todos son claros, así que la tinta encima es siempre la
+    ciruela; `sobre:claro` existe sólo para un color propio del comerciante
+    que sea oscuro.
+  endcomment
+  assign campos = '#EBC4CC,#C7CFFD,#EFDFC8,#D6D3F7,#F3D8D9,#F4D8C4,#CFEBE6,#F2E4C6' | split: ','
+  assign tintas = 'oscuro,oscuro,oscuro,oscuro,oscuro,oscuro,oscuro,oscuro' | split: ','
   assign letras = 'A,B,C,D,E,F,G,H' | split: ','
 
   comment
@@ -128,8 +134,8 @@
   if tinta == blank
     assign tinta = tintas[j]
     comment
-      Un color propio del comerciante se asume oscuro: la tinta clara encima
-      es el caso que más veces acierta y el que el mundo usa por defecto.
+      Un color propio del comerciante se asume claro: la tinta ciruela encima
+      es el caso que más veces acierta en este mundo.
     endcomment
   endif
 
@@ -140,10 +146,9 @@
   endif
 
   comment
-    El código de cartilla. No es un dato inventado sobre el perfume: es la
-    referencia del muestrario, igual que en un abanico de pintura. Sale del
-    índice del campo y del id, así que es estable y no se repite dentro de la
-    misma columna.
+    Un código de referencia estable. Ya no se pinta en ninguna página —era
+    lenguaje del mundo anterior— pero se sigue devolviendo porque no cuesta
+    nada y sirve para depurar qué tinte le tocó a cada producto.
   endcomment
   comment
     El número de la referencia sale de la misma semilla que el color cuando la

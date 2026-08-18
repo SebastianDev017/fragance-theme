@@ -1,10 +1,10 @@
 {%- comment -%}
-  Ficha de producto — la cartilla a tamaño completo.
+  Ficha de producto.
 
-  La mitad izquierda es el CAMPO de la fragancia (el mismo color que su
-  cartilla en el catálogo, ver snippets/campo.liquid), con el nombre reversado
-  a escala de campo y la foto del frasco dentro. La derecha es el riel
-  técnico: precios tabulares, la resta y las tres etapas.
+  Izquierda: un panel de vidrio con el frasco flotando sobre el tinte de su
+  fragancia (el mismo que en el catálogo, ver snippets/campo.liquid). Derecha:
+  el riel, con el nombre, el precio, las presentaciones, la resta y las tres
+  etapas.
 
   La resta es el producto. Un descuento se anuncia; un crédito se ASIENTA:
   las tres líneas están impresas, y cada número se puede caminar hacia atrás
@@ -65,16 +65,6 @@
   style="--campo: {{ campo[0] }}; --sobre: {{ campo[1] }};">
 
   <div class="pdp__campo">
-    <p class="pdp__ref">
-      {%- if p.vendor != blank -%}{{ p.vendor }} · {% endif -%}{{ campo[2] }}
-    </p>
-
-    <h1 class="pdp__titulo">{{ p.title }}</h1>
-
-    {%- if p.type != blank -%}
-      <p class="pdp__notas">{{ p.type }}</p>
-    {%- endif -%}
-
     <div class="pdp__media">
       {%- if p.images.size > 0 -%}
         <div class="pdp__visor">
@@ -108,14 +98,25 @@
         {%- endif -%}
       {%- else -%}
         {%- comment -%}
-          Sin foto el campo se queda solo, y está bien: el color ES la muestra.
-          Un marcador gris aquí sería peor que el silencio.
+          Sin foto queda el tinte solo. Está bien: se reconoce la fragancia
+          igual, y un marcador gris aquí sería peor que el silencio.
         {%- endcomment -%}
+        <div class="pdp__visor"></div>
       {%- endif -%}
     </div>
   </div>
 
   <div class="pdp__riel">
+    {%- if p.vendor != blank -%}
+      <p class="pdp__marca-riel">{{ p.vendor }}</p>
+    {%- endif -%}
+
+    <h1 class="pdp__titulo-riel">{{ p.title }}</h1>
+
+    {%- if p.type != blank -%}
+      <p class="pdp__notas-riel">{{ p.type }}</p>
+    {%- endif -%}
+
     <p class="pdp__precio">
       <strong data-pdp-precio>{{ v.price | money }}</strong>
       {%- if v.compare_at_price > v.price -%}

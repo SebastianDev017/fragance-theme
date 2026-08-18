@@ -1,0 +1,557 @@
+/* ===========================================================================
+   DropScents — la capa del mundo
+
+   Se carga LA ÚLTIMA. Los tokens ya se remapearon en styles.css (el
+   degradado, la ciruela, el radio, la sombra), así que casi todo el tema
+   cambió solo. Aquí vive lo que hacía falta reescribir de FORMA:
+
+     · la tarjeta, que es el átomo del catálogo
+     · la portada: titular con aire y una fila de tarjetas
+     · los controles: píldoras, vidrio esmerilado, sombras tintadas
+     · la ficha, con la resta, que es el argumento de la tienda
+
+   Regla de este archivo: nada tiene esquina viva y nada es opaco del todo.
+   El degradado del `body` tiene que verse por debajo de casi todo.
+   =========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   0. las superficies que no dibujé yo
+
+   Selección, cursor, barra de scroll y anillo de foco llegan con un valor por
+   defecto del navegador que no pertenece a ningún sistema de diseño. Vestirlas
+   es lo más barato que distingue una página construida de una ensamblada.
+   --------------------------------------------------------------------------- */
+::selection { background: var(--punch); color: #fff; }
+:root { color-scheme: light; accent-color: var(--punch); caret-color: var(--ink); }
+
+* { scrollbar-width: thin; scrollbar-color: var(--ink-3) transparent; }
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb { background: rgba(43,15,51,.22); border-radius: 999px; border: 3px solid transparent; background-clip: content-box; }
+*::-webkit-scrollbar-thumb:hover { background: rgba(43,15,51,.4); background-clip: content-box; }
+
+:where(a, button, summary, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--punch);
+  outline-offset: 3px;
+  border-radius: var(--r-sm);
+}
+
+a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
+
+/* Toda cifra de este tema es tabular: un precio que baila al cambiar de
+   variante es el detalle que delata que nadie miró. */
+:where(dd, b, strong, .precio, .money, [data-precio], time, .tabular) {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* ---------------------------------------------------------------------------
+   1. la portada
+   --------------------------------------------------------------------------- */
+.portada {
+  padding: clamp(3rem, 9vh, 6rem) var(--edge) clamp(3rem, 8vh, 5rem);
+}
+
+.portada__cabecera {
+  max-width: 54rem;
+  margin: 0 auto clamp(2.5rem, 6vh, 4.5rem);
+  text-align: center;
+}
+.portada__h {
+  font-family: var(--font-d);
+  font-weight: 600;
+  /* Dos líneas, no tres: a 5.6vw el titular se partía en tres y perdía el
+     ritmo de la promesa, que son dos frases. */
+  font-size: clamp(2.1rem, 4.5vw, 3.7rem);
+  line-height: 1.05;
+  letter-spacing: -.035em;
+  text-wrap: balance;
+  margin: 0;
+}
+.portada__p {
+  margin: 1.4rem auto 0;
+  max-width: 44ch;
+  font-size: clamp(1rem, 1.25vw, 1.12rem);
+  line-height: 1.55;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+.portada__acciones {
+  margin-top: 2.2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .8rem;
+  justify-content: center;
+}
+
+/* ---------------------------------------------------------------------------
+   2. la rejilla y la tarjeta
+   --------------------------------------------------------------------------- */
+.rejilla {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 1.75rem);
+}
+@media (max-width: 1000px) { .rejilla { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px)  { .rejilla { grid-template-columns: 1fr; } }
+
+.tarjeta {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(.7rem, 1vw, .9rem);
+  border-radius: var(--r-xl);
+  /* vidrio esmerilado: el degradado del body se ve por debajo */
+  background: var(--surface);
+  border: 1px solid rgba(255,255,255,.9);
+  backdrop-filter: blur(14px) saturate(130%);
+  box-shadow: var(--shadow-m);
+  transition: transform .4s var(--ease), box-shadow .4s var(--ease);
+}
+.tarjeta:hover { transform: translateY(-6px); box-shadow: var(--shadow-l); }
+
+/* El marco interior: el tinte de la fragancia, con el frasco flotando */
+.tarjeta__marco {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: var(--campo, var(--stock-2));
+}
+.tarjeta__enlace-foto { position: absolute; inset: 0; display: block; }
+.tarjeta__marco .card__slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  /* `contain` y no `cover`: el frasco y su caja se ven ENTEROS, nunca
+     recortados, que es justo lo que hay que poder juzgar aquí. */
+  object-fit: contain;
+  padding: clamp(1rem, 2.4vw, 1.8rem);
+  opacity: 0;
+  transition: opacity .3s var(--ease), transform .5s var(--ease);
+}
+.tarjeta__marco .card__slide.is-on { opacity: 1; }
+.tarjeta:hover .card__slide.is-on { transform: scale(1.04); }
+
+.tarjeta__sinfoto {
+  position: absolute;
+  inset: 22%;
+  border-radius: var(--r-md);
+  background: rgba(255,255,255,.5);
+}
+
+.tarjeta__nav {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: rgba(255,255,255,.82);
+  color: var(--ink);
+  cursor: pointer;
+  opacity: 0;
+  box-shadow: var(--shadow-s);
+  transition: opacity var(--t), background var(--t);
+}
+.tarjeta__nav--prev { left: .5rem; }
+.tarjeta__nav--next { right: .5rem; }
+.tarjeta:hover .tarjeta__nav,
+.tarjeta:focus-within .tarjeta__nav { opacity: 1; }
+.tarjeta__nav:hover { background: #fff; }
+@media (hover: none) { .tarjeta__nav { opacity: 1; } }
+
+.tarjeta__sello {
+  position: absolute;
+  z-index: 3;
+  left: .7rem;
+  top: .7rem;
+  padding: .35rem .7rem;
+  border-radius: var(--r-pill);
+  background: rgba(255,255,255,.88);
+  color: var(--ink-2);
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+}
+/* Agotada: se apaga el tinte, NO la tarjeta. Mientras la tienda no tenga
+   inventario TODAS salen agotadas, y bajar la tarjeta entera convierte la
+   rejilla en un cementerio. */
+.tarjeta--agotada .tarjeta__marco { opacity: .62; }
+.tarjeta--agotada .tarjeta__precio b { color: var(--ink-3); }
+
+.tarjeta__cuerpo {
+  padding: 1.05rem .65rem .95rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.tarjeta__marca {
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.tarjeta__nombre {
+  font-family: var(--font-d);
+  font-weight: 600;
+  font-size: clamp(1.15rem, 1.5vw, 1.42rem);
+  line-height: 1.12;
+  letter-spacing: -.025em;
+  margin: .38rem 0 0;
+}
+.tarjeta__nombre a { color: inherit; }
+/* El enlace se estira sobre toda la tarjeta; las flechas quedan por encima. */
+.tarjeta__nombre a::after { content: ''; position: absolute; inset: 0; z-index: 2; border-radius: var(--r-xl); }
+.tarjeta__notas {
+  margin-top: .4rem;
+  font-size: .8rem;
+  line-height: 1.45;
+  color: var(--ink-3);
+}
+.tarjeta__precio {
+  margin-top: auto;
+  padding-top: 1rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: .8rem;
+  font-size: .86rem;
+  color: var(--ink-2);
+}
+.tarjeta__precio b {
+  font-family: var(--font-d);
+  font-weight: 600;
+  font-size: 1.18rem;
+  color: var(--ink);
+}
+
+/* La entrada: las tarjetas aparecen en orden de lectura, una sola vez. */
+@media (prefers-reduced-motion: no-preference) {
+  .rejilla > * {
+    animation: subir .6s var(--ease) backwards;
+    animation-delay: calc(var(--i, 0) * 70ms);
+  }
+  @keyframes subir {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: none; }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   3. los controles: todo píldora
+   --------------------------------------------------------------------------- */
+.btn {
+  border-radius: var(--r-pill);
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.btn--lg { padding: 1.05rem 1.9rem; font-size: .98rem; min-height: 54px; }
+.btn--ink {
+  background: var(--ink);
+  color: #fff;
+  border: 1px solid var(--ink);
+  box-shadow: var(--shadow-m);
+}
+.btn--ink:hover { background: #3d1749; transform: translateY(-2px); box-shadow: var(--shadow-l); }
+.btn--ink:active { transform: translateY(0); }
+.btn--ghost {
+  background: var(--surface-solid);
+  border: 1px solid rgba(255,255,255,.8);
+  color: var(--ink);
+  backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-s);
+}
+.btn--ghost:hover { background: #fff; border-color: #fff; transform: translateY(-2px); box-shadow: var(--shadow-m); }
+
+.tag, .chip, .picker > button { border-radius: var(--r-pill); }
+
+/* ---------------------------------------------------------------------------
+   4. el chrome: la cabecera flotante
+   --------------------------------------------------------------------------- */
+.nav,
+.nav.is-stuck {
+  position: sticky;
+  top: clamp(.6rem, 1.4vh, 1rem);
+  z-index: 50;
+  width: min(calc(100% - var(--gutter) * 2), var(--maxw));
+  margin-inline: auto;
+  padding: .55rem .6rem .55rem 1.35rem;
+  border-radius: var(--r-pill);
+  background: rgba(255,255,255,.52);
+  border: 1px solid rgba(255,255,255,.7);
+  backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: var(--shadow-s);
+  transition: box-shadow .4s var(--ease), background-color .4s var(--ease);
+}
+.nav.is-stuck { background: rgba(255,255,255,.72); box-shadow: var(--shadow-m); }
+
+.nav__brand { font-family: var(--font-d); font-size: 1.14rem; letter-spacing: -.02em; }
+/* La gota vuelve, y ahora es blanda de verdad: sin `clip-path` de coordenadas
+   fijas, que no escalaba. Es un círculo con una esquina en punta. */
+.nav__drop {
+  width: 17px;
+  height: 20px;
+  flex: none;
+  clip-path: none;
+  border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%;
+  border-top-left-radius: 62% 100%;
+  border-top-right-radius: 38% 100%;
+  background: linear-gradient(150deg, var(--blush), var(--lavender) 52%, var(--sky));
+}
+.nav__links {
+  gap: 1.5rem;
+  font-size: .92rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink-2);
+}
+.nav__links a::after { height: 1.5px; background: var(--punch); }
+.nav__ico { border-radius: var(--r-pill); }
+.nav__ico:hover { background: rgba(255,255,255,.72); }
+.nav__cuenta-carrito { border-radius: var(--r-pill); }
+.nav__cta { padding: .7rem 1.25rem; min-height: 44px; font-size: .9rem; }
+
+.drawer__panel {
+  background: rgba(255,255,255,.86);
+  backdrop-filter: blur(22px) saturate(140%);
+  border-left: 1px solid rgba(255,255,255,.7);
+  border-radius: var(--r-xl) 0 0 var(--r-xl);
+  box-shadow: var(--shadow-l);
+}
+.drawer__fondo { background: rgba(43,15,51,.34); backdrop-filter: blur(3px); }
+.drawer__cerrar { border-radius: var(--r-pill); }
+.drawer__cerrar:hover { background: rgba(255,255,255,.8); }
+.drawer__links a { font-family: var(--font-d); text-transform: none; letter-spacing: -.02em; }
+
+/* ---------------------------------------------------------------------------
+   5. la ficha de producto
+   --------------------------------------------------------------------------- */
+.pdp {
+  gap: clamp(2rem, 4vw, 3.5rem);
+  padding: clamp(2.5rem, 7vh, 4.5rem) var(--edge) clamp(3rem, 8vh, 5rem);
+  align-items: start;
+}
+@media (min-width: 900px) {
+  .pdp { grid-template-columns: 1.05fr .95fr; }
+  .pdp__campo { position: sticky; top: 6rem; }
+}
+
+/* El panel de la foto: vidrio con el tinte de la fragancia por debajo */
+.pdp__campo {
+  padding: clamp(1rem, 1.8vw, 1.6rem);
+  border-radius: var(--r-xl);
+  background: var(--surface);
+  border: 1px solid rgba(255,255,255,.6);
+  backdrop-filter: blur(14px) saturate(130%);
+  box-shadow: var(--shadow-m);
+}
+.pdp .pdp__visor {
+  aspect-ratio: 1 / 1;
+  border: 0;
+  border-radius: var(--r-lg);
+  background: var(--campo, var(--stock-2));
+}
+.pdp .pdp__img { padding: clamp(1.6rem, 4vw, 3.2rem); }
+
+.pdp .pdp__mini {
+  border-radius: var(--r-md);
+  border: 1px solid rgba(255,255,255,.7);
+  background: var(--surface-solid);
+}
+.pdp .pdp__mini.is-on { border-color: var(--ink); }
+
+.pdp__riel { padding: 0; }
+.pdp__marca-riel {
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.pdp__titulo-riel {
+  font-family: var(--font-d);
+  font-weight: 600;
+  font-size: clamp(2.1rem, 4.4vw, 3.4rem);
+  line-height: 1;
+  letter-spacing: -.035em;
+  margin: .5rem 0 0;
+}
+.pdp__notas-riel { margin-top: .7rem; font-size: .95rem; color: var(--ink-3); }
+.pdp .pdp__precio { margin-top: 1.8rem; }
+.pdp .pdp__precio strong { font-size: clamp(2rem, 3.6vw, 2.6rem); }
+
+/* Las presentaciones son píldoras seleccionables, y siguen siendo radios de
+   verdad: sin JS el navegador manda la marcada y Shopify la añade al carrito. */
+.pdp__opciones { display: flex; flex-wrap: wrap; gap: .6rem; margin-bottom: 1.6rem; }
+.pdp__opciones legend { width: 100%; }
+.pres__cuerpo {
+  display: inline-flex;
+  gap: .6rem;
+  padding: .8rem 1.25rem;
+  border-radius: var(--r-pill);
+  background: var(--surface-solid);
+  border: 1px solid rgba(255,255,255,.8);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-s);
+}
+.pres:hover .pres__cuerpo { background: #fff; }
+.pres input:checked + .pres__cuerpo {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+  box-shadow: var(--shadow-m);
+}
+.pres input:checked + .pres__cuerpo .pres__estado { color: rgba(255,255,255,.7); }
+.pres__precio { margin-left: 0; }
+.pdp__atc { width: 100%; }
+.pdp__select select, .orden select, .buscador input, .buscador { border-radius: var(--r-pill); }
+
+/* ---------- la resta: el argumento de la tienda ---------- */
+.resta {
+  margin-top: 2rem;
+  padding: 1.5rem 1.6rem 1.3rem;
+  border-radius: var(--r-lg);
+  background: rgba(255,255,255,.66);
+  border: 1px solid rgba(255,255,255,.9);
+  backdrop-filter: blur(14px) saturate(130%);
+  box-shadow: var(--shadow-s);
+}
+.resta__h {
+  font-family: var(--font-b);
+  font-size: .95rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink);
+  margin: 0 0 1rem;
+}
+.resta__filas { margin: 0; display: grid; }
+.resta__filas > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .5rem 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+.resta__filas dt { margin: 0; font-size: .9rem; color: var(--ink-2); }
+.resta__filas dd { margin: 0; font-size: .95rem; font-weight: 600; }
+.resta__credito dd { color: var(--punch); }
+
+/* La escala es el argumento: el único número que el comprador tiene que
+   decidir recibe un tamaño que ningún otro de la página recibe. */
+.resta__total { border-bottom: 0 !important; padding-top: .9rem !important; }
+.resta__total dt { font-weight: 600; color: var(--ink) !important; }
+.resta__total dd {
+  font-family: var(--font-d);
+  font-weight: 600;
+  font-size: clamp(2rem, 4.4vw, 2.9rem) !important;
+  letter-spacing: -.035em;
+  line-height: 1;
+}
+.resta__nota { margin-top: 1rem; font-size: .8rem; line-height: 1.55; color: var(--ink-3); }
+
+/* ---------- las tres etapas ---------- */
+.etapas { margin: 1.8rem 0 0; padding: 0; list-style: none; display: grid; gap: .1rem; }
+.etapas li {
+  display: flex;
+  align-items: baseline;
+  gap: .85rem;
+  padding: .65rem 0;
+  border-bottom: 1px solid var(--line-soft);
+  font-size: .92rem;
+  color: var(--ink-2);
+}
+.etapas li:last-child { border-bottom: 0; }
+.etapas__n { font-size: .72rem; font-weight: 700; color: var(--ink-3); flex: none; width: 1.5rem; }
+/* Sólo la tercera está sellada: es el único paso del que no se vuelve. */
+.etapas__sellada { color: var(--ink); font-weight: 600; }
+.etapas__sellada .etapas__n { color: var(--punch-2); }
+
+.pdp__promesas { margin-top: 1.8rem; }
+.pdp__promesas li { gap: .6rem; }
+.pdp__promesas svg { color: var(--punch); }
+
+/* ---------------------------------------------------------------------------
+   6. carrito, colección y estados vacíos
+   --------------------------------------------------------------------------- */
+.linea__foto {
+  position: relative;
+  display: block;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  background: var(--campo, var(--stock-2));
+}
+.linea__nombre { font-family: var(--font-d); letter-spacing: -.02em; }
+
+.col-card { border-radius: var(--r-xl); }
+.col-card__foto { background: var(--stock-2); }
+.chips-activos .chip-activo, .facetas__panel, .facetas__barra { border-radius: var(--r-pill); }
+.facetas__panel { border-radius: var(--r-xl); }
+
+.tarjeta--vacia { border-style: dashed; box-shadow: none; }
+.tarjeta--vacia .tarjeta__nombre { color: var(--ink-3); }
+
+/* 404 */
+.err {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: center;
+  padding: clamp(3rem, 10vh, 6rem) var(--edge) clamp(3rem, 8vh, 5rem);
+}
+@media (min-width: 900px) { .err { grid-template-columns: .9fr 1.1fr; } }
+.err__campo {
+  display: grid;
+  place-items: center;
+  padding: clamp(2rem, 5vw, 3.5rem);
+  border-radius: var(--r-xl);
+  background: var(--surface);
+  border: 1px solid rgba(255,255,255,.6);
+  backdrop-filter: blur(14px) saturate(130%);
+  box-shadow: var(--shadow-m);
+}
+.err__n {
+  font-family: var(--font-d);
+  font-weight: 600;
+  font-size: clamp(5rem, 14vw, 10rem);
+  line-height: .85;
+  letter-spacing: -.05em;
+  margin: 0;
+  color: var(--ink);
+}
+.err__h {
+  font-family: var(--font-d);
+  font-weight: 600;
+  font-size: clamp(1.9rem, 4vw, 3rem);
+  line-height: 1.02;
+  letter-spacing: -.035em;
+  margin: 0 0 1rem;
+}
+.err__p { color: var(--ink-2); max-width: 46ch; margin-bottom: 1.8rem; }
+.err__cta { margin-top: 1.2rem; }
+
+/* ---------------------------------------------------------------------------
+   7. las secciones que ya existían
+   --------------------------------------------------------------------------- */
+.cierre__card, .compare__col, .step, .voz {
+  border-radius: var(--r-xl);
+  backdrop-filter: blur(12px) saturate(125%);
+}
+.step--3 { color: #F7F2F8; }
+.step--3 .step__n { color: #FF7FA8; }
+.is-free { color: #1F7A5C !important; }
+.shelf { gap: clamp(1rem, 2vw, 1.75rem); }
+.ticker--tinta { background: var(--ink); color: #F7F2F8; }
+.ticker--gradiente {
+  color: var(--ink);
+  background: linear-gradient(96deg, var(--blush), var(--lavender) 52%, var(--sky));
+}
