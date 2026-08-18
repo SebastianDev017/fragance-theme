@@ -664,3 +664,63 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
 .etapas__sellada .etapas__n { color: var(--ink); }
 
 .pdp__promesas { margin-top: 1.8rem; }
+
+/* ---------------------------------------------------------------------------
+   7. carrito — la pila de cartillas que te llevas
+   --------------------------------------------------------------------------- */
+.linea__foto {
+  position: relative;
+  display: block;
+  background: var(--campo, var(--stock-2));
+  border-radius: 0;
+  border: 0;
+  overflow: hidden;
+}
+.linea__foto img { mix-blend-mode: normal; }
+.linea__cod {
+  position: absolute;
+  left: .4rem;
+  bottom: .35rem;
+  font-size: .58rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  color: var(--sobre, var(--cream));
+}
+.linea__nombre { font-family: var(--font-d); text-transform: uppercase; letter-spacing: -.02em; }
+.linea__total, .linea__unidad { font-variant-numeric: tabular-nums lining-nums; }
+
+/* ---------------------------------------------------------------------------
+   8. colección — la página índice del estándar
+
+   La rejilla se pega, igual que la muralla: los campos se tocan. Es lo que
+   hace que una colección se lea como un muestrario y no como un catálogo de
+   fichas flotando sobre un fondo.
+   --------------------------------------------------------------------------- */
+.col-cab--foto .col-cab__txt h1 { color: var(--cream); }
+.col-cab--foto .col-cab__desc { color: color-mix(in srgb, var(--cream) 84%, transparent); }
+.col-cab__velo { background: color-mix(in srgb, var(--ink) 58%, transparent); }
+
+/* Las tarjetas de la lista de colecciones también son campos, no cristales */
+.col-card { border-radius: 0; }
+.col-card:hover { transform: none; box-shadow: none; }
+.col-card__foto { background: var(--stock-2); }
+
+/* Los controles del filtrado: rectángulos de formulario */
+.chips-activos .chip-activo,
+.orden select,
+.facetas__panel,
+.facetas__barra { border-radius: 0; }
+
+/* ---------------------------------------------------------------------------
+   9. el pie y los cierres
+   --------------------------------------------------------------------------- */
+.cierre__card, .compare__col, .step {
+  border-radius: 0;
+  box-shadow: none;
+}
+.compare__col--them { border-style: solid; }
+.step--3 { color: var(--cream); }
+.step--3 p { color: color-mix(in srgb, var(--cream) 76%, var(--ink)); }
+.step--3 strong { color: var(--cream); }
+.step--3 .step__n { color: var(--campo-5); }
+.is-free { color: var(--campo-7) !important; }

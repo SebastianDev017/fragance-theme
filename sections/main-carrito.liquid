@@ -23,14 +23,20 @@
     <form action="{{ routes.cart_url }}" method="post" novalidate class="carrito__form" data-carrito-form>
       <ul class="carrito__lista" role="list">
         {%- for item in cart.items -%}
-          <li class="linea">
+          {%- comment -%}
+            Cada línea lleva el campo de SU fragancia: el carrito es la pila de
+            cartillas que te llevas, y se reconoce por el mismo color con el
+            que se eligió en el catálogo.
+          {%- endcomment -%}
+          {%- capture c -%}{% render 'campo', producto: item.product %}{%- endcapture -%}
+          {%- assign c = c | strip | split: '|' -%}
+          <li class="linea" style="--campo: {{ c[0] }}; --sobre: {{ c[1] }};">
             <a class="linea__foto" href="{{ item.url }}" tabindex="-1" aria-hidden="true">
               {%- if item.image -%}
                 <img src="{{ item.image | image_url: width: 240 }}" alt="" width="120" height="120"
                   loading="lazy" decoding="async">
-              {%- else -%}
-                <span class="card__sinfoto"></span>
               {%- endif -%}
+              <span class="linea__cod">{{ c[2] }}</span>
             </a>
 
             <div class="linea__txt">
