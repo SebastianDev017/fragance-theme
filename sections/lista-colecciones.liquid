@@ -16,6 +16,23 @@
   if section.settings.orden == 'productos'
     assign lista = collections | sort: 'all_products_count' | reverse
   endif
+
+  comment
+    Cuantas se van a pintar de verdad. Hay que contarlas ANTES para decidir si
+    el mosaico tiene sentido: con una o dos, una tarjeta a doble ancho deja un
+    hueco del tamano de una columna al lado y parece que la pagina no cargo.
+  endcomment
+  assign total = 0
+  for c in lista
+    assign n = c.all_products_count | default: 0 | plus: 0
+    if section.settings.vacias or n > 0
+      assign total = total | plus: 1
+    endif
+  endfor
+  assign hay_mosaico = false
+  if section.settings.presentacion == 'mosaico' and total >= 3
+    assign hay_mosaico = true
+  endif
 -%}
 
 <section class="colecciones colecciones--{{ section.settings.presentacion }}"
@@ -58,7 +75,7 @@
         endcomment
         assign resto = pintadas | modulo: 4
         assign ancha = false
-        if section.settings.presentacion == 'mosaico' and resto == 1
+        if hay_mosaico and resto == 1
           assign ancha = true
         endif
       -%}
