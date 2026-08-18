@@ -156,6 +156,7 @@ qa/
 !qa/galeria.html
 !qa/cinta.html
 !qa/coleccion.html
+!qa/mundo.html
 
 # OJO: assets/ NO se ignora. Ahi viven los bundles compilados y las fuentes,
 # y Shopify los necesita en el repositorio para desplegar el tema.

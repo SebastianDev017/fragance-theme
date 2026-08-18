@@ -7,18 +7,24 @@ Este repositorio es **el tema de Shopify** y, a la vez, el proyecto que lo
 construye. Los archivos del tema están en la raíz (`layout/`, `sections/`,
 `snippets/`, `templates/`, `config/`, `locales/`, `assets/`) porque la
 integración GitHub → Shopify sólo reconoce el tema si está ahí. El código
-fuente del 3D y de la interfaz vive en `src/` y se compila a `assets/`.
+fuente de la interfaz vive en `src/` y se compila a `assets/`.
+
+El mundo visual es **El Muestrario**: el abanico de colores de la ferretería.
+Nadie compra un galón sin pegar tres muestras en la pared una semana; el
+decant es la muestra. Está descrito entero en el contrato de dirección que
+`layout/theme.liquid` imprime como comentario HTML al principio del `<body>`,
+y el comp aprobado está en `.impeccable/mocks/comp-b-muralla.png`.
 
 ```bash
 npm install
 
 # el tema
-npm run build:theme    # src/ → assets/dropscents.{js,css} + dropscents-scene.js
+npm run build:theme    # src/ → assets/dropscents.{js,css}
 npm run theme:check    # validador oficial
 npm run theme:dev      # servidor de desarrollo contra la tienda
 npm run theme:push
 
-# la maqueta local (para iterar el 3D sin levantar Shopify)
+# la maqueta local (para iterar sin levantar Shopify)
 npm run dev
 npm run build
 ```
@@ -53,6 +59,55 @@ npm run build
 > algo en él. Lo último que se guarda gana, así que si tocas ese archivo a mano
 > y a la vez alguien está en el editor, uno de los dos cambios se pierde.
 > Para la portada, el editor es la fuente de verdad.
+
+### El color de cada fragancia
+
+El campo de color **no es decorativo ni sinestésico** —no dice a qué huele—:
+se muestrea de la **foto real del frasco y su caja**. Eros es turquesa porque
+el frasco de Eros es turquesa. Es verificable de un vistazo, y hace el
+catálogo navegable por lo único que un comprador novato sí puede ver antes de
+oler.
+
+Lo decide `snippets/campo.liquid`, y sólo ese archivo, en tres pasos:
+
+1. **La etiqueta del producto**, que es el mecanismo de verdad:
+
+   | etiqueta        | qué hace                                        |
+   |-----------------|-------------------------------------------------|
+   | `campo:7`       | usa el campo 7 de la paleta (1–8)               |
+   | `campo:#2E4A1F` | un color propio, el que sea                     |
+   | `sobre:oscuro`  | fuerza tinta oscura encima (por defecto, clara) |
+
+   `dropscents-productos.csv` **ya trae** `campo:1` … `campo:8` escritas.
+   Reimportar el CSV con «actualizar productos existentes» las aplica.
+
+2. **Un mapa por handle** con el catálogo actual, dentro del snippet, para que
+   la tienda se vea correcta aunque nadie reimporte.
+
+3. **Un hash del handle**, para cualquier producto nuevo sin etiqueta.
+
+⚠️ **No uses el id del producto para repartir colores.** Aquí se intentó y el
+catálogo entero salió del mismo color: los ids que Shopify asigna en una
+importación por CSV avanzan con un **paso múltiplo de 8**, así que
+`producto.id | modulo: 8` daba el mismo resto para los ocho productos. El id
+parece aleatorio y no lo es.
+
+Y tampoco esperes que un hash reparta ocho colores en ocho productos sin
+repetir: es el problema del cumpleaños. Medido con los handles reales, la suma
+de caracteres daba 5 colores distintos de 8 y el mejor polinómico 6. Por eso
+existe el mapa, y por eso la etiqueta es el camino bueno.
+
+### Contraste sobre campo
+
+El texto pequeño sobre un campo saturado se tiñe del color de encima
+(`color-mix`), **nunca de gris**: un gris sobre burdeos se lee sucio. El
+porcentaje de la mezcla no es una decisión estética, es el suelo de contraste:
+medido en el navegador, al 85% el campo turquesa daba 4.23:1 y no pasaba. Está
+al 90%, y los ocho campos superan 4.5:1. La jerarquía la ponen el tamaño y el
+espaciado, no el gris.
+
+Si tocas un campo de la paleta, **vuelve a medir**: hay un medidor listo para
+pegar en la consola en la §6.
 
 ### La convención que sostiene todo
 
@@ -162,15 +217,20 @@ Three.js **sólo** en el de la escena, que se carga bajo demanda y únicamente s
 la página tiene el hero 3D. Cero CDN: las fuentes están en el repo, no se pide
 nada a un tercero en runtime.
 
-### Los tres heroes
+### El primer viewport
 
-| Sección | Qué necesita | Cuándo va bien |
-|---|---|---|
-| **Hero — el índice** | sólo una colección | la lista de fragancias es el argumento; no hace falta ninguna foto |
-| **Hero — vitrina** | una foto horizontal | campaña con foto propia; el titular se parte en dos colores |
-| **Hero — decant 3D** | nada | el 3D del decant sirviendo; carga 180 KB extra de Three.js |
+`sections/muestrario.liquid` es la portada: una rejilla a sangre, sin
+canalones, donde **la primera celda es la cabecera** —negra, con el titular,
+la mecánica y el botón— y todas las demás son fragancias. Con 8 productos son
+9 celdas y encaja exacto en 3×3.
 
-Se cambian desde el editor, sin tocar código.
+Sustituyó a los heroes de foto a pantalla completa. `hero-vitrina` y
+`hero-indice` siguen en el tema por si hacen falta en otra página; la escena
+3D (750 KB de WebGL) se eliminó: un abanico son transforms de CSS.
+
+Sin colección elegida, la sección cae a `collections.all` en vez de dejar la
+portada en blanco esperando al comerciante.
+
 
 ### Idiomas
 
@@ -319,15 +379,21 @@ los demás, por eso lleva `refreshPriority: -1`.
 
 ## 6. QA
 
-`qa/` está fuera del repo salvo `qa/galeria.html`, que sí se versiona: es el
-banco de pruebas de la galería de la tarjeta contra el bundle **real**
-(`assets/dropscents.js`), porque mientras ningún producto de la tienda tenga
-dos fotos no hay forma de comprobar las flechas en vivo. Se abre sirviendo la
-carpeta del proyecto:
+`qa/` está fuera del repo salvo unos pocos bancos que sí se versionan, porque
+cargan el bundle **real** de `assets/` contra marcado escrito a mano y sirven
+para lo que la tienda no puede probar rápido: la sincronización de GitHub
+tarda minutos y el editor de temas manda sobre `templates/*.json`.
+
+`qa/mundo.html` es el más útil de todos: el mundo entero —cabecera, muralla
+con los ocho campos, franja de códigos, ficha de producto con la resta— con
+los precios reales del catálogo. `qa/galeria.html` prueba las flechas de la
+cartilla, que en vivo no se pueden ver mientras ningún producto tenga dos
+fotos. Se abren sirviendo la carpeta del proyecto:
 
 ```bash
 python -m http.server 8777
 # → http://127.0.0.1:8777/qa/galeria.html
+# → http://127.0.0.1:8777/qa/mundo.html    ← el mundo entero: muralla + ficha
 ```
 
 Antes de cada push conviene pasar el validador de claves de idioma (no lo hace
@@ -338,3 +404,38 @@ Pendiente para producción: fotos reales de producto (y más de una por
 fragancia, que es lo que enciende la galería), inventario en las variantes,
 publicar la colección y el segundo idioma, Lighthouse, el Instagram real y los
 precios del día.
+
+### El medidor de contraste
+
+`color-mix()` computa a `color(srgb r g b)` con valores 0–1, **no** a `rgb()`.
+Un medidor escrito para `rgb()` devuelve ratios de 1.2 sobre texto que en
+realidad está a 13:1, y se acaba «arreglando» lo que no estaba roto. Este
+recorre el DOM real y sólo mira los elementos con texto propio:
+
+```js
+const toRGB = (s) => {
+  let m = s.match(/^color\(srgb\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)(?:\s*\/\s*([\d.]+))?/);
+  if (m) return (m[4] !== undefined && +m[4] === 0) ? null : [+m[1]*255, +m[2]*255, +m[3]*255];
+  m = s.match(/^rgba?\(([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)(?:[,\s/]+([\d.]+))?/);
+  if (m) return (m[4] !== undefined && +m[4] === 0) ? null : [+m[1], +m[2], +m[3]];
+  return null;
+};
+const lum = (c) => { const v = c.map(x => (x/=255, x <= .03928 ? x/12.92 : ((x+.055)/1.055)**2.4));
+                     return .2126*v[0] + .7152*v[1] + .0722*v[2]; };
+const bg = (el) => { for (let n = el; n && n !== document.documentElement; n = n.parentElement) {
+                       const c = toRGB(getComputedStyle(n).backgroundColor); if (c) return c; } return [255,255,255]; };
+
+console.table([...document.querySelectorAll('main *, header *')].filter(el =>
+  [...el.childNodes].some(c => c.nodeType === 3 && c.textContent.trim())).map(el => {
+    const cs = getComputedStyle(el), fg = toRGB(cs.color); if (!fg) return null;
+    const l1 = lum(fg), l2 = lum(bg(el));
+    const r = (Math.max(l1,l2) + .05) / (Math.min(l1,l2) + .05);
+    const px = parseFloat(cs.fontSize), w = +cs.fontWeight || 400;
+    const min = (px >= 24 || (px >= 18.66 && w >= 700)) ? 3 : 4.5;
+    return r < min ? { cls: el.className, txt: el.textContent.trim().slice(0,24), ratio: +r.toFixed(2), min } : null;
+  }).filter(Boolean));
+```
+
+Un `console.table` vacío es el resultado bueno. Ojo: los reveals dejan
+elementos en `opacity: 0`, y medir con ellos apagados da falsos positivos —
+mide con la sección ya visible, no con una captura `fullPage`.
