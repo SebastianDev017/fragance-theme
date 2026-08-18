@@ -1,0 +1,165 @@
+<!doctype html>
+<!--
+  Banco de pruebas de la página de colección.
+
+  Ninguna colección de la tienda está publicada en el canal Tienda online, así
+  que todas las URLs /collections/* dan 404 y la página no se puede ver en
+  vivo. Esta página carga el CSS y el JS REALES del tema (assets/dropscents.*)
+  contra el mismo marcado que escriben main-coleccion.liquid y facetas.liquid.
+
+  Lo que tiene que pasar:
+    · el panel de filtros abre y cierra (botón, fondo, Escape)
+    · los dos deslizadores de precio no se cruzan
+    · un extremo en su tope manda el campo vacío (no ensucia la URL)
+    · marcar una casilla pide sólo el trozo que cambia, con section_id
+    · los chips y la paginación también piden en vez de navegar
+-->
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>QA · colección</title>
+  <link rel="stylesheet" href="../assets/dropscents.css">
+</head>
+<body>
+  <div class="field" aria-hidden="true"><div class="field__blob field__blob--lav"></div></div>
+
+  <section class="coleccion" id="coleccion-qa"
+    style="--cols: 4; --cols-movil: 2;" data-seccion-id="template--qa__main">
+
+    <header class="col-cab col-cab--simple">
+      <div class="col-cab__txt">
+        <nav class="migas" aria-label="Migas de pan">
+          <a href="/">Inicio</a><span aria-hidden="true">/</span>
+          <a href="/collections">Todas las colecciones</a><span aria-hidden="true">/</span>
+          <span aria-current="page">Amaderados</span>
+        </nav>
+        <h1 class="h2">Amaderados</h1>
+        <div class="col-cab__desc rte"><p>Los que huelen a madera, a resina y a tarde de invierno.</p></div>
+      </div>
+    </header>
+
+    <div data-facetas-resultados>
+      <div class="facetas" data-facetas data-seccion="template--qa__main">
+        <div class="barra-filtros">
+          <p class="barra-filtros__cuenta" data-facetas-cuenta>8 fragancias</p>
+          <div class="barra-filtros__mandos">
+            <button class="btn btn--ghost barra-filtros__abrir" type="button"
+              data-facetas-abrir aria-expanded="false" aria-controls="panel-filtros">
+              Filtrar <span class="barra-filtros__n">2</span>
+            </button>
+            <form class="orden" method="get" action="/collections/amaderados" data-facetas-orden>
+              <label for="orden-qa">Ordenar por</label>
+              <select id="orden-qa" name="sort_by" data-envia-al-cambiar>
+                <option value="manual">Destacados</option>
+                <option value="price-ascending" selected>Precio: de menor a mayor</option>
+              </select>
+            </form>
+          </div>
+        </div>
+
+        <div class="chips-activos">
+          <a class="chip-activo" href="/collections/amaderados?filter.v.option.presentacion=Decant+10+ml" data-facetas-enlace>
+            <span>Decant 5 ml</span>✕
+          </a>
+          <a class="chip-activo" href="/collections/amaderados?filter.p.vendor=Dior" data-facetas-enlace>
+            <span>$20 – $80</span>✕
+          </a>
+          <a class="chips-activos__limpiar" href="/collections/amaderados" data-facetas-enlace>Quitar los filtros</a>
+        </div>
+
+        <div class="panel-filtros" id="panel-filtros" data-facetas-panel>
+          <div class="panel-filtros__fondo" data-facetas-cerrar></div>
+          <form class="panel-filtros__caja" method="get" action="/collections/amaderados" data-facetas-form>
+            <div class="panel-filtros__top">
+              <h2>Filtrar</h2>
+              <button class="drawer__cerrar" type="button" data-facetas-cerrar aria-label="Cerrar los filtros">✕</button>
+            </div>
+            <input type="hidden" name="sort_by" value="price-ascending">
+
+            <div class="panel-filtros__cuerpo">
+              <details class="faceta" open>
+                <summary><span>Presentación</span><b class="faceta__n">1</b><i aria-hidden="true"></i></summary>
+                <div class="faceta__cuerpo">
+                  <label class="casilla">
+                    <input type="checkbox" name="filter.v.option.presentacion" value="Decant 5 ml" checked>
+                    <span class="casilla__marca" aria-hidden="true">✓</span>
+                    <span class="casilla__txt">Decant 5 ml</span><span class="casilla__n">8</span>
+                  </label>
+                  <label class="casilla">
+                    <input type="checkbox" name="filter.v.option.presentacion" value="Decant 10 ml">
+                    <span class="casilla__marca" aria-hidden="true">✓</span>
+                    <span class="casilla__txt">Decant 10 ml</span><span class="casilla__n">8</span>
+                  </label>
+                  <label class="casilla casilla--vacia">
+                    <input type="checkbox" name="filter.v.option.presentacion" value="Frasco 200 ml" disabled>
+                    <span class="casilla__marca" aria-hidden="true">✓</span>
+                    <span class="casilla__txt">Frasco 200 ml</span><span class="casilla__n">0</span>
+                  </label>
+                </div>
+              </details>
+
+              <details class="faceta" open>
+                <summary><span>Precio</span><b class="faceta__n">1</b><i aria-hidden="true"></i></summary>
+                <div class="faceta__cuerpo">
+                  <div class="precio" data-precio data-tope="200"
+                    style="--desde: 20; --hasta: 80; --tope: 200;">
+                    <div class="precio__pista" aria-hidden="true"><span data-precio-relleno></span></div>
+                    <input class="precio__rango precio__rango--min" type="range" min="0" max="200" value="20" step="1"
+                      data-precio-rango="min" aria-label="Precio mínimo">
+                    <input class="precio__rango precio__rango--max" type="range" min="0" max="200" value="80" step="1"
+                      data-precio-rango="max" aria-label="Precio máximo">
+                    <div class="precio__campos">
+                      <label><span>Desde</span>
+                        <input type="number" name="filter.v.price.gte" value="20" min="0" max="200" data-precio-campo="min"></label>
+                      <label><span>Hasta</span>
+                        <input type="number" name="filter.v.price.lte" value="80" min="0" max="200" data-precio-campo="max"></label>
+                    </div>
+                  </div>
+                </div>
+              </details>
+
+              <details class="faceta">
+                <summary><span>Marca</span><i aria-hidden="true"></i></summary>
+                <div class="faceta__cuerpo">
+                  <label class="casilla">
+                    <input type="checkbox" name="filter.p.vendor" value="Dior">
+                    <span class="casilla__marca" aria-hidden="true">✓</span>
+                    <span class="casilla__txt">Dior</span><span class="casilla__n">3</span>
+                  </label>
+                </div>
+              </details>
+            </div>
+
+            <div class="panel-filtros__pie">
+              <a class="btn btn--ghost" href="/collections/amaderados" data-facetas-enlace>Quitar los filtros</a>
+              <button class="btn btn--ink" type="submit">Aplicar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="shelf" data-facetas-rejilla>
+        <article class="card" style="--card-ratio: 1/1;">
+          <div class="card__shot"><span class="card__sinfoto"></span></div>
+          <div class="card__body"><h3 class="card__name"><a href="#">Una fragancia</a></h3></div>
+        </article>
+      </div>
+
+      <nav class="paginacion" aria-label="Paginación">
+        <span class="paginacion__flecha is-muerta"><span>Anterior</span></span>
+        <ol class="paginacion__nums">
+          <li><span class="is-actual" aria-current="page">1</span></li>
+          <li><a href="/collections/amaderados?page=2" data-facetas-enlace>2</a></li>
+        </ol>
+        <a class="paginacion__flecha" href="/collections/amaderados?page=2" rel="next" data-facetas-enlace>
+          <span>Siguiente</span>
+        </a>
+      </nav>
+    </div>
+  </section>
+
+  <script>window.DropScentsAssets = {}; window.DropScentsTextos = {};</script>
+  <script type="module" src="../assets/dropscents.js"></script>
+</body>
+</html>

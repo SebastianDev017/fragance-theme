@@ -155,6 +155,7 @@ qa/
 # ...menos el banco de pruebas de la galeria, que es codigo y si se versiona.
 !qa/galeria.html
 !qa/cinta.html
+!qa/coleccion.html
 
 # OJO: assets/ NO se ignora. Ahi viven los bundles compilados y las fuentes,
 # y Shopify los necesita en el repositorio para desplegar el tema.
