@@ -3862,7 +3862,7 @@ function Bu(s, t) {
     };
     [n, o].forEach((d) => {
       d && (d.addEventListener("input", u), d.addEventListener("change", t));
-    }), l();
+    }), c("init");
   });
 }
 let ys = 0;

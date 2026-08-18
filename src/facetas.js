@@ -126,7 +126,12 @@ function conectarPrecios(raiz, alCambiar) {
       c.addEventListener('change', alCambiar);
     });
 
-    pintar();
+    /* Normalizar al arrancar. Si por lo que sea los campos llegan con un cero
+       escrito, el formulario mandaria `price.gte=0&price.lte=0` en el primer
+       clic de CUALQUIER otro filtro, y Shopify devolveria cero resultados: un
+       rango de 0 a 0. Aqui se ponen a lo que digan los deslizadores, que es la
+       fuente buena, y los extremos quedan vacios. */
+    desdeRango('init');
   });
 }
 
