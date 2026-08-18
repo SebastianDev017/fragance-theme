@@ -585,3 +585,27 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
   gap: 1.6rem;
 }
 .vacio-pagina__t { font-size: 1.05rem; max-width: 40ch; }
+
+/* ---------------------------------------------------------------------------
+   9. el pie con las columnas a medio llenar
+
+   El pie reparte sus bloques en columnas de ancho fijo. Mientras el
+   comerciante no haya elegido los menús queda un bloque solo, empujado a la
+   derecha por las columnas vacías, y el hueco parece un error del tema.
+   `auto-fit` con `min-content` colapsa las columnas que no existen: con un
+   bloque se alinea a la izquierda, con cuatro se reparte igual que antes.
+   --------------------------------------------------------------------------- */
+.foot__cols {
+  grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), max-content));
+  justify-content: start;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+}
+
+/* La columna de comparación llevaba borde discontinuo, que en un mundo de
+   vidrio y esquina blanda se lee como «esto está sin terminar» y no como
+   «esta es la otra opción». Filete continuo y más callada. */
+.compare__col--them {
+  border: 1px solid var(--line);
+  border-style: solid;
+  background: rgba(255,255,255,.34);
+}
