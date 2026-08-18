@@ -49,7 +49,7 @@
   {%- if cuantos > 0 -%}
     <div class="shelf">
       {%- for producto in coleccion.products limit: limite -%}
-        {% render 'card-fragancia', producto: producto, ratio: section.settings.ratio %}
+        {% render 'card-fragancia', producto: producto, ratio: section.settings.ratio, indice: forloop.index %}
       {%- endfor -%}
     </div>
 

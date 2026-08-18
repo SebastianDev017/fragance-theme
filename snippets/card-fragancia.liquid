@@ -19,6 +19,8 @@
     · cualquier otra  → el frasco completo (p. ej. "Frasco 100 ml")
 
   Parámetros opcionales:
+    ratio  → proporción del marco de la foto ('1/1', '4/5'…). Lo eligen las
+             secciones de catálogo desde el editor.
     indice → posición en la rejilla; alimenta el escalonado de la entrada
     nivel  → nivel del encabezado (2 en la portada, 3 dentro de una sección
              que ya tiene su propio h2). Por defecto, 3.
@@ -51,6 +53,7 @@
   assign n_img = imagenes.size
   assign nivel = nivel | default: 3
   assign indice = indice | default: 0
+  assign ratio = ratio | default: '1/1'
 -%}
 
 {%- capture campo -%}{% render 'campo', producto: producto %}{%- endcapture -%}
@@ -58,7 +61,7 @@
 
 <article class="tarjeta{% unless producto.available %} tarjeta--agotada{% endunless %}"
   data-reveal-card
-  style="--campo: {{ campo[0] }}; --i: {{ indice }};">
+  style="--campo: {{ campo[0] }}; --i: {{ indice }}; --marco-ratio: {{ ratio }};">
 
   <div class="tarjeta__marco{% if n_img > 1 %} tarjeta__marco--galeria{% endif %}"
     {% if n_img > 1 %}data-galeria data-total="{{ n_img }}"{% endif %}>

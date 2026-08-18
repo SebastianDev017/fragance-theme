@@ -112,7 +112,9 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
 /* El marco interior: el tinte de la fragancia, con el frasco flotando */
 .tarjeta__marco {
   position: relative;
-  aspect-ratio: 1 / 1;
+  /* La proporcion la elige el comerciante en el editor. Sin esto el ajuste
+     `ratio` de cuatro secciones no hacia nada. */
+  aspect-ratio: var(--marco-ratio, 1 / 1);
   border-radius: var(--r-lg);
   overflow: hidden;
   background: var(--campo, var(--stock-2));
@@ -513,8 +515,16 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
 .chips-activos .chip-activo, .facetas__panel, .facetas__barra { border-radius: var(--r-pill); }
 .facetas__panel { border-radius: var(--r-xl); }
 
-.tarjeta--vacia { border-style: dashed; box-shadow: none; }
-.tarjeta--vacia .tarjeta__nombre { color: var(--ink-3); }
+/* La tarjeta en blanco hereda el borde BLANCO de .tarjeta: discontinuo y
+   blanco sobre claro es invisible, y el marcador dejaba de leerse como
+   marcador. */
+.tarjeta--vacia {
+  border: 1px dashed var(--line);
+  background: rgba(255,255,255,.42);
+  box-shadow: none;
+}
+.tarjeta--vacia .tarjeta__nombre,
+.tarjeta--vacia .tarjeta__precio b { color: var(--ink-3); }
 
 /* 404 */
 .err {

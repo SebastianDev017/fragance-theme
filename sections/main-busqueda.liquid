@@ -51,7 +51,7 @@
           <div class="shelf" data-facetas-rejilla>
             {%- for item in search.results -%}
               {%- if item.object_type == 'product' -%}
-                {% render 'card-fragancia', producto: item, ratio: section.settings.ratio %}
+                {% render 'card-fragancia', producto: item, ratio: section.settings.ratio, indice: forloop.index %}
               {%- endif -%}
             {%- endfor -%}
           </div>

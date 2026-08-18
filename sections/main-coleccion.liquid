@@ -85,7 +85,7 @@
       {%- if collection.products.size > 0 -%}
         <div class="shelf" data-facetas-rejilla>
           {%- for producto in collection.products -%}
-            {% render 'card-fragancia', producto: producto, ratio: section.settings.ratio %}
+            {% render 'card-fragancia', producto: producto, ratio: section.settings.ratio, indice: forloop.index %}
           {%- endfor -%}
         </div>
 
