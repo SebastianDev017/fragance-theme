@@ -116,6 +116,9 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
   border-radius: var(--r-lg);
   overflow: hidden;
   background: var(--campo, var(--stock-2));
+  /* contiene el `multiply` de la foto: sin esto se mezclaría con lo que haya
+     detrás de la tarjeta, no con el tinte */
+  isolation: isolate;
 }
 .tarjeta__enlace-foto { position: absolute; inset: 0; display: block; }
 .tarjeta__marco .card__slide {
@@ -129,6 +132,13 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
   padding: clamp(1rem, 2.4vw, 1.8rem);
   opacity: 0;
   transition: opacity .3s var(--ease), transform .5s var(--ease);
+
+  /* Las fotos del comerciante vienen con fondo BLANCO, no recortadas, y un
+     rectángulo blanco encima del tinte lo parte por la mitad. `multiply`
+     funde ese blanco con el tinte y deja el frasco flotando. Si algún día
+     se suben recortes con transparencia, sigue viéndose bien: sobre un
+     tinte claro, multiply apenas toca los píxeles opacos. */
+  mix-blend-mode: multiply;
 }
 .tarjeta__marco .card__slide.is-on { opacity: 1; }
 .tarjeta:hover .card__slide.is-on { transform: scale(1.04); }
@@ -359,8 +369,13 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
   border: 0;
   border-radius: var(--r-lg);
   background: var(--campo, var(--stock-2));
+  isolation: isolate;
 }
-.pdp .pdp__img { padding: clamp(1.6rem, 4vw, 3.2rem); }
+.pdp .pdp__img {
+  padding: clamp(1.6rem, 4vw, 3.2rem);
+  mix-blend-mode: multiply;   /* mismo motivo que en la tarjeta */
+}
+.pdp .pdp__mini img { mix-blend-mode: multiply; }
 
 .pdp .pdp__mini {
   border-radius: var(--r-md);
