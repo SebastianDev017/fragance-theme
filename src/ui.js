@@ -259,17 +259,6 @@ function conectarMovimiento() {
     });
   }
 
-  /* el campo de color deriva lentísimo con el scroll */
-  if ($('.field__blob--lav')) {
-    gsap.to('.field__blob--lav', {
-      yPercent: -18, ease: 'none',
-      scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom bottom', scrub: 2 },
-    });
-    gsap.to('.field__blob--sky', {
-      yPercent: -30, ease: 'none',
-      scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom bottom', scrub: 2 },
-    });
-  }
 }
 
 /* ===========================================================================
@@ -287,76 +276,12 @@ function conectarNav() {
 }
 
 /* ===========================================================================
-   7. hero fijado + escena 3D
-   ---------------------------------------------------------------------------
-   Three.js va en su propio chunk y se carga sin bloquear el resto, para que el
-   titular y el campo de color estén listos antes.
-   =========================================================================== */
-
-/* Cómo se carga la escena 3D: lo decide quien arranca, no este módulo.
-   Es a propósito. Si aquí apareciera `import('./scene.js')`, el bundler del
-   tema empaquetaría Three.js dentro del bundle de la interfaz aunque en
-   Shopify la escena se cargue desde su propio asset — y entonces todas las
-   páginas de la tienda cargarían el 3D sin usarlo. */
-let cargarEscena = null;
-
-async function conectarHero() {
-  const canvas = $('#scene');
-  if (!canvas) return;
-
-  if (!cargarEscena) return;
-  const { createScene } = await cargarEscena();
-  const scene = createScene(canvas, { reducedMotion: REDUCED });
-  window.addEventListener('resize', () => {
-    scene.resize();
-    if (REDUCED) scene.render();   // sin bucle de render hay que repintar
-  });
-
-  if (!REDUCED) {
-    const hero = gsap.timeline({
-      scrollTrigger: {
-        trigger: '.hero',
-        start: 'top top',
-        end: '+=185%',
-        pin: true,
-        scrub: 1,
-        onUpdate: (self) => scene.timeline.progress(self.progress),
-        invalidateOnRefresh: true,
-        // se crea después de los demás por el import dinámico, pero está
-        // primero en la página: sin esto el pin recalcularía fuera de orden
-        refreshPriority: -1,
-      },
-    });
-    // fromTo + immediateRender:false es obligatorio: a estos elementos también
-    // los anima la entrada del hero, y un .to() capturaría el opacity:0 inicial
-    hero
-      .fromTo('.hero__lead',
-        { opacity: 1, y: 0, filter: 'blur(0px)' },
-        { opacity: 0, y: -70, filter: 'blur(8px)', duration: 0.22, ease: 'power2.in', immediateRender: false }, 0.06)
-      .fromTo('.hero__scroll',
-        { opacity: 1 },
-        { opacity: 0, duration: 0.08, immediateRender: false }, 0.02)
-      .fromTo('.hero__final',
-        { opacity: 0, y: 50, filter: 'blur(10px)' },
-        { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.16, ease: 'power2.out' }, 0.74)
-      .to({}, { duration: 0.01 }, 0.99);
-  }
-
-  ScrollTrigger.refresh();   // el pin cambia la altura del documento
-  return scene;
-}
-
-/* ===========================================================================
    arranque
    =========================================================================== */
 
-let escena = null;
-
-export function iniciar(opciones = {}) {
-  cargarEscena = opciones.cargarEscena || null;
-
-  /* El hero va fijado: si el navegador restaura el scroll a media página, el
-     pin arranca a mitad de la animación y el sitio parece roto. */
+export function iniciar() {
+  /* La portada abre con la muralla repartiéndose: si el navegador restaura el
+     scroll a media página, el reparto ocurre fuera de la vista. */
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   window.scrollTo(0, 0);
   window.addEventListener('pageshow', () => window.scrollTo(0, 0));
@@ -373,20 +298,14 @@ export function iniciar(opciones = {}) {
   if (document.fonts?.ready) {
     document.fonts.ready.then(() => ScrollTrigger.refresh());
   }
-
-  conectarHero().then((s) => { escena = s; });
 }
 
 /** El editor de temas de Shopify recarga secciones sin recargar la página:
- *  hay que rehacer los cálculos de scroll y, si la sección era el hero,
- *  volver a montar la escena. */
+ *  hay que rehacer los cálculos de scroll y volver a conectar lo que se
+ *  acaba de repintar. */
 export function conectarEditorDeTemas() {
   if (!window.Shopify?.designMode) return;
   document.addEventListener('shopify:section:load', (e) => {
-    if (e.target.querySelector('#scene')) {
-      escena?.dispose();
-      conectarHero().then((s) => { escena = s; });
-    }
     /* La sección se ha vuelto a pintar entera: sus galerías, carruseles y
        selectores son elementos NUEVOS y no tienen ningún listener. */
     conectarTienda(e.target);

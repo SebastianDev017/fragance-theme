@@ -335,24 +335,16 @@
       "velo": "Darken the photo",
       "zoom": "Photo zoom"
     },
-    "voces": {
-      "anchos": {
-        "ancho": "Wide",
-        "angosto": "Narrow, like a chat",
-        "medio": "Medium"
-      },
-      "bloque_cliente": "Customer message",
-      "bloque_tienda": "Store reply",
-      "cta": "Chat button underneath",
-      "hora": "Time",
-      "mensaje": "Message",
-      "nombre": "Voices",
+    "muestrario": {
+      "nombre": "Sample deck",
+      "columnas_info": "With 8 fragrances, 3 columns give an exact 3×3 grid (the masthead takes the first cell).",
+      "indice": "Code strip at the foot",
       "presets": {
-        "con_cta": "Voices — with chat button",
-        "conversacion": "Voices — conversation",
-        "corta": "Voices — short",
-        "izquierda": "Voices — left aligned",
-        "muro": "Voices — wall of messages"
+        "muralla": "Wall 3×3",
+        "ancha": "Wide wall",
+        "corta": "Short wall",
+        "chat": "Wall with chat",
+        "columna": "Narrow wall"
       }
     }
   }

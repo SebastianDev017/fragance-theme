@@ -1,0 +1,14 @@
+{
+  "approved": true,
+  "surface": "home first viewport (governs the whole theme)",
+  "world": "El Muestrario",
+  "model": "nano_banana_pro (nano_banana_2)",
+  "aspect_ratio": "16:9",
+  "resolution": "2k",
+  "approved_at_session": "c63f830a",
+  "prompt_embedded_in_file": true,
+  "known_comp_defects": [
+    "shows 7 fragrances + masthead in a 4x2 grid; the real catalog has 8 fragrances, so the build uses a 3x3 grid (masthead + 8) in the same grammar",
+    "field code labels are illustrative; real codes are derived from the SKU"
+  ]
+}

@@ -61,7 +61,8 @@
       "menu_principal": "Menú principal",
       "pie": "Pie de página",
       "siguiente": "Siguiente",
-      "skip_to_content": "Saltar al contenido"
+      "skip_to_content": "Saltar al contenido",
+      "indice_campos": "Índice de campos del muestrario"
     },
     "anterior": "Anterior",
     "buscar": {
@@ -107,7 +108,8 @@
       "marca": "Marca",
       "nombre": "Nombre de la fragancia",
       "notas": "Nota · Nota · Nota",
-      "ticker": "Añade frases a la cinta desde los bloques de esta sección."
+      "ticker": "Añade frases a la cinta desde los bloques de esta sección.",
+      "campo": "Campo sin asignar"
     },
     "volver_arriba": "Volver arriba"
   },
@@ -128,7 +130,8 @@
     "promesa_envio": "Envío gratis desde $20 a toda Venezuela",
     "promesa_original": "Frasco original sellado, sin réplicas",
     "quitar_uno": "Quitar uno",
-    "ver_imagen": "Ver la imagen {{ n }}"
+    "ver_imagen": "Ver la imagen {{ n }}",
+    "llevate": "Llévate la muestra"
   },
   "secciones": {
     "carrusel": {
@@ -211,16 +214,6 @@
       "subtitulo": "Decants y frascos originales, al mismo precio que afuera pero aquí, en dos días y sin aduana.",
       "titulo_1": "Pruébalo en 5 ml.",
       "titulo_2": "Cómpralo seguro."
-    },
-    "voces": {
-      "mensajes": {
-        "1": "Marico el Sauvage me duró todo el día, ya voy a comprar el frasco",
-        "2": "Jajaja te lo dije. Te descuento el decant del frasco.",
-        "3": "Compré 3 decants para probar y me quedé con el Bleu. Los otros dos se los regalé a mi hermano jaja",
-        "4": "Lo que más me gustó fue no gastar 130 dólares en algo que no sabía si me iba a gustar. Llegó al día siguiente en Chacao.",
-        "5": "Ese es el punto"
-      },
-      "titulo": "Sin filtro."
     }
   }
 }

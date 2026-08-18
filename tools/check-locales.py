@@ -45,7 +45,6 @@ for ruta in glob.glob(os.path.join(BASE, '**', '*.liquid'), recursive=True):
 # las dinámicas se expanden a mano: son bucles de índice conocido
 usadas |= set('secciones.ritual.pasos.%d.%s' % (i, c) for i in (1, 2, 3, 4) for c in ('titulo', 'texto'))
 usadas |= set('secciones.claro.preguntas.%d.%s' % (i, c) for i in (1, 2, 3, 4, 5) for c in ('p', 'r'))
-usadas |= set('secciones.voces.mensajes.%d' % i for i in (1, 2, 3, 4, 5))
 
 fallos = []
 for clave in sorted(usadas):

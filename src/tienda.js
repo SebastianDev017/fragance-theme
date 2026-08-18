@@ -139,7 +139,12 @@ export function conectarGalerias(raiz = document) {
       puntos.forEach((p, k) => p.classList.toggle('is-on', k === i));
     };
 
-    $$('[data-galeria-paso]', caja).forEach((boton) => {
+    /* En la cartilla las flechas son HERMANAS de la caja de fotos, no hijas:
+       la caja va debajo de todo (se revela en hover) y las flechas tienen que
+       quedar por encima del enlace que cubre la tarjeta. Se buscan, entonces,
+       en la cartilla entera. */
+    const mando = caja.closest('.chip') || caja;
+    $$('[data-galeria-paso]', mando).forEach((boton) => {
       boton.addEventListener('click', (e) => {
         // el enlace que cubre la tarjeta entera está debajo: sin esto,
         // pulsar la flecha navegaría al producto

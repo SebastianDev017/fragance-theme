@@ -61,7 +61,8 @@
       "menu_principal": "Main menu",
       "pie": "Footer",
       "siguiente": "Next",
-      "skip_to_content": "Skip to content"
+      "skip_to_content": "Skip to content",
+      "indice_campos": "Sample deck field index"
     },
     "anterior": "Previous",
     "buscar": {
@@ -107,7 +108,8 @@
       "marca": "Brand",
       "nombre": "Fragrance name",
       "notas": "Note · Note · Note",
-      "ticker": "Add lines to the ticker from this section’s blocks."
+      "ticker": "Add lines to the ticker from this section’s blocks.",
+      "campo": "Unassigned field"
     },
     "volver_arriba": "Back to top"
   },
@@ -128,7 +130,8 @@
     "promesa_envio": "Free shipping over $20, anywhere in Venezuela",
     "promesa_original": "Sealed original bottle — never a clone",
     "quitar_uno": "Remove one",
-    "ver_imagen": "View image {{ n }}"
+    "ver_imagen": "View image {{ n }}",
+    "llevate": "Take the sample"
   },
   "secciones": {
     "carrusel": {
@@ -211,16 +214,6 @@
       "subtitulo": "Original decants and full bottles, at the same price as abroad but here, in two days and with no customs.",
       "titulo_1": "Try it in 5 ml.",
       "titulo_2": "Buy it sure."
-    },
-    "voces": {
-      "mensajes": {
-        "1": "Man, the Sauvage lasted me all day, I am buying the bottle",
-        "2": "Haha told you. I will take the decant off the bottle price.",
-        "3": "I got 3 decants to try and stuck with the Bleu. Gave the other two to my brother lol",
-        "4": "What I liked most was not spending 130 dollars on something I did not know I would like. It arrived the next day in Chacao.",
-        "5": "That is the point"
-      },
-      "titulo": "Unedited."
     }
   }
 }

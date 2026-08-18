@@ -335,24 +335,16 @@
       "velo": "Oscurecer la foto",
       "zoom": "Acercamiento de la foto"
     },
-    "voces": {
-      "anchos": {
-        "ancho": "Ancho",
-        "angosto": "Angosto, como un chat",
-        "medio": "Medio"
-      },
-      "bloque_cliente": "Mensaje del cliente",
-      "bloque_tienda": "Respuesta de la tienda",
-      "cta": "Botón de chat de debajo",
-      "hora": "Hora",
-      "mensaje": "Mensaje",
-      "nombre": "Voces",
+    "muestrario": {
+      "nombre": "Muestrario",
+      "columnas_info": "Con 8 fragancias, 3 columnas dan una rejilla exacta de 3×3 (la cabecera ocupa la primera celda).",
+      "indice": "Franja de códigos al pie",
       "presets": {
-        "con_cta": "Voces — con botón de chat",
-        "conversacion": "Voces — conversación",
-        "corta": "Voces — corta",
-        "izquierda": "Voces — alineada a la izquierda",
-        "muro": "Voces — muro de mensajes"
+        "muralla": "Muralla 3×3",
+        "ancha": "Muralla ancha",
+        "corta": "Muralla corta",
+        "chat": "Muralla con chat",
+        "columna": "Muralla estrecha"
       }
     }
   }

@@ -1,0 +1,105 @@
+{%- comment -%}
+  El campo de color de una fragancia.
+
+  Este snippet es el ÚNICO sitio donde se decide de qué color es una fragancia.
+  Lo consumen la cartilla del catálogo, la ficha de producto, el carrito y el
+  muestrario de la portada: si el color se calculara en cada uno, el mismo
+  perfume saldría de dos colores distintos en dos páginas.
+
+  Por qué existe el color: en este tema el campo NO es decorativo ni sinestésico
+  —no dice «a qué huele»—, se muestrea de la FOTO REAL del frasco y su caja.
+  Eros es turquesa porque el frasco de Eros es turquesa. Es verificable de un
+  vistazo, y hace el catálogo navegable por lo único que el comprador novato sí
+  puede ver antes de oler.
+
+  Cómo lo controla el comerciante, sin metafields, con etiquetas del producto:
+
+      campo:7          → usa el campo número 7 de la paleta (1–8)
+      campo:#2E4A1F    → un color propio, el que sea
+      sobre:oscuro     → fuerza tinta oscura encima (por defecto: clara)
+
+  Sin etiqueta, el campo sale del id del producto: siempre el mismo para el
+  mismo producto, nunca un hueco gris.
+
+  Devuelve UNA línea, para partir por «|»:
+
+      #460E1B|#F5EFDD|4B-12|1
+       campo   tinta   cód  índice
+
+  Uso:
+      {%- capture c -%}{% render 'campo', producto: producto %}{%- endcapture -%}
+      {%- assign c = c | strip | split: '|' -%}
+      style="--campo: {{ c[0] }}; --sobre: {{ c[1] }};"
+{%- endcomment -%}
+
+{%- liquid
+  comment
+    Los ocho valores salen muestreados píxel a píxel del comp aprobado
+    (.impeccable/mocks/comp-b-muralla.png). El oro se aclaró de #A47625 a
+    #C9922B: el muestreado daba 4.37:1 contra la tinta y no llegaba a 4.5.
+  endcomment
+  assign campos = '#460E1B,#121A2D,#77562B,#263F9C,#E09CAB,#89491F,#219B91,#C9922B' | split: ','
+  assign tintas = 'claro,claro,claro,claro,oscuro,claro,oscuro,oscuro' | split: ','
+  assign letras = 'A,B,C,D,E,F,G,H' | split: ','
+
+  assign hex = ''
+  assign idx = 0
+  assign tinta = ''
+
+  for t in producto.tags
+    assign tl = t | downcase | strip
+    if tl contains 'campo:'
+      assign val = tl | remove: 'campo:' | strip
+      if val contains '#'
+        assign hex = val
+      else
+        assign idx = val | times: 1
+      endif
+    elsif tl contains 'sobre:'
+      assign tinta = tl | remove: 'sobre:' | strip
+    endif
+  endfor
+
+  comment
+    `modulo` sobre el id: determinista y estable. El +1 evita el índice 0, y
+    el `at_most` protege de una etiqueta campo:99 escrita a mano.
+  endcomment
+  if idx < 1 or idx > 8
+    assign idx = producto.id | modulo: 8 | plus: 1
+  endif
+
+  comment
+    Liquid NO evalúa un filtro dentro de los corchetes: `campos[idx | minus: 1]`
+    no devuelve nada y se traga el error en silencio. El índice se calcula antes
+    y se guarda en su propia variable.
+  endcomment
+  assign j = idx | minus: 1
+
+  if hex == blank
+    assign hex = campos[j]
+  endif
+  if tinta == blank
+    assign tinta = tintas[j]
+    comment
+      Un color propio del comerciante se asume oscuro: la tinta clara encima
+      es el caso que más veces acierta y el que el mundo usa por defecto.
+    endcomment
+  endif
+
+  if tinta == 'oscuro'
+    assign sobre = '#1A191E'
+  else
+    assign sobre = '#F5EFDD'
+  endif
+
+  comment
+    El código de cartilla. No es un dato inventado sobre el perfume: es la
+    referencia del muestrario, igual que en un abanico de pintura. Sale del
+    índice del campo y del id, así que es estable y no se repite dentro de la
+    misma columna.
+  endcomment
+  assign dd = producto.id | modulo: 89 | plus: 10
+  assign letra = letras[j]
+  assign codigo = idx | append: letra | append: '-' | append: dd
+-%}
+{{ hex }}|{{ sobre }}|{{ codigo }}|{{ idx }}

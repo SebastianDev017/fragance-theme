@@ -197,12 +197,12 @@
   transform: rotate(var(--ticker-inclina, 0deg));
   margin-block: clamp(1.5rem, 5vh, 4rem);
 }
-.ticker--tinta { background: var(--ink); color: #F7F2F8; }
+.ticker--tinta { background: var(--ink); color: var(--cream); }
 .ticker--claro { background: var(--paper); color: var(--ink); border-block: 1px solid var(--line-soft); }
-.ticker--gradiente {
-  color: var(--ink);
-  background: linear-gradient(96deg, var(--blush), var(--lavender) 52%, var(--sky));
-}
+/* El preset se sigue llamando "gradiente" porque su clave vive en presets ya
+   publicados y en templates/index.json; lo que cambia es lo que pinta: un
+   campo saturado, plano, sin degradado. */
+.ticker--gradiente { color: var(--cream); background: var(--campo-1); }
 .ticker--linea { color: var(--ink-2); border-block: 1px solid var(--line); }
 
 /* Dos copias de la lista y un desplazamiento del 50%: el corte cae justo

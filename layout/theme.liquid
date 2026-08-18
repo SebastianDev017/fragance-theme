@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#F7F5F8">
+  <meta name="theme-color" content="#E9E8E3">
   <link rel="canonical" href="{{ canonical_url }}">
   {%- if settings.favicon != blank -%}
     <link rel="icon" href="{{ settings.favicon | image_url: width: 64 }}">
@@ -31,13 +31,7 @@
   </style>
 
   <link rel="stylesheet" href="{{ 'dropscents.css' | asset_url }}">
-  {%- comment -%}
-    La escena 3D se carga bajo demanda y su URL tiene que salir de `asset_url`:
-    en el CDN de Shopify un import relativo entre assets del tema no resuelve
-    de forma fiable.
-  {%- endcomment -%}
   <script>
-    window.DropScentsAssets = { scene: "{{ 'dropscents-scene.js' | asset_url }}" };
     /* Los textos que escribe el JavaScript (avisos del chat, precios que
        cambian al elegir presentación) tienen que salir traducidos igual que
        el resto: se los pasa Liquid, no van escritos en el bundle. */
@@ -55,13 +49,26 @@
 <body class="template--{{ template.name | handle }}">
   <a class="visually-hidden" href="#main">{{ 'general.accesibilidad.skip_to_content' | t }}</a>
 
-  {%- comment -%} el campo de color de la marca, detrás de todo {%- endcomment -%}
-  <div class="field" aria-hidden="true">
-    <div class="field__blob field__blob--blush"></div>
-    <div class="field__blob field__blob--lav"></div>
-    <div class="field__blob field__blob--sky"></div>
-    <div class="field__grain"></div>
-  </div>
+  <!--
+    EL MUESTRARIO  ·  seed 24455b5c
+    THESIS: el decant es la muestra de pintura, y la tienda es el estándar de
+      color que la cataloga. Rechaza el hero de frasco a pantalla completa con
+      titular serif que envía toda la perfumería DTC.
+    OWN-WORLD: cartulina gris fría #E9E8E3 y tinta #1A191E; ocho campos planos
+      saturados muestreados de la foto real de cada frasco; esquina viva, cero
+      sombras, filete como única elevación; Clash Display a escala de campo,
+      Switzer diminuta, tracked y tabular para códigos, mililitros y precios.
+    STORY: probar no cuesta nada, porque lo que pagas por la muestra se te
+      descuenta del frasco. Entiende, elige un campo y se lleva la muestra.
+    FIRST VIEWPORT: rejilla a sangre sin canalones; la primera celda es negra
+      y carga titular, mecánica y botón; las demás son las fragancias, nombre
+      grande arriba y los tres precios reales anclados abajo.
+    FORM: la muralla de cartillas, composición B de tres, aprobada por el
+      usuario el 2026-08-18.
+    FINISH: unreviewed and undocumented is unfinished; this build ends with the
+      finish review, the verdict, DESIGN.md, and every shipping raster carrying
+      its provenance.
+  -->
 
   {% sections 'header-group' %}
 

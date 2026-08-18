@@ -1,7 +1,7 @@
 /* ---------------------------------------------------------------------------
    Punto de entrada de la MAQUETA LOCAL (index.html).
 
-   Existe para poder iterar la escena 3D y el diseño sin levantar Shopify.
+   Existe para poder iterar el diseño sin levantar Shopify.
    Escribe en el DOM el mismo marcado que después genera Liquid —mismas clases,
    mismos atributos data-*— y de ahí en adelante manda src/ui.js, que es el
    único comportamiento y no sabe de dónde salieron los datos.
@@ -14,6 +14,7 @@ import './fonts.css';
 import './styles.css';
 import './tienda.css';
 import './coleccion.css';
+import './muestrario.css';   /* la capa del mundo: va LA ÚLTIMA */
 import { FRAGANCIAS, ENVIO_AFUERA, dol, desde, foto } from './data.js';
 import { iniciar, $, $$ } from './ui.js';
 
@@ -53,4 +54,4 @@ $('#shelf').innerHTML = FRAGANCIAS.map((f) => `
 /* CTA del hero: el decant más barato del catálogo, no un número inventado */
 $('[data-hero-price]').textContent = dol(desde);
 
-iniciar({ cargarEscena: () => import('./scene.js') });
+iniciar();

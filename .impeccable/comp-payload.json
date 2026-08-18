@@ -1,0 +1,46 @@
+{
+  "title": "El Muestrario — tres composiciones del primer viewport",
+  "question": "El mundo ya está cerrado. Lo que se decide aquí es la COMPOSICIÓN: qué estructura gobierna la portada y, por herencia, el resto del tema. Elige una, o dime qué combinar.",
+  "options": [
+    {
+      "id": "comp-b",
+      "label": "La muralla de cartillas",
+      "kicker": "COMPOSICIÓN B",
+      "lineage": "la página índice de un estándar de color; el muro de muestras de la ferretería",
+      "thesis": "El catálogo entero es el primer viewport. No hay hero: hay ocho campos a sangre y la promesa vive dentro de uno de ellos.",
+      "palette": ["#4A0E1C", "#10182F", "#7A5A2E", "#2340A8", "#E2A2B4", "#8A4B23", "#17A398", "#17171A"],
+      "materials": ["campos de tinta plana a sangre", "cero gutters", "tabla de precios tabular en cada campo", "keyline fina como estado hover"],
+      "viewport": "Rejilla 4×2 sin gutters ocupando el 94% del alto. El campo superior izquierdo es negro y carga el titular, la mecánica y el botón. Los otros siete son las fragancias: nombre grande, casa + código, y los tres precios reales anclados abajo. El campo turquesa muestra el estado hover.",
+      "risk": "Densidad máxima desde el segundo cero: ocho precios y ocho nombres compiten. Si un campo no se calla, el titular se pierde. Y con 40 fragancias la rejilla deja de ser un viewport y pasa a ser scroll.",
+      "case": "Es la que más se parece a lo que el mundo es en la vida real. Cada campo ya es la tarjeta del PDP; colección y portada comparten una sola gramática. Nada que traducir después.",
+      "comp": ".impeccable/mocks/comp-b-muralla.png"
+    },
+    {
+      "id": "comp-a",
+      "label": "El abanico desplegado",
+      "kicker": "COMPOSICIÓN A",
+      "lineage": "el abanico de colores remachado que se abre en la mano",
+      "thesis": "El objeto entra en escena abriéndose. La interacción firma —desplegar, y despegar una cartilla— está impresa en la composición desde el primer fotograma.",
+      "palette": ["#EBEAE5", "#17171A", "#4A0E1C", "#2340A8", "#E2A2B4", "#17A398"],
+      "materials": ["cartillas troqueladas rotadas desde un remache", "solape real", "índice de códigos a pie de página", "titular en el margen libre"],
+      "viewport": "Titular a tres líneas arriba a la izquierda sobre el papel. El abanico se despliega desde un remache abajo al centro y barre hacia la derecha; la cartilla frontal (Sauvage Elixir) está entera, con sus tres precios y el botón impreso encima. Franja inferior con los ocho códigos.",
+      "risk": "Sólo una cartilla es legible; las otras siete quedan cortadas y su nombre truncado. Es la composición más bonita y la que menos información entrega. En móvil el abanico no cabe y hay que inventarle otra forma.",
+      "case": "Es la única que enseña el movimiento sin animarlo. Si la firma del tema va a ser el despliegue, aquí ya está prometida.",
+      "comp": ".impeccable/mocks/comp-a-abanico.png"
+    },
+    {
+      "id": "comp-c",
+      "label": "La muestra a escala",
+      "kicker": "COMPOSICIÓN C",
+      "lineage": "una sola muestra ampliada junto al riel técnico del estándar",
+      "thesis": "Un campo, un nombre gigante, y toda la aritmética a la derecha. La escala es el argumento: un número recibe un tamaño que ningún otro recibe.",
+      "palette": ["#17A398", "#EBEAE5", "#17171A", "#4A0E1C", "#2340A8"],
+      "materials": ["campo único al 68% del ancho", "riel tabular con filetes", "las tres etapas con el punto de compromiso marcado", "canto derecho con el índice del resto del catálogo"],
+      "viewport": "Campo turquesa a sangre con EROS a un tercio del alto de la pantalla. A la derecha, el riel: wordmark, tabla de precios alineada al decimal, las tres etapas (01 · 02 · 03 marcada), el botón negro y la línea de envío. En el canto, siete barras finas = las otras siete fragancias.",
+      "risk": "Es la más cercana a un póster, y por eso la que más fácil se lee como 'imagen bonita' en vez de tienda. Deja el 60% del campo vacío y sólo enseña una fragancia: el catálogo hay que ir a buscarlo.",
+      "case": "Es la que mejor explica la mecánica: las tres etapas y las tres líneas de precio están completas en el primer viewport, sin scroll.",
+      "comp": ".impeccable/mocks/comp-c-escala.png"
+    }
+  ],
+  "steer": true
+}

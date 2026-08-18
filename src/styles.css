@@ -1,43 +1,68 @@
 /* ===========================================================================
-   DropScents — sistema visual
+   DropScents — sistema visual: EL MUESTRARIO
 
-   El gradiente blush → lavanda → cielo sigue siendo la firma, pero MUY bajado
-   de intensidad: las fotos de los perfumes traen cada una sus propios colores
-   (frasco + caja) y si el fondo compite, la estantería se vuelve un carnaval.
-   Regla: el fondo es casi papel, el color fuerte lo pone el producto.
+   El abanico de colores de la ferretería. Nadie compra un galón sin pegar
+   tres muestras en la pared una semana; el decant es la muestra.
+
+   La página NO es clara ni oscura: es el color. Los campos saturados ocupan
+   regiones enteras y la cartulina sólo es lo que queda entre ellos.
    =========================================================================== */
 
-/* ---------- tokens ---------- */
 :root {
-  /* el gradiente de la marca, en su versión de fondo (lavada a propósito).
-     Los valores saturados de la primera propuesta quedan comentados al lado
-     por si algún día se quiere volver a subir el volumen.                   */
-  --blush:        #FFE6ED;   /* v1: #FFD7E4 */
-  --lavender:     #E8E1FF;   /* v1: #D8C9FF */
-  --sky:          #DEEFFF;   /* v1: #C4E3FF */
-  --pearl:        #F7F5F8;   /* fondo base */
-  --paper:        #FDFCFD;
+  /* ---------------------------------------------------------------------
+     El Muestrario — el abanico de colores de la ferretería.
 
-  /* tinta */
-  --ink:      #2B0F33;   /* ciruela profundo — 17:1 sobre el fondo */
-  --ink-2:    #5A2E68;   /* secundario — 9:1 */
-  --ink-3:    #866193;   /* meta — 4.9:1, sólo etiquetas */
-  --punch:    #E8356F;   /* único acento saturado, dosis mínima */
+     Ninguno de estos valores está estimado: salen muestreados píxel a píxel
+     del comp aprobado (.impeccable/mocks/comp-b-muralla.png). El adjetivo
+     no es un registro: "crema" cubre desde el casi blanco hasta el beige,
+     y donde no hay número el color se va solo hacia el sitio de siempre.
 
-  /* superficies */
-  --surface:      rgba(255, 255, 255, .74);
-  --surface-solid: #FFFFFF;
-  --line:         rgba(43, 15, 51, .11);
-  --line-soft:    rgba(43, 15, 51, .06);
+     Los NOMBRES no se tocan aunque suenen al mundo anterior (--pearl,
+     --punch): medio tema los nombra. Se remapean los VALORES.
+     --------------------------------------------------------------------- */
 
-  --shadow-s: 0 1px 2px rgba(43,15,51,.04), 0 4px 14px -8px rgba(43,15,51,.14);
-  --shadow-m: 0 2px 6px rgba(43,15,51,.04), 0 18px 44px -24px rgba(43,15,51,.24);
-  --shadow-l: 0 4px 10px rgba(43,15,51,.04), 0 40px 90px -44px rgba(43,15,51,.34);
+  /* cartulina y tinta */
+  --stock:    #E9E8E3;   /* la cartulina de muestra: gris FRÍO, no crema */
+  --stock-2:  #DFDED8;   /* rebaje: filas alternas, barras, campos inertes */
+  --cream:    #F5EFDD;   /* la tinta clara: texto reversado sobre campo */
+  --ink:      #1A191E;
+  --ink-2:    #46454B;
+  --ink-3:    #6E6C74;   /* 4.9:1 sobre --stock; sólo etiquetas */
+  --alerta:   #8E2318;   /* agotado y errores; vive en la familia del burdeos */
 
-  --r-md: 18px;
-  --r-lg: 26px;
-  --r-xl: 38px;
-  --r-pill: 999px;
+  /* alias heredados, remapeados */
+  --pearl:  #E9E8E3;
+  --paper:  #E9E8E3;
+  --punch:  #1A191E;     /* en este mundo el énfasis es la tinta, no un color */
+
+  /* Los ocho campos. Se muestrean de la FOTO REAL del frasco y su caja: es
+     lo que hace que el color no mienta. El orden es el del catálogo. */
+  --campo-1: #460E1B;   /* Dior · Sauvage Elixir      */
+  --campo-2: #121A2D;   /* Chanel · Bleu de Chanel    */
+  --campo-3: #77562B;   /* JPG · Le Male Elixir       */
+  --campo-4: #263F9C;   /* Herrera · Good Girl        */
+  --campo-5: #E09CAB;   /* Lancôme · La Vie Est Belle */
+  --campo-6: #89491F;   /* Armani · Stronger With You */
+  --campo-7: #219B91;   /* Versace · Eros             */
+  --campo-8: #C9922B;   /* YSL · Libre — aclarado del muestreo #A47625: no llegaba a 4.5:1 */
+
+  /* superficies: tinta plana. Ni vidrio, ni desenfoque, ni translúcidos. */
+  --surface:       #F1F0EC;
+  --surface-solid: #F5F4F0;
+  --line:      rgba(26, 25, 30, .20);
+  --line-soft: rgba(26, 25, 30, .09);
+
+  /* Un impreso no proyecta sombra sobre sí mismo. La elevación de este mundo
+     es el filete y la inversión de campo, no un halo. */
+  --shadow-s: none;
+  --shadow-m: none;
+  --shadow-l: none;
+
+  /* La cartilla tiene esquina viva. Cero es una decisión, no un descuido. */
+  --r-md: 0px;
+  --r-lg: 0px;
+  --r-xl: 0px;
+  --r-pill: 0px;
 
   /* UN SOLO contenedor para toda la página: nav, secciones y footer caen
      exactamente sobre la misma línea izquierda y derecha. --edge es el
@@ -98,20 +123,6 @@ img { max-width: 100%; display: block; }
 .visually-hidden {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
   overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
-}
-
-/* ---------- campo de color ---------- */
-.field {
-  position: fixed; inset: 0; z-index: -1; overflow: hidden;
-  background: linear-gradient(170deg, #FDF9FB 0%, var(--pearl) 45%, #F3F6FA 100%);
-}
-.field__blob { position: absolute; border-radius: 50%; filter: blur(120px); will-change: transform; }
-.field__blob--blush { width: 60vw; height: 60vw; left: -16vw; top: -20vw; opacity: .55; background: radial-gradient(circle at 40% 40%, var(--blush), transparent 66%); }
-.field__blob--lav   { width: 66vw; height: 66vw; right: -24vw; top: 14vh;  opacity: .48; background: radial-gradient(circle at 55% 45%, var(--lavender), transparent 64%); }
-.field__blob--sky   { width: 54vw; height: 54vw; left: 6vw;   bottom: -24vw; opacity: .42; background: radial-gradient(circle at 50% 50%, var(--sky), transparent 66%); }
-.field__grain {
-  position: absolute; inset: -50%; opacity: .3; mix-blend-mode: multiply; pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.42'/%3E%3C/svg%3E");
 }
 
 /* ---------- tipografía de sección ---------- */

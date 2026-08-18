@@ -9,52 +9,17 @@
  */
 {
   "sections": {
-    "hero_vitrina_9U6jXM": {
-      "type": "hero-vitrina",
-      "name": "t:secciones.vitrina.presets.chat",
+    "muestrario": {
+      "type": "muestrario",
       "settings": {
-        "imagen": "shopify://shop_images/c1d9e653741661d45d1c9a7f26578702.jpg",
-        "altura": "pantalla",
-        "corte": 50,
-        "velo": 35,
-        "zoom": 106,
-        "eyebrow": "Decants y frascos originales · Toda Venezuela",
-        "titulo_1": "Pruébalo en 5 ml.",
-        "titulo_2": "Cómpralo cuando estes seguro",
-        "subtitulo": "Los perfumes que ya conoces, en decant para vivirlos una semana en tu piel. Y si es el tuyo, el frasco completo al mismo precio que en Amazon — solo que aquí, y en dos días.",
-        "cta_texto": "Ver los decants",
-        "cta_url": "",
-        "cta2_texto": "Pregúntanos por el chat",
-        "cta2_url": "",
-        "cta2_chat": true,
-        "mostrar_tira": false,
-        "coleccion": "frontpage",
-        "tira_titulo": "Los que más nos piden",
-        "tira_limite": 8
-      }
-    },
-    "hero": {
-      "type": "hero-decant",
-      "settings": {
-        "coleccion": "frontpage",
-        "eyebrow": "Decants y frascos originales · Toda Venezuela",
-        "titulo_1": "Pruébalo en 5 ml.",
-        "titulo_2": "Cómpralo cuando",
-        "titulo_3": "estés seguro.",
-        "subtitulo": "Los perfumes que ya conoces, en decant para vivirlos una semana en tu piel. Y si es el tuyo, el frasco completo al mismo precio que en Amazon — solo que aquí, y en dos días.",
-        "cta_texto": "Ver decants desde",
-        "cta_url": "",
-        "cta2_texto": "Cómo funciona",
-        "cta2_url": "",
-        "nota": "Precios en dólares. ¿Prefieres pagar en bolívares?",
-        "nota_enlace": "Escríbenos por el chat",
-        "nota_cola": "y te pasamos el monto a la tasa del día.",
-        "final_eyebrow": "Y entonces sí",
-        "final_titulo": "Ya sabes que es el tuyo.",
-        "final_texto": "El frasco completo, sellado, al mismo precio que en Amazon — menos lo que pagaste por el decant.",
-        "final_cta": "Ver la cuenta completa",
-        "final_url": "",
-        "scroll_texto": "baja y sirve"
+        "cantidad": 8,
+        "columnas": 3,
+        "mostrar_indice": true,
+        "titulo": "Nadie pinta la casa sin la muestra",
+        "texto": "Decant de 5 o 10 ml. Lo que pagas por la muestra se te descuenta del frasco completo.",
+        "cta_texto": "Empieza por una muestra",
+        "cta2_texto": "Pregúntanos",
+        "cta2_chat": true
       }
     },
     "ritual": {
@@ -163,6 +128,51 @@
         "ancla": "cuenta"
       }
     },
+    "cinta": {
+      "type": "ticker",
+      "settings": {
+        "estilo": "tinta",
+        "tamano": 26,
+        "velocidad": 4,
+        "separador": "gota"
+      },
+      "blocks": {
+        "b1": {
+          "type": "frase",
+          "settings": {
+            "texto": "Decants desde 5 ml",
+            "icono": "gota"
+          }
+        },
+        "b2": {
+          "type": "frase",
+          "settings": {
+            "texto": "Envíos a toda Venezuela",
+            "icono": "camion"
+          }
+        },
+        "b3": {
+          "type": "frase",
+          "settings": {
+            "texto": "100% originales",
+            "icono": "escudo"
+          }
+        },
+        "b4": {
+          "type": "frase",
+          "settings": {
+            "texto": "Te descontamos el decant del frasco",
+            "destacado": true
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ]
+    },
     "estanteria": {
       "type": "estanteria",
       "settings": {
@@ -237,62 +247,6 @@
         "ancla": "claro"
       }
     },
-    "voces": {
-      "type": "voces",
-      "blocks": {
-        "b1": {
-          "type": "recibido",
-          "settings": {
-            "texto": "Marico el Sauvage me duró todo el día, ya voy a comprar el frasco",
-            "hora": "10:42"
-          }
-        },
-        "b2": {
-          "type": "enviado",
-          "settings": {
-            "texto": "Jajaja te lo dije. Te descuento el decant del frasco.",
-            "hora": "10:44"
-          }
-        },
-        "b3": {
-          "type": "recibido",
-          "settings": {
-            "texto": "Compré 3 decants para probar y me quedé con el Bleu. Los otros dos se los regalé a mi hermano jaja",
-            "hora": "18:07"
-          }
-        },
-        "b4": {
-          "type": "recibido",
-          "settings": {
-            "texto": "Lo que más me gustó fue no gastar 130 dólares en algo que no sabía si me iba a gustar. Llegó al día siguiente en Chacao.",
-            "hora": "21:15"
-          }
-        },
-        "b5": {
-          "type": "enviado",
-          "settings": {
-            "texto": "Ese es el punto",
-            "hora": "21:16"
-          }
-        }
-      },
-      "block_order": [
-        "b1",
-        "b2",
-        "b3",
-        "b4",
-        "b5"
-      ],
-      "settings": {
-        "ancho": "angosto",
-        "alinear": "centro",
-        "eyebrow": "Lo que nos escriben",
-        "titulo": "Sin filtro.",
-        "texto": "",
-        "cta": "",
-        "ancla": "voces"
-      }
-    },
     "cierre": {
       "type": "cierre",
       "settings": {
@@ -308,13 +262,12 @@
     }
   },
   "order": [
-    "hero_vitrina_9U6jXM",
-    "hero",
+    "muestrario",
     "ritual",
     "cuenta",
+    "cinta",
     "estanteria",
     "claro",
-    "voces",
     "cierre"
   ]
 }
