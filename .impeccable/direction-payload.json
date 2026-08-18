@@ -1,0 +1,128 @@
+{
+  "title": "DropScents — elige el mundo visual",
+  "question": "La tirada asignó El Talón. Quédatelo, toma una alternativa, o vuelve a tirar.",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "El Talón",
+      "kicker": "THE ROLL",
+      "lineage": "boleto troquelado, talón de equipaje, ticket de rifa",
+      "thesis": "El decant no es un producto: es el talón que te descuenta el frasco. La tienda entera es papel de boleto.",
+      "palette": ["#E24A1E", "#1A1C1A", "#0B5D51", "#D8D2C4"],
+      "materials": ["papel de boleto troquelado", "tinta de sello", "numeración secuencial", "perforación"],
+      "viewport": "Un talón a sangre ocupa la pantalla: arriba la fragancia, abajo la línea de perforación cruzando de borde a borde, y en el talón el número grande — lo que ESTE decant te descuenta del frasco. El botón va impreso dentro del talón, no flotando encima.",
+      "risk": "Si la perforación se vuelve adorno en vez de estructura, queda como una skin de scrapbook.",
+      "raised": [
+        { "from": "Plancton bioluminiscente (declinado)", "raise": "Un solo fenómeno manda en todo el campo: la perforación no bordea, atraviesa la página completa de lado a lado." },
+        { "from": "HyperCard (declinado)", "raise": "Un objeto en tres estados: el mismo talón pasa de sin validar a validado a canjeado; no son tres componentes distintos." },
+        { "from": "Muro de crisis anime (declinado)", "raise": "El bilingüe se vuelve composición: español en grande, inglés en versalitas espaciadas debajo, en vez de un selector escondido." },
+        { "from": "Hoffmann / Wiener Werkstätte (declinado)", "raise": "El paso de la perforación nunca se estira: se recuentan los dientes por viewport, jamás se escalan." }
+      ]
+    },
+    {
+      "id": "model-pick",
+      "label": "La Botica",
+      "kicker": "IMPECCABLE'S PICK",
+      "lineage": "botica de fórmulas magistrales, frasco ámbar, etiqueta mecanografiada",
+      "thesis": "El decant como dosis dispensada: un mostrador que despacha, no una vitrina de lujo.",
+      "palette": ["#3B2412", "#E9E4D8", "#1C3F2F", "#C0392B"],
+      "materials": ["vidrio ámbar", "etiqueta mecanografiada", "sello de caucho"],
+      "viewport": "Mostrador de frente: la fórmula, el frasco ámbar y encima la etiqueta con tu dosis y tus días escritos a máquina.",
+      "risk": "Es donde aterriza casi todo el mundo que diseña decants. Familiar y seguro, y por eso mismo el menos memorable."
+    },
+    {
+      "id": "challenger-sewing",
+      "label": "Sobre de Patrón",
+      "verdict": "competitive",
+      "lineage": "sobre de patrón de costura y su papel de seda",
+      "thesis": "Las tres presentaciones como vistas A, B y C de un mismo patrón: la talla que elegiste se dibuja sólida, las otras quedan punteadas.",
+      "palette": ["#D9CDB4", "#161412", "#C8102E", "#8FA9A0"],
+      "materials": ["papel de seda", "línea punteada de corte", "flecha de hilo"],
+      "viewport": "El sobre abre y el patrón se despliega: 5 ml, 10 ml y frasco como tres líneas anidadas sobre el mismo cuerpo.",
+      "case": "Gana claridad: el gradado anidado ES 5 ml / 10 ml / frasco, y el estado activo ya viene resuelto. Pierde identificación: el patrón de costura no es un objeto de este comprador.",
+      "risk": "Sin rigor de dibujo técnico se lee como scrapbook.",
+      "hero": "https://impeccable.style/worlds/cards/fashion-folded-worlds-sewing-pattern-envelope-hero.webp"
+    },
+    {
+      "id": "challenger-nixie",
+      "label": "Contador Nixie",
+      "verdict": "competitive",
+      "lineage": "contador de laboratorio de tubos nixie",
+      "thesis": "El producto es un número que cambia: lo que pagaste por el decant baja del frasco, dígito a dígito, dentro de tubos de vidrio.",
+      "palette": ["#FF6A00", "#0A0A0C", "#8A8F98", "#1A1410"],
+      "materials": ["tubo de vidrio", "chasis de acero pavonado", "malla de ánodo"],
+      "viewport": "Banco de tubos: el precio del frasco arriba, tu crédito debajo, y el total cruzando de una capa física a otra cuando eliges tamaño.",
+      "case": "Gana claridad: «las cantidades son la interfaz» describe literalmente el crédito del decant. Pierde identificación: el nixie no es un referente de este comprador.",
+      "risk": "Negro con naranja neón es uno de los clichés de interfaz generada; sin la física del tubo se cae solo.",
+      "hero": "https://impeccable.style/worlds/cards/signals-instruments-nixie-laboratory-counter-hero.webp"
+    },
+    {
+      "id": "challenger-plankton",
+      "label": "Plancton bioluminiscente",
+      "verdict": "declined",
+      "lineage": "mar nocturno encendido por plancton",
+      "thesis": "La estela de la fragancia como luz viva sobre agua negra.",
+      "palette": ["#04070D", "#2BD9FF", "#0A6E8C"],
+      "materials": ["agua negra", "luz viva"],
+      "viewport": "Campo negro donde el puntero deja una estela azul que se apaga.",
+      "case": "Fusiona mal: es el misticismo de perfumería de nicho, exactamente el primo del default de categoría, y sobre mar negro no se lee una tabla de precios.",
+      "kept": "Compromiso atmosférico total: un solo fenómeno manda en todo el campo.",
+      "risk": "Intimida al novato, que es justo lo contrario del producto.",
+      "hero": "https://impeccable.style/worlds/cards/reefs-bioluminescent-nocturnal-plankton-wake-stars-hero.webp"
+    },
+    {
+      "id": "challenger-hypercard",
+      "label": "HyperCard",
+      "verdict": "declined",
+      "lineage": "pila de tarjetas HyperCard",
+      "thesis": "Las 8 fragancias como una pila de tarjetas de un bit enlazadas por botones pintados a mano.",
+      "palette": ["#FFFFFF", "#000000", "#9C9C9C"],
+      "materials": ["trama de un bit", "botón pintado"],
+      "viewport": "Tarjeta fija en blanco y negro con botones dibujados y el rastro de vuelta.",
+      "case": "Fusiona mal: la nostalgia Mac de un bit no es de este público, y el blanco y negro mata la foto de producto que el novato necesita ver.",
+      "kept": "Un solo objeto en dos modos: leer y editar son el mismo objeto.",
+      "risk": "Sin color, una tienda de fragancias pierde su única prueba visual.",
+      "hero": "https://impeccable.style/worlds/cards/medium-native-hypercard-stack-shoebox-hero.webp"
+    },
+    {
+      "id": "challenger-anime",
+      "label": "Muro de crisis anime",
+      "verdict": "declined",
+      "lineage": "sala de mando de mecha noventero",
+      "thesis": "Cuenta regresiva monumental en naranja fósforo sobre negro absoluto, con bandas de peligro.",
+      "palette": ["#FF6B00", "#B6FF00", "#000000", "#E10600"],
+      "materials": ["fósforo", "banda de chevrones", "siete segmentos"],
+      "viewport": "Muro negro con dígitos gigantes contando y chevrones recorriendo el marco.",
+      "case": "Fusiona mal: fabrica urgencia y alarma para un producto cuyo trabajo entero es quitar el miedo. Es la llamada más cerrada de las declinadas: el público sí es anime-literate.",
+      "kept": "El bilingüe como estructura tipográfica, no como selector.",
+      "risk": "La semántica de crisis contradice el principio de producto número uno.",
+      "hero": "https://impeccable.style/worlds/cards/pop-culture-shelf-anime-command-center-hero.webp"
+    },
+    {
+      "id": "challenger-hoffmann",
+      "label": "Wiener Werkstätte",
+      "verdict": "declined",
+      "lineage": "showroom de orfebrería de Hoffmann",
+      "thesis": "Retícula estricta de cuadrados perforados, laca negra sobre blanco de galería.",
+      "palette": ["#FFFFFF", "#0A0A0A", "#B9BDC0"],
+      "materials": ["plata martillada", "laca negra"],
+      "viewport": "Celosía de celdas cuadradas donde la celda activa se rellena de negro sólido.",
+      "case": "Fusiona mal: el lujo vienés de 1905 es el default «perfume igual a lujo europeo» con otro sombrero, y lee caro justo para quien teme gastar.",
+      "kept": "La unidad nunca se estira: la retícula recuenta cuadrados por viewport.",
+      "risk": "Intimida al comprador que el producto quiere desarmar.",
+      "hero": "https://impeccable.style/worlds/cards/design-canon-hoffmann-gridsmith-showroom-hero.webp"
+    }
+  ],
+  "reroll": { "registers": ["safer", "bolder"] },
+  "buildPath": { "value": "code", "toggle": true },
+  "canon": true,
+  "canonCard": {
+    "label": "El estándar de la categoría",
+    "thesis": "Lo que esta categoría envía, ejecutado impecablemente.",
+    "palette": ["#0B0B0C", "#FFFFFF", "#B79A5B"],
+    "materials": ["fotografía macro de producto", "cuadrícula limpia"],
+    "viewport": "Hero a sangre con el frasco, titular corto y un botón.",
+    "risk": "Indistinguible de la competencia, por diseño."
+  },
+  "steer": true
+}
