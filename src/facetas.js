@@ -31,6 +31,9 @@ function conectarPanel(raiz) {
     abridor.setAttribute('aria-expanded', 'true');
     document.documentElement.style.overflow = 'hidden';
     window.DropScentsLenis?.stop();
+    /* El panel tapa la rejilla: el boton lleva la cuenta desde el primer
+       momento, no solo despues del primer filtro. */
+    pintarCuenta(raiz);
     $('.faceta > summary', panel)?.focus();
   };
 
@@ -157,9 +160,12 @@ async function pedir(url, seccion, raiz) {
       .querySelector('[data-facetas-resultados]');
     if (!nuevo) throw new Error('la respuesta no trae resultados');
 
+    const memoria = leerEstado(raiz);
     cont.innerHTML = nuevo.innerHTML;
     history.pushState({ facetas: true }, '', url);
     conectar(raiz);
+    devolverEstado(raiz, memoria);
+    if (memoria.abierto) pintarCuenta(raiz);
 
     /* Volver arriba de la rejilla, no de la página: la barra de filtros tiene
        que seguir a la vista para poder seguir tocando. */
@@ -177,6 +183,57 @@ async function pedir(url, seccion, raiz) {
   } finally {
     if (nuestra === peticion) cont.classList.remove('facetas-cargando');
   }
+}
+
+/* ===========================================================================
+   guardar y devolver el estado visible del panel
+   ---------------------------------------------------------------------------
+   El panel se reemplaza con el resto del trozo, porque sus contadores («8»,
+   «0») cambian con cada filtro y tienen que venir del servidor. Lo que no
+   puede cambiar es lo que el cliente estaba mirando.
+   =========================================================================== */
+
+function leerEstado(raiz) {
+  const panel = $('[data-facetas-panel]', raiz);
+  const cuerpo = $('.panel-filtros__cuerpo', raiz);
+  const foco = document.activeElement;
+  return {
+    abierto: !!panel?.classList.contains('is-on'),
+    desplegadas: $$('.faceta', raiz).map((f) => f.open),
+    scroll: cuerpo ? cuerpo.scrollTop : 0,
+    /* El foco se devuelve por nombre+valor, no por referencia: el elemento
+       que tenia el foco ya no existe despues del reemplazo. */
+    foco: foco && raiz.contains(foco) && foco.name
+      ? { name: foco.name, value: foco.value }
+      : null,
+  };
+}
+
+function devolverEstado(raiz, m) {
+  if (!m) return;
+  const panel = $('[data-facetas-panel]', raiz);
+  if (m.abierto && panel) {
+    panel.classList.add('is-on');
+    $('[data-facetas-abrir]', raiz)?.setAttribute('aria-expanded', 'true');
+  }
+  $$('.faceta', raiz).forEach((f, i) => {
+    if (m.desplegadas[i] !== undefined) f.open = m.desplegadas[i];
+  });
+  const cuerpo = $('.panel-filtros__cuerpo', raiz);
+  if (cuerpo) cuerpo.scrollTop = m.scroll;
+  if (m.foco) {
+    const vuelta = raiz.querySelector(
+      `[name="${CSS.escape(m.foco.name)}"][value="${CSS.escape(m.foco.value)}"]`
+    ) || raiz.querySelector(`[name="${CSS.escape(m.foco.name)}"]`);
+    vuelta?.focus({ preventScroll: true });
+  }
+}
+
+/** Con el panel abierto tapando la rejilla, el boton dice cuantas quedan. */
+function pintarCuenta(raiz) {
+  const cuenta = $('[data-facetas-cuenta]', raiz)?.textContent.trim();
+  const boton = $('[data-facetas-form] button[type="submit"]', raiz);
+  if (cuenta && boton) boton.textContent = cuenta;
 }
 
 /** Construye la URL a partir del formulario, sin los campos vacíos. */

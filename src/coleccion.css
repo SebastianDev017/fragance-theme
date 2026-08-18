@@ -156,6 +156,12 @@ body:has(.nav--fijo) .barra-filtros { top: 62px; }
   border-top: 1px solid var(--line-soft);
 }
 .panel-filtros__pie .btn--ink { flex: 1; justify-content: center; }
+@media (min-width: 900px) {
+  /* En un panel de 1.300 px, un boton al 100% mide como una valla. Los dos
+     botones se van a la derecha, a su ancho natural. */
+  .panel-filtros__pie { justify-content: flex-end; }
+  .panel-filtros__pie .btn--ink { flex: 0 0 auto; min-width: 13rem; }
+}
 
 /* ---------- una faceta ---------- */
 .faceta { border-bottom: 1px solid var(--line-soft); }
