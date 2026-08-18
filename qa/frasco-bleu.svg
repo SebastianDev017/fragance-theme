@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-label="Frasco de relleno">
+  <rect x="176" y="52" width="48" height="34" rx="7" fill="#0E1424"/>
+  <rect x="188" y="82" width="24" height="22" fill="#0E1424"/>
+  <rect x="112" y="100" width="176" height="228" rx="26" fill="#1B2440"/>
+  <rect x="128" y="196" width="144" height="118" rx="18" fill="#2A3760"/>
+  <rect x="146" y="230" width="108" height="12" rx="6" fill="#FFFFFF" opacity=".72"/>
+  <rect x="146" y="252" width="72" height="9" rx="4.5" fill="#FFFFFF" opacity=".52"/>
+  <text x="200" y="160" text-anchor="middle" font-family="Helvetica,Arial,sans-serif"
+        font-size="19" letter-spacing="3" fill="#EDF0FA" opacity=".9">BLEU</text>
+</svg>

@@ -336,15 +336,13 @@
       "zoom": "Acercamiento de la foto"
     },
     "muestrario": {
-      "nombre": "Muestrario",
-      "columnas_info": "Con 8 fragancias, 3 columnas dan una rejilla exacta de 3×3 (la cabecera ocupa la primera celda).",
-      "indice": "Franja de códigos al pie",
+      "nombre": "Portada",
       "presets": {
-        "muralla": "Muralla 3×3",
-        "ancha": "Muralla ancha",
-        "corta": "Muralla corta",
-        "chat": "Muralla con chat",
-        "columna": "Muralla estrecha"
+        "muralla": "Portada · cuatro fragancias",
+        "ancha": "Portada · ocho fragancias",
+        "corta": "Portada · tres fragancias",
+        "chat": "Portada · con chat",
+        "columna": "Portada · seis en tres columnas"
       }
     }
   }

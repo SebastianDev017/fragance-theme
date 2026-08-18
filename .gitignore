@@ -160,6 +160,7 @@ qa/*
 !qa/cinta.html
 !qa/coleccion.html
 !qa/mundo.html
+!qa/frasco-*.svg
 
 # OJO: assets/ NO se ignora. Ahi viven los bundles compilados y las fuentes,
 # y Shopify los necesita en el repositorio para desplegar el tema.

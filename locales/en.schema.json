@@ -336,15 +336,13 @@
       "zoom": "Photo zoom"
     },
     "muestrario": {
-      "nombre": "Sample deck",
-      "columnas_info": "With 8 fragrances, 3 columns give an exact 3×3 grid (the masthead takes the first cell).",
-      "indice": "Code strip at the foot",
+      "nombre": "Home hero",
       "presets": {
-        "muralla": "Wall 3×3",
-        "ancha": "Wide wall",
-        "corta": "Short wall",
-        "chat": "Wall with chat",
-        "columna": "Narrow wall"
+        "muralla": "Home · four fragrances",
+        "ancha": "Home · eight fragrances",
+        "corta": "Home · three fragrances",
+        "chat": "Home · with chat",
+        "columna": "Home · six in three columns"
       }
     }
   }
