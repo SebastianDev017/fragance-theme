@@ -18,8 +18,10 @@
     pagina y el titulo casi no se lee. Sin foto se cae a la cabecera simple.
   endcomment
   assign cabecera = section.settings.cabecera
-  if cabecera == 'foto' and collection.image == blank
-    assign cabecera = 'simple'
+  if cabecera == 'foto'
+    unless collection.image
+      assign cabecera = 'simple'
+    endunless
   endif
 
   assign cols = section.settings.columnas | default: 4
