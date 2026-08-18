@@ -151,8 +151,11 @@ vite.config.ts.timestamp-*
 
 # Capturas de QA: 31 MB de PNG que no aportan al tema.
 # Se quedan en local; el README explica que contienen.
-qa/
-# ...menos el banco de pruebas de la galeria, que es codigo y si se versiona.
+# `qa/*` y no `qa/`: git no vuelve a entrar en un DIRECTORIO excluido, asi que
+# con `qa/` las negaciones de debajo no aplicaban nunca y los bancos solo
+# seguian versionados por haberse anadido con `git add -f`.
+qa/*
+# ...menos los bancos de pruebas, que son codigo y si se versionan.
 !qa/galeria.html
 !qa/cinta.html
 !qa/coleccion.html
