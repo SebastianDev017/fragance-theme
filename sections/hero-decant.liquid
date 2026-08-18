@@ -14,6 +14,16 @@
   assign coleccion = section.settings.coleccion
 
   comment
+    Solo la PRIMERA seccion de la pagina puede llevar <h1>. Si se ponen dos
+    heroes (pasa mientras se decide cual queda), el segundo baja a <h2>: el
+    tamano lo pone la clase, no la etiqueta, asi que no cambia nada de aspecto.
+  endcomment
+  assign etiqueta_titular = 'h2'
+  if section.index == 1
+    assign etiqueta_titular = 'h1'
+  endif
+
+  comment
     Copia: si el ajuste está vacío, entra el texto traducido del idioma
     activo. Así el mismo tema habla español o inglés sin que el comerciante
     tenga que escribir nada dos veces.
@@ -60,13 +70,13 @@
         </p>
       {%- endif -%}
 
-      <h1 class="hero__h1">
+      <{{ etiqueta_titular }} class="hero__h1">
         <span class="line" data-hero-in>{{ t1 }}</span>
         <span class="line line--2" data-hero-in>{{ t2 }}</span>
         {%- if t3 != blank -%}
           <span class="line line--2" data-hero-in>{{ t3 }}</span>
         {%- endif -%}
-      </h1>
+      </{{ etiqueta_titular }}>
 
       <p class="hero__sub" data-hero-in>{{ sub }}</p>
 

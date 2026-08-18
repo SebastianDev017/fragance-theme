@@ -13,22 +13,34 @@
         <div class="foot__col" {{ block.shopify_attributes }}>
           {%- case block.type -%}
             {%- when 'menu' -%}
-              {%- if block.settings.titulo != blank -%}
-                <h2 class="foot__col-tit">{{ block.settings.titulo }}</h2>
-              {%- endif -%}
+              {%- comment -%}
+                Sin menu no hay columna. Un titulo con nada debajo se lee como
+                algo roto, no como algo pendiente de rellenar.
+              {%- endcomment -%}
               {%- if block.settings.menu != blank -%}
+                {%- if block.settings.titulo != blank -%}
+                  <h2 class="foot__col-tit">{{ block.settings.titulo }}</h2>
+                {%- endif -%}
                 <ul class="foot__col-links">
                   {%- for link in block.settings.menu.links -%}
                     <li><a href="{{ link.url }}">{{ link.title }}</a></li>
                   {%- endfor -%}
                 </ul>
+              {%- elsif request.design_mode -%}
+                {%- comment -%}
+                  En el editor si se avisa: si no, el comerciante no entiende
+                  por que el bloque que acaba de anadir no aparece.
+                {%- endcomment -%}
+                <p class="aviso-vacio aviso-vacio--suelto">{{ 'general.vacio.elige_menu' | t }}</p>
               {%- endif -%}
 
             {%- when 'texto' -%}
-              {%- if block.settings.titulo != blank -%}
-                <h2 class="foot__col-tit">{{ block.settings.titulo }}</h2>
+              {%- if block.settings.texto != blank -%}
+                {%- if block.settings.titulo != blank -%}
+                  <h2 class="foot__col-tit">{{ block.settings.titulo }}</h2>
+                {%- endif -%}
+                <div class="foot__col-txt rte">{{ block.settings.texto }}</div>
               {%- endif -%}
-              <div class="foot__col-txt rte">{{ block.settings.texto }}</div>
               {%- if block.settings.cta_chat != blank -%}
                 <button class="btn btn--ghost foot__chat" type="button" data-chat>
                   {% render 'icono', tipo: 'chat', tam: 16 %}

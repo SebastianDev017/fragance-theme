@@ -1,5 +1,9 @@
 {%- comment -%}
   404. No es un callejón sin salida: se ofrece el buscador y el catálogo.
+
+  El botón NO va a `/collections/all`: esa ruta solo responde si la tienda
+  tiene productos publicados en el canal Tienda online, y si no los tiene el
+  botón de la 404 lleva a otra 404. El índice de colecciones responde siempre.
 {%- endcomment -%}
 
 <section class="pagina pagina--404">
@@ -18,7 +22,7 @@
   </form>
 
   <p class="pagina__cta">
-    <a class="btn btn--ghost btn--lg" href="{{ routes.all_products_collection_url }}">
+    <a class="btn btn--ghost btn--lg" href="{{ section.settings.cta_url | default: routes.collections_url }}">
       {{ 'general.404.cta' | t }}
       {% render 'icono', tipo: 'flecha' %}
     </a>
@@ -29,6 +33,8 @@
 {
   "name": "t:secciones.404.nombre",
   "tag": "section",
-  "settings": []
+  "settings": [
+    { "type": "url", "id": "cta_url", "label": "t:comun.boton_enlace", "info": "t:secciones.404.cta_info" }
+  ]
 }
 {% endschema %}

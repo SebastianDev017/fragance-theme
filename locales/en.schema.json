@@ -79,6 +79,7 @@
   },
   "secciones": {
     "404": {
+      "cta_info": "Empty = the collections index, which always resolves.",
       "nombre": "404 page"
     },
     "articulo": {

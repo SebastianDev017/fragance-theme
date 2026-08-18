@@ -79,6 +79,7 @@
   },
   "secciones": {
     "404": {
+      "cta_info": "Vacío = el índice de colecciones, que responde siempre.",
       "nombre": "Página 404"
     },
     "articulo": {

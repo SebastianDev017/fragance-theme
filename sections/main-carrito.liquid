@@ -108,7 +108,7 @@
   {%- else -%}
     <div class="vacio-pagina">
       <p class="vacio-pagina__t">{{ 'carrito.vacio_texto' | t }}</p>
-      <a class="btn btn--ink btn--lg" href="{{ routes.all_products_collection_url }}">
+      <a class="btn btn--ink btn--lg" href="{{ section.settings.cta_url | default: routes.collections_url }}">
         {{ 'carrito.vacio_cta' | t }}
         {% render 'icono', tipo: 'flecha' %}
       </a>
@@ -120,6 +120,8 @@
 {
   "name": "t:secciones.carrito.nombre",
   "tag": "section",
-  "settings": []
+  "settings": [
+    { "type": "url", "id": "cta_url", "label": "t:comun.boton_enlace", "info": "t:secciones.404.cta_info" }
+  ]
 }
 {% endschema %}

@@ -14,6 +14,16 @@
 
 {%- liquid
   assign coleccion = section.settings.coleccion
+
+  comment
+    Solo la PRIMERA seccion de la pagina puede llevar <h1>. Si se ponen dos
+    heroes (pasa mientras se decide cual queda), el segundo baja a <h2>: el
+    tamano lo pone la clase, no la etiqueta, asi que no cambia nada de aspecto.
+  endcomment
+  assign etiqueta_titular = 'h2'
+  if section.index == 1
+    assign etiqueta_titular = 'h1'
+  endif
   assign cuantos = coleccion.products_count | default: 0 | plus: 0
   assign corte = section.settings.corte | default: 50
 
@@ -71,7 +81,7 @@
       {%- if t2 != blank %}<span class="vitrina__l">{{ t2 }}</span>{% endif -%}
     {%- endcapture -%}
     <div class="vitrina__fila" data-hero-in>
-      {% render 'texto-partido', etiqueta: 'h1', clase: 'vitrina__h1', contenido: titulo_html %}
+      {% render 'texto-partido', etiqueta: etiqueta_titular, clase: 'vitrina__h1', contenido: titulo_html %}
     </div>
 
     {%- if sub != blank -%}
