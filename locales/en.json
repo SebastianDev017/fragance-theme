@@ -37,7 +37,8 @@
     "bundle": {
       "titulo": "Add one more to try",
       "sub": "5 ml decants. Whatever you pay for each one comes off its full bottle.",
-      "anadir_aria": "Add {{ nombre }} to the cart"
+      "anadir_aria": "Add {{ nombre }} to the cart",
+      "vacio": "Start with one of these"
     }
   },
   "colecciones": {

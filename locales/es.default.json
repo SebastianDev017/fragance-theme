@@ -37,7 +37,8 @@
     "bundle": {
       "titulo": "Súmale otro por probar",
       "sub": "Decants de 5 ml. Lo que pagues por cada uno se te descuenta de su frasco.",
-      "anadir_aria": "Añadir {{ nombre }} al carrito"
+      "anadir_aria": "Añadir {{ nombre }} al carrito",
+      "vacio": "Empieza por uno de estos"
     }
   },
   "colecciones": {

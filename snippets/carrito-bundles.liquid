@@ -96,7 +96,16 @@
         lo deja pasar y `t` traduciría el texto del comerciante como si fuera
         una clave. El respaldo va con un `if`, como en el resto del tema.
       {%- endcomment -%}
-      {%- assign titulo = settings.bundle_titulo -%}
+      {%- comment -%}
+        Con el carrito vacío no hay «otro» que sumar: la sección se llama
+        distinto. El texto lo pasa quien renderiza, y sólo entonces se ignora
+        el título que haya puesto el comerciante en los ajustes (que está
+        escrito para el carrito con cosas dentro).
+      {%- endcomment -%}
+      {%- assign titulo = titulo_vacio -%}
+      {%- if titulo == blank -%}
+        {%- assign titulo = settings.bundle_titulo -%}
+      {%- endif -%}
       {%- if titulo == blank -%}{%- assign titulo = 'carrito.bundle.titulo' | t -%}{%- endif -%}
       <h3 class="bundles__h" id="bundles-t">{{ titulo }}</h3>
       <p class="bundles__sub">{{ 'carrito.bundle.sub' | t }}</p>

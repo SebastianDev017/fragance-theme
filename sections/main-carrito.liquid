@@ -124,6 +124,15 @@
         {% render 'icono', tipo: 'flecha' %}
       </a>
     </div>
+
+    {%- comment -%}
+      Un carrito vacío es la pantalla con MÁS intención de toda la tienda: se
+      llega a ella queriendo comprar y encontrándose con nada. Dejarla con un
+      titular y un botón desaprovecha a alguien que ya venía decidido, así que
+      aquí se enseñan decants de verdad — los mismos que sugiere el cajón.
+    {%- endcomment -%}
+    {%- assign titulo_vacio = 'carrito.bundle.vacio' | t -%}
+    {% render 'carrito-bundles', titulo_vacio: titulo_vacio %}
   {%- endif -%}
 </section>
 
