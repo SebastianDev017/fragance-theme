@@ -351,6 +351,13 @@
    encogerse por debajo de su contenido y la tarjeta desborda igual. */
 .is-recorrido .carrusel__slide,
 .is-recorrido .tarjeta { min-height: 0; }
+/* El `<li>` se estira a lo que mide la pista, pero la tarjeta de dentro tiene
+   altura automática y se sale por abajo igual: hay que encadenarla también.
+   Con `overflow-x: auto` en la pista, lo que sobresale por abajo no se ve —
+   crea desbordamiento vertical dentro de un carrusel horizontal, que es de
+   los desórdenes más difíciles de leer luego en el navegador. */
+.is-recorrido .carrusel__slide { display: flex; }
+.is-recorrido .carrusel__slide > .tarjeta { width: 100%; }
 /* Sólo el marco de la foto se estira: el cuerpo (marca, nombre, notas,
    precio) mide lo que mide su texto. Sin fijarlo, `.tarjeta__cuerpo` también
    lleva `flex: 1` y se reparte la tarjeta a medias con la foto. */
