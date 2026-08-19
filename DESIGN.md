@@ -139,28 +139,52 @@ contenedor, centrada y despegada del canto superior. El documento le deja su
 hueco con `body { padding-top: var(--nav-hueco) }`; si se toca el alto de la
 barra, se toca ese token.
 
+El hueco entre tarjetas de **cualquier** tira horizontal —la marquesina de la
+portada y los carruseles de colección— sale de un solo token,
+`--hueco-carrusel: clamp(1rem, 2vw, 1.75rem)`. Dos tiras a distinta distancia
+en la misma página se leen como un descuido.
+
 Rejilla del catálogo: `repeat(var(--cols), 1fr)` → 2 columnas por debajo de
 1000 px → 1 columna por debajo de 560. En móvil la tarjeta se ve grande a
 propósito: el producto es lo que hay que juzgar.
 
 ## Movimiento
 
-Dos momentos, y sólo dos.
+El movimiento hace tres trabajos, y ninguno es «que se note que hay
+animación»: **retener** (algo que se mueve detiene la mano), **jerarquizar**
+(el orden de entrada dice por dónde se empieza a leer) y **responder** (el
+sitio contesta a lo que se hace con él).
 
 **El carrusel de la portada.** Una pista que corre de derecha a izquierda en
-bucle continuo, y se detiene con `:hover` y con `:focus-within`. Bucle de CSS
+bucle continuo y se detiene con `:hover` y con `:focus-within`. Bucle de CSS
 puro: dos copias de la lista y `translateX(-50%)`. Es el único movimiento
-permanente de la página, y su trabajo es retener, no decorar.
+permanente de la página, y su trabajo es retener.
 
-**La entrada de las rejillas.** Las tarjetas aparecen en orden de lectura,
-**una vez**: `--i` por tarjeta y `animation-delay: calc(var(--i) * 70ms)`,
-desde `translateY(18px)` y opacidad 0.
+**El recorrido.** El carrusel de colección puede clavarse en la ventana y
+avanzar con el scroll de la página: seguir bajando es seguir viendo catálogo.
+Se enciende por sección desde el editor, sólo en pantalla ancha, y sólo si hay
+recorrido que hacer.
 
-Ambos bajo `prefers-reduced-motion: no-preference`. Con movimiento reducido el
-carrusel se queda quieto y se recorre con el dedo.
+**Los titulares se descubren línea a línea**, desde debajo de un corte, con
+`expo.out` y 85 ms entre líneas. Nunca aparecen: se destapan.
 
-Los hover son suaves y cortos (`--t: .28s`): la tarjeta sube 6 px y sube de
-sombra, la foto escala 1.04.
+**Las rejillas entran en orden de lectura, una vez**: `--i` por tarjeta y
+`animation-delay: calc(var(--i) * 70ms)`, desde `translateY(18px)`.
+
+**El cajón del carrito se llena de arriba abajo.** Se repinta entero en cada
+cambio, y sin nada que marque el orden cuesta ver qué acaba de cambiar.
+
+**Las respuestas al puntero** son cortas y pequeñas: la tarjeta sube 6 px, la
+foto escala 1.04, el botón se acerca un quinto de la distancia al cursor
+(`--t: .28s`). Un imán de 20 px no confirma nada, obliga a perseguir.
+
+**El frasco vuela al carrito** al añadirlo. Es la única confirmación que no
+necesita escribir un cartel.
+
+Todo bajo `prefers-reduced-motion: no-preference`. Con movimiento reducido el
+carrusel se queda quieto y se recorre con el dedo, los titulares salen puestos
+y no hay ni arrastre ni imán ni vuelo. Lo que necesita puntero fino tampoco se
+monta en táctil: el arrastre nativo del sistema es mejor que el nuestro.
 
 El scroll lo lleva **Lenis** (`window.DropScentsLenis`). Consecuencia práctica
 al depurar: `window.scrollTo` no mueve nada.
@@ -196,6 +220,7 @@ El tema empuja, y lo hace con cosas que son ciertas:
 | los decants sugeridos en el carrito | el sí difícil ya está dicho; sumar $8 no es una decisión nueva |
 | la barra de compra fija en móvil | el botón vuelve justo cuando se termina de decidir |
 | el aviso de existencias | escasez REAL, leída del inventario de Shopify |
+| el frasco que vuela al carrito | cierra el bucle de la acción: se ve que pasó, y adónde fue |
 
 El límite es duro y no se mueve: **nada de lo que empuja puede ser falso.** No
 hay contadores inventados, no hay temporizadores, no hay «12 personas viendo
@@ -207,7 +232,10 @@ Cuando no hay dato, no se dibuja nada.
 - **No hay antetítulos.** El titular se sostiene solo. El ajuste existe sin
   valor por defecto por si el comerciante quiere uno.
 - **No hay prueba social.** El negocio aún no ha lanzado y no tiene clientes;
-  la sección que enviaba testimonios inventados se eliminó.
+  la sección que enviaba testimonios inventados se eliminó. Ni en el copy: el
+  titular del catálogo decía «Los que siempre nos piden», que es lo que dice
+  una tienda con clientes. Ahora dice lo que sí es cierto —que son fragancias
+  que ya se reconocen— y de paso es un argumento mejor.
 - **No se repite el catálogo** en la portada.
 - **No hay esquinas vivas, ni sombras negras, ni degradados en el texto.**
 - **No hay contadores de escasez inventados** ni temporizadores de cuenta atrás.

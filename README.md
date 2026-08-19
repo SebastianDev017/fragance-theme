@@ -205,6 +205,90 @@ Tres cosas medidas en la tienda, no supuestas:
 mueve sola volvía a dispararse y las apagaba. Ese era el bug de «los productos
 desaparecen al terminar de cargar».
 
+### El recorrido: la tira avanza con el scroll
+
+El carrusel de colección tiene dos formas de avanzar, y se elige por sección
+en el editor («Cómo avanza»). La segunda —**con el scroll de la página**— clava
+la sección en la ventana y traduce el scroll vertical en avance horizontal:
+seguir bajando es seguir viendo colección. Trae su propio preset.
+
+Cuatro decisiones que sostienen el efecto:
+
+- **se mueve el `scrollLeft` de la pista, no un `transform`.** La pista sigue
+  siendo un contenedor de scroll de verdad, así que el teclado, el dedo y el
+  lector de pantalla la recorren igual si el JavaScript no llega o si se
+  decide desmontar el efecto. Con un `transform` la lista quedaría
+  inalcanzable por cualquier otro medio;
+- **sólo en pantalla ancha y sin movimiento reducido.** En el móvil una tira
+  que secuestra el scroll pelea contra el único gesto que tiene el pulgar. Con
+  `gsap.matchMedia()` el efecto se monta y se **desmonta** solo al cruzar el
+  umbral;
+- **si no hay recorrido que hacer, no se engancha nada.** Clavar una sección
+  para no mover nada es la peor versión de este efecto;
+- **la sección mide exactamente lo que queda de ventana** por debajo de la
+  cabecera fija, y de ahí para dentro todo es flexible (`min-height: 0` en
+  toda la cadena). Es la única forma de garantizar que la tarjeta cabe entera:
+  mientras el scroll gobierna la tira, una tarjeta cortada por abajo no se
+  puede terminar de ver — no hay scroll con el que bajar.
+
+⚠️ **`--nav-hueco` no se puede leer del `:root` desde JavaScript.** Una
+propiedad personalizada devuelve su **texto**, no un valor calculado, así que
+`getPropertyValue('--nav-hueco')` da la cadena `clamp(5.4rem, 9vh, 7rem)` y
+`parseFloat` la convierte en `NaN`. El mismo número, ya en píxeles, está en el
+`padding-top` del `body`. Con el `NaN` la sección se clavaba en `top: 0` y el
+titular salía por debajo de la cabecera.
+
+También se apaga el `scroll-snap` mientras el recorrido manda: tira de la
+pista hacia la tarjeta más cercana y con el scroll gobernando la posición eso
+se siente como un tirón en cada paso.
+
+### La capa de movimiento
+
+`src/animacion.js`. Cada pieza tiene un trabajo; ninguna está para que se note
+que hay animación:
+
+| pieza | plugin | qué hace por la página |
+|---|---|---|
+| titulares que se descubren línea a línea | SplitText (`mask: 'lines'`) | jerarquía: dice por dónde se empieza a leer |
+| tiras que se tiran con el ratón y siguen por inercia | Draggable + Inertia | en el escritorio no hay gesto de arrastre, y una tira que sólo avanza con flechas se recorre a medias |
+| imán en botones y flechas | `gsap.quickTo` | confirma dónde hay que pulsar antes de pulsar |
+| el frasco vuela al carrito | `Flip.fit` | la única respuesta que dice «sí, se añadió» sin escribir un cartel |
+| el cajón se llena en orden | stagger | el carrito se repinta entero en cada cambio; sin orden, cuesta ver qué acaba de cambiar |
+
+Todo se apaga entero con `prefers-reduced-motion`, y lo que necesita puntero
+fino (el arrastre, el imán) no se monta siquiera en táctil.
+
+Desde GSAP 3.13 estos plugins dejaron de estar detrás del club, así que entran
+en el bundle como cualquier otro. El coste es real: 98 KB comprimidos.
+
+⚠️ **`Flip.fit(clon, foto, { absolute: true })` deja el clon en coordenadas de
+DOCUMENTO** mientras los dos extremos del vuelo se miden con
+`getBoundingClientRect`, que son coordenadas de **ventana**. Añadir al carrito
+con la página bajada mandaba el frasco fuera de la pantalla. El clon va
+`fixed`, y el trayecto lo devuelve el propio `Flip.fit` como tween.
+
+⚠️ **La tarjeta entera es un enlace.** Sin cancelar el clic que cierra un
+arrastre, soltar la tira te lleva a la ficha del producto que quedó debajo del
+puntero.
+
+### Lo que leen las máquinas
+
+`snippets/datos-seo.liquid`, una sola vez en el `<head>`. Descripción, tarjetas
+para compartir y un `@graph` con `Store`, `WebSite`, y según la página
+`Product` (con una oferta real por variante), `CollectionPage`, `BlogPosting` y
+`BreadcrumbList`. Las preguntas frecuentes se declaran aparte, desde los
+bloques **reales** de la sección: si el comerciante cambia una respuesta en el
+editor, cambia lo que lee el buscador.
+
+**Regla que no se rompe: aquí no se declara nada que la tienda no tenga.** Sin
+reseñas no hay `aggregateRating`; sin política de devolución escrita no hay
+`hasMerchantReturnPolicy`. Un dato estructurado inventado es exactamente la
+clase de cosa por la que Google retira los resultados enriquecidos.
+
+Las preguntas se declaran **en una sola página**. La sección vive también en
+producto y colección, y la misma lista repetida en veinte fichas no suma: se
+diluye. Es un ajuste, con la razón escrita al lado.
+
 ### Los ajustes del tema
 
 Todo lo que el comerciante puede mover vive en `snippets/tokens.liquid`, que
@@ -392,7 +476,32 @@ algo, manda lo que escribió. Así el tema recién instalado ya se lee entero en
 los dos idiomas sin que nadie tenga que traducir nada, y quien quiera su propia
 voz sólo tiene que escribirla.
 
-### Dos reglas de schema que `theme check` no mira
+### Tres cosas que `theme check` no ve y Shopify sí
+
+Las tres tienen el mismo síntoma —el archivo no llega al tema y nadie dice por
+qué— y las tres cuestan una tarde si no se sabe dónde mirar.
+
+#### Una llave suelta dentro de un `{{ }}`
+
+`{{ shop.url | append: '?q={search_term_string}' }}` **tumba el archivo
+entero**. El lexer de Liquid de Shopify ve la llave, se pierde buscando el
+cierre y rechaza el fichero completo; la página dice «Could not find asset», que
+es exactamente lo que diría si nunca se hubiera subido. Ni `theme check` ni el
+validador de Shopify lo ven. Lo canta:
+
+```bash
+shopify theme push --only snippets/datos-seo.liquid
+# Liquid syntax error (line 138): Variable '{{ ... }}' was not properly
+# terminated with regexp: /\}\}/
+```
+
+Dentro de un `{% capture %}` las llaves son texto y no pasa nada.
+
+⚠️ Corolario, y es lo caro: **cuando un archivo nuevo no aparece en el tema, no
+es la sincronización — es que el archivo no compila.** Un `push` por CLI de ese
+único archivo da el motivo en un segundo.
+
+#### Dos reglas de schema
 
 Shopify rechaza el **archivo de sección entero** si el `{% schema %}` incumple
 alguna de estas dos, y no avisa por ningún sitio: la sección simplemente no se
