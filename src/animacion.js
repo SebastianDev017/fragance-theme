@@ -96,33 +96,74 @@ function titulares(raiz = document) {
    producto que quedó debajo del puntero.
    --------------------------------------------------------------------------- */
 
-function tirar(raiz = document) {
-  if (REDUCIDO || !PUNTERO_FINO) return;
+const arrastres = new WeakMap();
+const pistas = new Set();
 
-  $$('[data-carrusel-pista]', raiz).forEach((pista) => {
-    if (pista.dataset.tirable) return;
-    /* El recorrido gobierna la posición desde el scroll de la página: dos
-       manos en el mismo volante. */
-    if (pista.closest('[data-recorrido]')) return;
-    if (pista.scrollWidth - pista.clientWidth < 40) return;
-    pista.dataset.tirable = '1';
+/** Monta o desmonta el arrastre según si la tira tiene de verdad recorrido.
+ *  Se vuelve a preguntar al cambiar el ancho: un carrusel de tres tarjetas
+ *  desborda en una ventana estrecha y no desborda en una ancha, y un `grab`
+ *  sobre algo que no se mueve promete lo que no hay. */
+function revisarTira(pista) {
+  const puede = pista.scrollWidth - pista.clientWidth >= 40;
+  const ya = arrastres.get(pista);
 
-    let arrastrado = 0;
-
-    Draggable.create(pista, {
+  if (puede && !ya) {
+    const [instancia] = Draggable.create(pista, {
       type: 'scrollLeft',
       inertia: true,
       dragClickables: true,
       cursor: 'grab',
       activeCursor: 'grabbing',
-      onPress() { arrastrado = 0; },
-      onDrag() { arrastrado = Math.max(arrastrado, Math.abs(this.deltaX)); },
+      onPress() { pista.dataset.arrastrado = '0'; },
+      onDrag() {
+        pista.dataset.arrastrado = String(
+          Math.max(Number(pista.dataset.arrastrado || 0), Math.abs(this.deltaX))
+        );
+      },
     });
+    arrastres.set(pista, instancia);
+  } else if (!puede && ya) {
+    ya.kill();
+    arrastres.delete(pista);
+    pista.style.cursor = '';
+  }
+}
 
-    pista.addEventListener('click', (e) => {
-      if (arrastrado > 6) { e.preventDefault(); e.stopPropagation(); }
-    }, true);
+function tirar(raiz = document) {
+  if (REDUCIDO || !PUNTERO_FINO) return;
+
+  $$('[data-carrusel-pista]', raiz).forEach((pista) => {
+    /* El recorrido gobierna la posición desde el scroll de la página: dos
+       manos en el mismo volante. */
+    if (pista.closest('[data-recorrido]')) return;
+
+    if (!pistas.has(pista)) {
+      pistas.add(pista);
+      /* El detalle que nadie prueba: la tarjeta entera es un enlace. Sin
+         cancelar el clic que cierra un arrastre, soltar la tira te lleva a la
+         ficha del producto que quedó debajo del puntero. */
+      pista.addEventListener('click', (e) => {
+        if (Number(pista.dataset.arrastrado || 0) > 6) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }, true);
+    }
+    revisarTira(pista);
   });
+}
+
+/* Se vuelve a mirar cuando el ancho de las tarjetas ya es el definitivo: con
+   las fuentes puestas y las fotos medidas, no antes. */
+if (!REDUCIDO && PUNTERO_FINO) {
+  let temporizador = null;
+  const repasar = () => {
+    clearTimeout(temporizador);
+    temporizador = setTimeout(() => pistas.forEach(revisarTira), 150);
+  };
+  window.addEventListener('resize', repasar);
+  window.addEventListener('load', repasar);
+  document.fonts?.ready.then(repasar);
 }
 
 /* ---------------------------------------------------------------------------
