@@ -537,6 +537,39 @@ python tools/check-locales.py   # ninguna clave de idioma sin traducir
 
 Las dos se pasan antes de cada push. `theme check` no sustituye a ninguna.
 
+### Los presets, y cómo se revisan
+
+Un preset es un paquete de ajustes con nombre. Es el mecanismo para NO tener
+seis secciones casi iguales: la sección es una y los presets sacan de ella la
+rejilla ancha, el muro, el dúo, la tira, el escaparate y el recorrido.
+
+Shopify no valida un preset en ningún sitio. `tools/check-presets.py` mira las
+dos reglas que tumban el archivo entero, pero no dice si la sección
+**renderiza** bien con esos ajustes. Para eso:
+
+```bash
+python tools/qa-presets.py     # instancia los 45 presets en templates/index.presets*.json
+shopify theme push --store <tienda> --unpublished --theme "QA presets"
+# y se miran en <tienda>?preview_theme_id=<id>&view=presets1|2|3
+```
+
+Máximo **25 secciones por plantilla**, así que se reparten en varias. Las
+plantillas están en `.gitignore`: viven sólo en el borrador de QA.
+
+Esa pasada es la que encontró el titular que prometía «seis maneras» con un
+preset de cuatro, y la que sacó a la luz lo de abajo.
+
+⚠️ **En un plural, la variable tiene que llamarse `count`.** Es la que mira
+Liquid para elegir entre `one` y `other`. Con cualquier otro nombre no elige
+nada y escupe el diccionario entero en mitad de la página:
+
+```
+{"one"=>"Una manera de oler distinto.", "other"=>"{{ count }} maneras…"}
+```
+
+Interpolar sí funciona con cualquier nombre (`t: n: 3` rellena `{{ n }}`); lo
+que exige `count` es **elegir la forma**.
+
 ### Dos caminos de despliegue, y cuál manda
 
 El tema está conectado por GitHub, así que **el repositorio es la fuente de
