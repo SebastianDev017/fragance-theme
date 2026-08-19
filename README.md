@@ -271,6 +271,22 @@ con la página bajada mandaba el frasco fuera de la pantalla. El clon va
 arrastre, soltar la tira te lleva a la ficha del producto que quedó debajo del
 puntero.
 
+⚠️ **`Draggable` de tipo `scrollLeft` envuelve el contenido del contenedor en
+un `<div>` propio** para poder arrastrarlo. La pista es un `<ul>` en flex y
+sus `<li>` llevan el ancho en `flex-basis`: con un div en medio dejan de ser
+hijos del flex, pierden el ancho y **el carrusel colapsa en una sola tarjeta
+del tamaño de la pantalla** — a unos anchos sí y a otros no, porque el
+arrastre sólo se monta si antes había desbordamiento. Y de paso rompe la lista
+para el lector de pantalla. Se arrastra un elemento **suelto**, que nunca entra
+en el documento, y su `x` se copia al `scrollLeft`.
+
+⚠️ **`isolation: isolate` abre un contexto de apilamiento**, así que el
+`z-index` de lo que va dentro sólo vale ahí dentro. Las flechas de la galería
+de la tarjeta (z-index 3, dentro del marco aislado) quedaban por debajo del
+enlace que cubre la tarjeta entera (z-index 2, fuera): se veían, pero el clic
+lo recibía el enlace y en vez de cambiar de foto se iba a la ficha. Se arregla
+subiendo el **contenedor** aislado, no lo de dentro.
+
 ### Lo que leen las máquinas
 
 `snippets/datos-seo.liquid`, una sola vez en el `<head>`. Descripción, tarjetas
