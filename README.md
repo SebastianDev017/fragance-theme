@@ -129,6 +129,73 @@ consola en la §6. Y ojo con dos trampas que ya costaron una ronda:
 - el vidrio es **semitransparente**: hay que componer las capas hasta el
   `body` para saber el fondo real, no leer el `background-color` del padre.
 
+### El carrito
+
+Se elige desde la **cabecera**: cajón lateral o sólo página. El cajón lleva lo
+mismo que la página —líneas, cantidades, subtotal, barra de envío gratis y
+decants sugeridos— porque quien compra desde el lateral no debería recibir
+menos información. El umbral de envío y la colección de sugerencias son
+**ajustes del tema**, compartidos por los dos, para que nunca digan cosas
+distintas.
+
+Reparto de archivos:
+
+| archivo | para qué |
+|---|---|
+| `snippets/carrito-drawer.liquid` | el marcado del panel |
+| `sections/carrito-drawer.liquid` | envoltorio, sólo para la Section Rendering API |
+| `snippets/carrito-envio.liquid` | la barra del envío gratis |
+| `snippets/carrito-bundles.liquid` | los decants sugeridos |
+| `src/carrito.js` | el comportamiento |
+
+⚠️ **El JavaScript no calcula precios.** Cada cambio se manda a Shopify y
+luego se pide a Liquid la sección recalculada (`/?section_id=carrito-drawer`).
+Un carrito que suma en el cliente acaba enseñando un total distinto al del
+checkout, y ese es el bug que más caro sale.
+
+Sin JavaScript todo sigue funcionando: el icono es un enlace real a `/cart`,
+las cantidades son un `<form>` con `updates[]` posicionales y cada sugerencia
+es su propio `<form>` a `/cart/add`.
+
+**Cuando Shopify dice que no** (un 422 por falta de existencias, lo más
+común), se lee el cuerpo de la respuesta y se enseña el motivo dentro del
+cajón, y se repinta igual para que el número del input vuelva al valor
+verdadero. Tragarse el 422 dejaba al cliente pulsando «+» sin que pasara nada.
+
+### Los avisos de existencias
+
+`snippets/urgencia.liquid`. **Salen del inventario REAL de Shopify o no salen.**
+Se dibujan sólo si el comerciante lo activa, la variante lleva seguimiento de
+inventario y quedan pocas unidades de verdad. Si el producto no lleva
+seguimiento no se pinta nada: el silencio es la respuesta correcta. Un
+«quedan 2» falso funciona una vez y quema la tienda para siempre.
+
+La nota de entrega de la ficha es urgencia honesta de otro tipo: no dice
+«corre que se acaba», dice cuándo lo tienes en la mano. El comerciante la
+escribe, y tiene que ser verdad.
+
+### La portada es un carrusel
+
+Bucle de CSS puro, la misma técnica que la cinta: la lista se imprime **dos
+veces** y la animación desplaza el 50%, así que el salto cae donde empieza la
+segunda copia. Sin JavaScript. Se detiene con `:hover` y con `:focus-within`,
+y con `prefers-reduced-motion` se queda quieto y se recorre con el dedo.
+
+La segunda copia va `aria-hidden` y sus enlaces con `tabindex="-1"`: para un
+lector de pantalla el catálogo aparece **una** vez.
+
+Dos cosas medidas en la tienda, no supuestas:
+
+- con pocas fragancias la pista mide menos que la ventana y al saltar al 50%
+  se ve el hueco → la lista se repite dentro de cada copia hasta juntar 10;
+- 112 s por vuelta no se lee como «se mueve», se lee como quieto. Unos 48 s
+  con ocho fragancias es el paso donde se nota sin marear.
+
+⚠️ Las tarjetas del carrusel **no** llevan `data-reveal-card`. El reveal es un
+`gsap.from(opacity: 0)` con `ScrollTrigger.batch`, y sobre una pista que se
+mueve sola volvía a dispararse y las apagaba. Ese era el bug de «los productos
+desaparecen al terminar de cargar».
+
 ### La convención que sostiene todo
 
 El tema identifica las variantes **por su nombre**, no por su posición:
@@ -240,9 +307,10 @@ nada a un tercero en runtime.
 ### El primer viewport
 
 `sections/muestrario.liquid` es la portada: un titular centrado con aire, dos
-píldoras y una fila de tarjetas de vidrio con el frasco flotando sobre su
-tinte y **una** línea de precio, la de entrada. El precio del frasco completo
-vive en la ficha y en el comparador.
+píldoras, la línea que quita el miedo y un carrusel de tarjetas de vidrio con
+el frasco flotando sobre su tinte y **una** línea de precio, la de entrada. El
+precio del frasco completo vive en la ficha y en el comparador. El comerciante
+puede volver a rejilla desde el editor.
 
 El archivo conserva el nombre `muestrario` a propósito, aunque la clase CSS
 sea `.portada`: `templates/index.json` lo referencia por tipo y el editor de

@@ -121,8 +121,10 @@ Un solo contenedor para toda la página: `--maxw: 1360px`, `--gutter:
 clamp(1.25rem, 4vw, 3rem)`, y `--edge` es lo que sobra a los lados. Cabecera,
 secciones y pie caen sobre la misma línea izquierda y derecha.
 
-La cabecera es una **píldora flotante** `sticky`, no una barra: ancho del
-contenedor, centrada, separada del canto superior.
+La cabecera es una **píldora flotante FIJA**, no una barra: ancho del
+contenedor, centrada y despegada del canto superior. El documento le deja su
+hueco con `body { padding-top: var(--nav-hueco) }`; si se toca el alto de la
+barra, se toca ese token.
 
 Rejilla del catálogo: `repeat(var(--cols), 1fr)` → 2 columnas por debajo de
 1000 px → 1 columna por debajo de 560. En móvil la tarjeta se ve grande a
@@ -130,10 +132,19 @@ propósito: el producto es lo que hay que juzgar.
 
 ## Movimiento
 
-Un solo momento orquestado, no efectos sueltos. Las tarjetas entran en orden de
-lectura, **una vez** al cargar: `--i` por tarjeta y `animation-delay: calc(var(--i) * 70ms)`,
-desde `translateY(18px)` y opacidad 0, con `--ease: cubic-bezier(.22,1,.36,1)`.
-Todo bajo `prefers-reduced-motion: no-preference`.
+Dos momentos, y sólo dos.
+
+**El carrusel de la portada.** Una pista que corre de derecha a izquierda en
+bucle continuo, y se detiene con `:hover` y con `:focus-within`. Bucle de CSS
+puro: dos copias de la lista y `translateX(-50%)`. Es el único movimiento
+permanente de la página, y su trabajo es retener, no decorar.
+
+**La entrada de las rejillas.** Las tarjetas aparecen en orden de lectura,
+**una vez**: `--i` por tarjeta y `animation-delay: calc(var(--i) * 70ms)`,
+desde `translateY(18px)` y opacidad 0.
+
+Ambos bajo `prefers-reduced-motion: no-preference`. Con movimiento reducido el
+carrusel se queda quieto y se recorre con el dedo.
 
 Los hover son suaves y cortos (`--t: .28s`): la tarjeta sube 6 px y sube de
 sombra, la foto escala 1.04.
@@ -159,6 +170,25 @@ blanco encima del tinte lo parte por la mitad, así que la foto lleva
 contain` siempre: el frasco y su caja se ven enteros, que es justo lo que hay
 que poder juzgar.
 
+## La persuasión, y su límite
+
+El tema empuja, y lo hace con cosas que son ciertas:
+
+| pieza | por qué funciona |
+|---|---|
+| la resta de la ficha | inversión del riesgo: probar no cuesta nada |
+| las tres etapas, con la tercera marcada | escalera de compromiso; se ve dónde se puede uno echar atrás |
+| la línea bajo el botón del hero | desarma la objeción justo cuando aparece |
+| la barra del envío gratis | *goal gradient*: dice lo que FALTA en dinero, no un porcentaje |
+| los decants sugeridos en el carrito | el sí difícil ya está dicho; sumar $8 no es una decisión nueva |
+| la barra de compra fija en móvil | el botón vuelve justo cuando se termina de decidir |
+| el aviso de existencias | escasez REAL, leída del inventario de Shopify |
+
+El límite es duro y no se mueve: **nada de lo que empuja puede ser falso.** No
+hay contadores inventados, no hay temporizadores, no hay «12 personas viendo
+esto», y no hay testimonios —el negocio aún no ha lanzado y no tiene clientes—.
+Cuando no hay dato, no se dibuja nada.
+
 ## Lo que este tema no hace
 
 - **No hay antetítulos.** El titular se sostiene solo. El ajuste existe sin
@@ -167,3 +197,5 @@ que poder juzgar.
   la sección que enviaba testimonios inventados se eliminó.
 - **No se repite el catálogo** en la portada.
 - **No hay esquinas vivas, ni sombras negras, ni degradados en el texto.**
+- **No hay contadores de escasez inventados** ni temporizadores de cuenta atrás.
+- **El JavaScript no calcula precios**: los recalcula Liquid y se vuelven a pedir.

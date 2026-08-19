@@ -971,7 +971,8 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
   z-index: 45;
   left: .7rem;
   right: .7rem;
-  bottom: .7rem;
+  /* la barra del iPhone se come lo de abajo si no se le deja su zona segura */
+  bottom: calc(.7rem + env(safe-area-inset-bottom, 0px));
   display: flex;
   align-items: center;
   justify-content: space-between;
