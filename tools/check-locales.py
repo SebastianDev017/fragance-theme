@@ -55,7 +55,30 @@ for clave in sorted(usadas):
     if not tiene(en, clave):
         fallos.append('en.json: ' + clave)
 
+# ---------------------------------------------------------------------------
+# Las claves del EDITOR (las que empiezan por `t:`) viven en otras dos locales
+# y hasta ahora no las miraba nadie. Una que falta no rompe nada visible: sale
+# el nombre crudo de la clave dentro del editor de temas, y eso lo ve el
+# comerciante, no el cliente, asi que puede quedarse ahi meses.
+# ---------------------------------------------------------------------------
+es_s = carga('es.default.schema.json')
+en_s = carga('en.schema.json')
+
+usadas_schema = set()
+for ruta in (glob.glob(os.path.join(BASE, 'sections', '*.liquid')) +
+             glob.glob(os.path.join(BASE, 'snippets', '*.liquid')) +
+             glob.glob(os.path.join(BASE, 'config', 'settings_schema.json'))):
+    s = io.open(ruta, encoding='utf-8').read()
+    usadas_schema |= set(re.findall(r'"t:([a-z0-9_]+(?:\.[a-z0-9_]+)+)"', s))
+
+for clave in sorted(usadas_schema):
+    if not tiene(es_s, clave):
+        fallos.append('es.default.schema.json: ' + clave)
+    if not tiene(en_s, clave):
+        fallos.append('en.schema.json: ' + clave)
+
 print('claves de tienda comprobadas: %d' % len(usadas))
+print('claves del editor comprobadas: %d' % len(usadas_schema))
 for d in sorted(set(dinamicas)):
     print('  clave dinámica en %s -> %s*' % d)
 if fallos:

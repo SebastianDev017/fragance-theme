@@ -85,7 +85,18 @@
       {%- if collection.products.size > 0 -%}
         <div class="shelf" data-facetas-rejilla>
           {%- for producto in collection.products -%}
-            {% render 'card-fragancia', producto: producto, ratio: section.settings.ratio, indice: forloop.index %}
+            {%- comment -%}
+              Las cuatro primeras se ven sin bajar: su foto va sin diferir. Una
+              página de colección es la puerta de entrada desde el buscador, y
+              ahí la primera impresión la da la foto, no el texto.
+            {%- endcomment -%}
+            {%- liquid
+              assign arriba = false
+              if forloop.index <= 4
+                assign arriba = true
+              endif
+            -%}
+            {% render 'card-fragancia', producto: producto, ratio: section.settings.ratio, indice: forloop.index, prioridad: arriba %}
           {%- endfor -%}
         </div>
 

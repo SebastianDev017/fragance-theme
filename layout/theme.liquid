@@ -3,14 +3,42 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#E9E8E3">
+  {%- comment -%}
+    El color de la barra del navegador en móvil. Es el fondo real de la
+    página: si no coincide, el teléfono dibuja una franja de otro color justo
+    encima del diseño.
+  {%- endcomment -%}
+  <meta name="theme-color" content="#F2F0F5">
   <link rel="canonical" href="{{ canonical_url }}">
+  {%- comment -%}
+    El CDN de las fotos de producto es otro dominio: abrir la conexión mientras
+    se lee el `<head>` le quita unos 100 ms a la primera foto.
+  {%- endcomment -%}
+  <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
   {%- if settings.favicon != blank -%}
     <link rel="icon" href="{{ settings.favicon | image_url: width: 64 }}">
   {%- endif -%}
 
-  <title>{{ page_title }}{% if current_tags %} &ndash; {{ current_tags | join: ', ' }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}</title>
-  {%- if page_description -%}<meta name="description" content="{{ page_description | escape }}">{%- endif -%}
+  {%- comment -%}
+    En la portada el título es lo único que se lee en la pestaña y en el
+    resultado del buscador, y «DropScents» a secas no dice qué se vende. El
+    eslogan va traducido, no escrito aquí.
+  {%- endcomment -%}
+  <title>
+    {%- if template.name == 'index' -%}
+      {{ shop.name }} &ndash; {{ 'seo.eslogan' | t }}
+    {%- else -%}
+      {{- page_title -}}
+      {%- if current_tags %} &ndash; {{ current_tags | join: ', ' }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    {%- endif -%}
+  </title>
+
+  {%- comment -%}
+    Descripción, tarjetas para compartir y datos estructurados: todo en un
+    sitio, en snippets/seo.liquid.
+  {%- endcomment -%}
+  {% render 'seo' %}
 
   {%- comment -%}
     Las @font-face van aquí y no en el CSS empaquetado porque en Shopify los

@@ -17,7 +17,7 @@
   "carrito": {
     "actualizar": "Actualizar",
     "descuento": "Descuento",
-    "impuestos": "Impuestos y envío se calculan al pagar. Envío gratis desde $20.",
+    "impuestos": "Impuestos y envío se calculan al pagar. El envío va por nuestra cuenta desde $20.",
     "nota": "Nota para el pedido",
     "nota_ph": "Zona de entrega, referencias, o si prefieres pagar en bolívares.",
     "pagar": "Ir a pagar",
@@ -26,7 +26,7 @@
     "subtotal": "Subtotal",
     "titulo": "Tu carrito",
     "vacio_cta": "Ver los decants",
-    "vacio_texto": "Empieza por un decant: cuestan poco y te dicen todo.",
+    "vacio_texto": "Empieza por un decant de 5 ml: cuesta poco y te dice todo lo que hace falta saber.",
     "vacio_titulo": "Tu carrito está vacío.",
     "envio": {
       "falta_html": "Te faltan <b>{{ monto }}</b> para el envío gratis",
@@ -60,7 +60,7 @@
   "general": {
     "404": {
       "cta": "Ver el catálogo",
-      "texto": "Puede que la fragancia que buscabas cambiara de nombre. Búscala aquí o mira el catálogo completo.",
+      "texto": "Puede que la fragancia cambiara de nombre, o que el enlace venga mal. Búscala aquí o mira el catálogo completo.",
       "titulo": "Esta página ya no existe."
     },
     "accesibilidad": {
@@ -133,14 +133,14 @@
     "decant_10": "Decant 10 ml",
     "decant_5": "Decant 5 ml",
     "desde": "Desde",
-    "dudas": "¿Dudas con esta fragancia? Escríbenos",
+    "dudas": "¿No sabes cuál pedir? Escríbenos y lo vemos juntos",
     "frasco": "Frasco completo",
     "impuestos": "Impuestos incluidos. Envío calculado al pagar.",
     "oferta": "Oferta",
     "presentacion": "Presentación",
-    "promesa_decant": "Te descontamos el decant del frasco completo",
-    "promesa_envio": "Envío gratis desde $20 a toda Venezuela",
-    "promesa_original": "Frasco original sellado, sin réplicas",
+    "promesa_decant": "Lo que pagues por el decant se te descuenta del frasco",
+    "promesa_envio": "Envío gratis desde $20, a toda Venezuela",
+    "promesa_original": "Frasco original sellado. Ni réplicas ni «inspirados en»",
     "quitar_uno": "Quitar uno",
     "ver_imagen": "Ver la imagen {{ n }}",
     "llevate": "Llévate la muestra",
@@ -163,7 +163,7 @@
   "secciones": {
     "carrusel": {
       "aria": "Carrusel de fragancias",
-      "titulo": "Pasa y mira."
+      "titulo": "Empieza por una."
     },
     "cierre": {
       "texto": "Dinos qué usas ahora o qué te gusta oler, y te decimos cuál decant pedir primero. Sin vendedor encima, sin discurso.",
@@ -204,7 +204,7 @@
       "total": "Total del frasco"
     },
     "estanteria": {
-      "titulo": "Los que siempre nos piden."
+      "titulo": "Las que reconoces sin que te digan el nombre."
     },
     "hero": {
       "subtitulo": "Los perfumes que ya conoces, en decant para vivirlos una semana en tu piel. Y si es el tuyo, el frasco completo al mismo precio que en Amazon — solo que aquí, y en dos días.",
@@ -242,5 +242,10 @@
       "titulo_1": "Pruébalo en 5 ml.",
       "titulo_2": "Cómpralo seguro."
     }
+  },
+  "seo": {
+    "eslogan": "Decants de 5 y 10 ml y frascos originales, con envío a toda Venezuela",
+    "producto": "{{ nombre }} de {{ marca }} en decant de 5 y 10 ml, y el frasco completo sellado. En {{ tienda }} lo pruebas primero y te descontamos el decant del frasco.",
+    "coleccion": "{{ titulo }} en {{ tienda }}: decants de 5 y 10 ml para probar y frascos originales sellados, con envío a toda Venezuela."
   }
 }

@@ -97,6 +97,11 @@
   --edge: max(var(--gutter), (100% - var(--maxw)) / 2);
   --pad: var(--edge);   /* alias heredado */
 
+  /* El hueco entre tarjetas de CUALQUIER tira horizontal —la marquesina de la
+     portada y los carruseles de colección—. Un solo token: dos tiras a
+     distinta distancia en la misma página se leen como un descuido. */
+  --hueco-carrusel: clamp(1rem, 2vw, 1.75rem);
+
   /* La cabecera es FIJA y flota separada del canto. Este es el hueco que
      tiene que dejarle el documento; si se toca el alto de la barra, se toca
      aquí. */
@@ -187,6 +192,15 @@ img { max-width: 100%; display: block; }
   color: var(--ink-2); margin-bottom: 1.4rem;
 }
 .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--punch); flex: none; }
+
+/* Las líneas que parte SplitText para descubrir los titulares.
+
+   `mask: 'lines'` mete cada línea en una caja recortada, y con `line-height`
+   de .95 ese recorte se come la cola de las «g» y las «y». El acolchado le da
+   sitio a la cola y el margen negativo devuelve la altura, así que el titular
+   ocupa exactamente lo mismo partido que sin partir — si no, la página da un
+   salto justo al terminar de cargar las fuentes. */
+.linea-partida { padding-bottom: .14em; margin-bottom: -.14em; }
 
 .sec-head { margin: 0 0 3.5rem; padding-inline: var(--edge); }
 .sec-head__p { color: var(--ink-2); font-size: clamp(1rem, 1.3vw, 1.15rem); max-width: 46ch; margin-top: 1.6rem; }

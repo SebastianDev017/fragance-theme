@@ -123,10 +123,17 @@
         "novedades": "Carousel — new in",
         "relacionados": "Carousel — related",
         "tira": "Carousel — long strip",
-        "vitrina": "Carousel — showcase"
+        "vitrina": "Carousel — showcase",
+        "recorrido": "Scroll-driven run"
       },
       "sangrar": "Let the next one peek off the edge",
-      "sangrar_info": "Makes it obvious there is more, and invites a swipe."
+      "sangrar_info": "Makes it obvious there is more, and invites a swipe.",
+      "avance": "How it advances",
+      "avance_info": "With page scroll, the section holds still and the strip advances as you scroll: keeping scrolling is keeping browsing. Wide screens only; on mobile it always drags.",
+      "avances": {
+        "arrastre": "By dragging or with the arrows",
+        "scroll": "With the page scroll"
+      }
     },
     "cierre": {
       "estilos": {
@@ -453,6 +460,18 @@
         "recto": "Square"
       },
       "versalitas": "Uppercase label"
+    },
+    "marca": {
+      "grupo": "Brand",
+      "favicon": "Favicon",
+      "compartir": "Sharing image",
+      "compartir_info": "The one that shows up when someone pastes a store link into WhatsApp, Instagram or X. Only used where there is no image of its own: a product or an article shows theirs.",
+      "instagram": "Instagram",
+      "instagram_info": "Also the fallback for the chat button while no app is installed."
+    },
+    "chat": {
+      "grupo": "Chat",
+      "parrafo": "Every chat button in the theme calls the same function. To connect your app, define window.DropScentsChat = () => yourPlugin.open(). If there is none, the theme tries the Crisp, Tawk, Tidio, Intercom, Zendesk and Shopify Inbox APIs, and if it finds none it shows a notice pointing at Instagram."
     }
   }
 }

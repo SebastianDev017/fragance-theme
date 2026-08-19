@@ -17,7 +17,7 @@
   "carrito": {
     "actualizar": "Update",
     "descuento": "Discount",
-    "impuestos": "Taxes and shipping calculated at checkout. Free shipping over $20.",
+    "impuestos": "Taxes and shipping calculated at checkout. Shipping is on us from $20.",
     "nota": "Order note",
     "nota_ph": "Delivery area, landmarks, or if you would rather pay in bolívares.",
     "pagar": "Check out",
@@ -26,7 +26,7 @@
     "subtotal": "Subtotal",
     "titulo": "Your cart",
     "vacio_cta": "Browse the decants",
-    "vacio_texto": "Start with a decant: they cost little and tell you everything.",
+    "vacio_texto": "Start with a 5 ml decant: it costs little and tells you everything you need to know.",
     "vacio_titulo": "Your cart is empty.",
     "envio": {
       "falta_html": "You are <b>{{ monto }}</b> away from free shipping",
@@ -60,7 +60,7 @@
   "general": {
     "404": {
       "cta": "Browse the catalogue",
-      "texto": "The fragrance you were after may have changed its name. Search for it here, or browse the full catalogue.",
+      "texto": "The fragrance may have changed its name, or the link may be wrong. Search for it here, or browse the full catalogue.",
       "titulo": "This page is gone."
     },
     "accesibilidad": {
@@ -133,14 +133,14 @@
     "decant_10": "Decant 10 ml",
     "decant_5": "Decant 5 ml",
     "desde": "From",
-    "dudas": "Not sure about this one? Message us",
+    "dudas": "Not sure which one to get? Message us and we will work it out",
     "frasco": "Full bottle",
     "impuestos": "Taxes included. Shipping calculated at checkout.",
     "oferta": "On sale",
     "presentacion": "Size",
-    "promesa_decant": "What you paid for the decant comes off the full bottle",
-    "promesa_envio": "Free shipping over $20, anywhere in Venezuela",
-    "promesa_original": "Sealed original bottle — never a clone",
+    "promesa_decant": "Whatever you pay for the decant comes off the bottle",
+    "promesa_envio": "Free shipping from $20, anywhere in Venezuela",
+    "promesa_original": "Sealed original bottle. No replicas, no “inspired by”",
     "quitar_uno": "Remove one",
     "ver_imagen": "View image {{ n }}",
     "llevate": "Take the sample",
@@ -163,7 +163,7 @@
   "secciones": {
     "carrusel": {
       "aria": "Fragrance carousel",
-      "titulo": "Have a look."
+      "titulo": "Start with one."
     },
     "cierre": {
       "texto": "Tell us what you wear now or what you like to smell, and we will tell you which decant to order first. No salesperson breathing down your neck.",
@@ -204,7 +204,7 @@
       "total": "Bottle total"
     },
     "estanteria": {
-      "titulo": "The ones everyone asks us for."
+      "titulo": "The ones you recognise without being told."
     },
     "hero": {
       "subtitulo": "The fragrances you already know, as a decant you can live with for a week. And if it turns out to be yours, the full bottle at the same price as Amazon — only here, and in two days.",
@@ -242,5 +242,10 @@
       "titulo_1": "Try it in 5 ml.",
       "titulo_2": "Buy it sure."
     }
+  },
+  "seo": {
+    "eslogan": "5 and 10 ml decants and sealed designer bottles, shipped anywhere in Venezuela",
+    "producto": "{{ marca }} {{ nombre }} in 5 and 10 ml decants, plus the sealed full bottle. At {{ tienda }} you try it first and we take the decant off the bottle.",
+    "coleccion": "{{ titulo }} at {{ tienda }}: 5 and 10 ml decants to try and sealed original bottles, shipped anywhere in Venezuela."
   }
 }

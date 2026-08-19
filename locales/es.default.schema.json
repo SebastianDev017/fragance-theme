@@ -123,10 +123,17 @@
         "novedades": "Carrusel — novedades",
         "relacionados": "Carrusel — relacionados",
         "tira": "Carrusel — tira larga",
-        "vitrina": "Carrusel — vitrina"
+        "vitrina": "Carrusel — vitrina",
+        "recorrido": "Recorrido con el scroll"
       },
       "sangrar": "Que asome la siguiente por el borde",
-      "sangrar_info": "Se nota que hay más y da ganas de arrastrar."
+      "sangrar_info": "Se nota que hay más y da ganas de arrastrar.",
+      "avance": "Cómo avanza",
+      "avance_info": "Con el scroll de la página, la sección se queda fija y la tira avanza mientras bajas: seguir bajando es seguir viendo colección. Solo en pantalla ancha; en el móvil siempre se arrastra.",
+      "avances": {
+        "arrastre": "Arrastrando o con las flechas",
+        "scroll": "Con el scroll de la página"
+      }
     },
     "cierre": {
       "estilos": {
@@ -453,6 +460,18 @@
         "recto": "Recto"
       },
       "versalitas": "Texto en versalitas"
+    },
+    "marca": {
+      "grupo": "Marca",
+      "favicon": "Favicon",
+      "compartir": "Imagen para compartir",
+      "compartir_info": "La que sale cuando alguien pega un enlace de la tienda en WhatsApp, Instagram o X. Solo se usa donde no hay foto propia: un producto o un artículo enseñan la suya.",
+      "instagram": "Instagram",
+      "instagram_info": "También es el respaldo del botón de chat mientras no haya app instalada."
+    },
+    "chat": {
+      "grupo": "Chat",
+      "parrafo": "Todos los botones de chat del tema llaman a la misma función. Para conectar tu app, define window.DropScentsChat = () => tuPlugin.abrir(). Si no hay ninguna, el tema prueba las APIs de Crisp, Tawk, Tidio, Intercom, Zendesk y Shopify Inbox, y si no encuentra ninguna muestra un aviso con el Instagram."
     }
   }
 }

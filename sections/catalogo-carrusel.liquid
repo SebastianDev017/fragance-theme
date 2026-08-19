@@ -22,7 +22,8 @@
   endif
 -%}
 
-<section class="carrusel-sec" id="{{ section.settings.ancla | default: 'carrusel' }}"
+<section class="carrusel-sec{% if section.settings.avance == 'scroll' %} carrusel-sec--recorrido{% endif %}"
+  id="{{ section.settings.ancla | default: 'carrusel' }}"
   style="--porvista: {{ porver }}; --porvista-movil: {{ porver_movil }};">
 
   <header class="sec-head sec-head--row">
@@ -38,7 +39,9 @@
   </header>
 
   {%- if cuantos > 0 -%}
-    <div class="carrusel{% if section.settings.sangrar %} carrusel--sangra{% endif %}" data-carrusel>
+    <div class="carrusel{% if section.settings.sangrar %} carrusel--sangra{% endif %}"
+      data-carrusel
+      {% if section.settings.avance == 'scroll' %}data-recorrido{% endif %}>
       <ul class="carrusel__pista" data-carrusel-pista
         tabindex="0" role="region"
         aria-label="{{ 'secciones.carrusel.aria' | t }}">
@@ -105,6 +108,17 @@
     { "type": "checkbox", "id": "barra", "label": "t:secciones.carrusel.barra", "default": true },
     {
       "type": "select",
+      "id": "avance",
+      "label": "t:secciones.carrusel.avance",
+      "info": "t:secciones.carrusel.avance_info",
+      "default": "arrastre",
+      "options": [
+        { "value": "arrastre", "label": "t:secciones.carrusel.avances.arrastre" },
+        { "value": "scroll", "label": "t:secciones.carrusel.avances.scroll" }
+      ]
+    },
+    {
+      "type": "select",
       "id": "ratio",
       "label": "t:comun.ratio",
       "info": "t:comun.ratio_info",
@@ -128,7 +142,7 @@
   "presets": [
     {
       "name": "t:secciones.carrusel.presets.vitrina",
-      "settings": { "por_vista": 4, "por_vista_movil": 1, "limite": 12, "ratio": "1/1", "sangrar": true }
+      "settings": { "por_vista": 4, "por_vista_movil": 1, "limite": 12, "ratio": "1/1", "sangrar": true, "avance": "arrastre" }
     },
     {
       "name": "t:secciones.carrusel.presets.novedades",
@@ -141,6 +155,10 @@
     {
       "name": "t:secciones.carrusel.presets.relacionados",
       "settings": { "por_vista": 4, "por_vista_movil": 2, "limite": 8, "ratio": "3/4", "sangrar": false }
+    },
+    {
+      "name": "t:secciones.carrusel.presets.recorrido",
+      "settings": { "por_vista": 3, "por_vista_movil": 1, "limite": 12, "ratio": "4/5", "sangrar": true, "barra": true, "avance": "scroll" }
     },
     {
       "name": "t:secciones.carrusel.presets.escaparate",

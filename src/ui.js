@@ -14,6 +14,8 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 import { conectarChat, conectarDrawer, conectarTienda, abrirChat } from './tienda.js';
+import { conectarRecorrido, soltarRecorrido } from './recorrido.js';
+import { conectarAnimacion } from './animacion.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -311,7 +313,15 @@ export function conectarEditorDeTemas() {
     conectarTienda(e.target);
     conectarComparador();
     conectarFotos();
+    conectarRecorrido(e.target);
+    conectarAnimacion(e.target);
     ScrollTrigger.refresh();
   });
-  document.addEventListener('shopify:section:unload', () => ScrollTrigger.refresh());
+  document.addEventListener('shopify:section:unload', (e) => {
+    /* El recorrido deja la sección clavada con un espaciador: si se retira la
+       sección sin desmontarlo, queda el hueco y el resto de la página se
+       calcula mal. */
+    soltarRecorrido(e.target);
+    ScrollTrigger.refresh();
+  });
 }

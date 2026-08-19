@@ -123,17 +123,35 @@
   {%- if n > 0 -%}
     <div class="marquesina{% if section.settings.disposicion == 'rejilla' %} marquesina--rejilla{% endif %}"
       style="--marq-dur: {{ dur }}s;"
+      {%- comment -%}
+        Sin `role`, un `aria-label` sobre un `div` no lo anuncia nadie: los
+        lectores de pantalla solo leen la etiqueta de un elemento que tenga un
+        papel. `group` es el papel que le toca a una tira de tarjetas.
+      {%- endcomment -%}
+      role="group"
       aria-label="{{ 'general.accesibilidad.carrusel_portada' | t }}">
       <div class="marquesina__pista" data-marq-pista>
         {%- for copia in (1..2) -%}
           <ul class="marquesina__grupo" role="list" {% unless forloop.first %}aria-hidden="true"{% endunless %}>
             {%- for vuelta in (1..repetir) -%}
               {%- for producto in productos limit: tope -%}
+                {%- liquid
+                  assign prioridad = false
+                  if copia == 1 and vuelta == 1 and forloop.index <= 3
+                    assign prioridad = true
+                  endif
+                -%}
                 <li class="marquesina__item">
+                  {%- comment -%}
+                    Sólo las tres primeras de la primera copia: son las que
+                    caben en la primera pantalla. Marcar más no adelanta nada
+                    y compite por el ancho de banda con la fuente.
+                  {%- endcomment -%}
                   {% render 'card-fragancia',
                        producto: producto,
                        nivel: 2,
-                       clon: copia %}
+                       clon: copia,
+                       prioridad: prioridad %}
                 </li>
               {%- endfor -%}
             {%- endfor -%}

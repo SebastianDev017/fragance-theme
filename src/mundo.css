@@ -266,13 +266,13 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
 .marquesina__pista { display: flex; width: max-content; }
 .marquesina__grupo {
   display: flex;
-  gap: clamp(1rem, 2vw, 1.75rem);
+  gap: var(--hueco-carrusel);
   margin: 0;
   /* La «línea negra» bajo cada tarjeta era su propia SOMBRA cortada en seco
      por el `overflow: hidden` de la pista. La sombra baja unos 40 px y el
      recorte la partía por una recta. Con sitio de sobra arriba y abajo cabe
      entera y se desvanece como debe. */
-  padding: 1.4rem clamp(.5rem, 1vw, .875rem) 3.2rem;
+  padding: 1.6rem clamp(.5rem, 1vw, .875rem) 3.4rem;
   list-style: none;
 }
 .marquesina__item { width: clamp(15rem, 21vw, 19.5rem); flex: none; display: flex; }
@@ -330,8 +330,8 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
   cursor: pointer;
   transition: background var(--t), color var(--t), transform var(--t);
 }
-.marq__flecha--prev { left: clamp(.5rem, 1.6vw, 1.2rem); }
-.marq__flecha--next { right: clamp(.5rem, 1.6vw, 1.2rem); }
+.marq__flecha--prev { left: clamp(.75rem, 2.2vw, 1.9rem); }
+.marq__flecha--next { right: clamp(.75rem, 2.2vw, 1.9rem); }
 .marq__flecha:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
 .marq__flecha:active { transform: translateY(-50%) scale(.94); }
 .marq__flecha[hidden] { display: none; }

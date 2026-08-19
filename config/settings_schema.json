@@ -300,27 +300,33 @@
     ]
   },
   {
-    "name": "Marca",
+    "name": "t:ajustes.marca.grupo",
     "settings": [
       {
         "type": "image_picker",
         "id": "favicon",
-        "label": "Favicon"
+        "label": "t:ajustes.marca.favicon"
+      },
+      {
+        "type": "image_picker",
+        "id": "imagen_compartir",
+        "label": "t:ajustes.marca.compartir",
+        "info": "t:ajustes.marca.compartir_info"
       },
       {
         "type": "url",
         "id": "instagram",
-        "label": "Instagram",
-        "info": "También es el respaldo del botón de chat mientras no haya app instalada."
+        "label": "t:ajustes.marca.instagram",
+        "info": "t:ajustes.marca.instagram_info"
       }
     ]
   },
   {
-    "name": "Chat",
+    "name": "t:ajustes.chat.grupo",
     "settings": [
       {
         "type": "paragraph",
-        "content": "Todos los botones de chat del tema llaman a la misma función. Para conectar tu app, define window.DropScentsChat = () => tuPlugin.abrir(). Si no hay ninguna, el tema prueba las APIs de Crisp, Tawk, Tidio, Intercom, Zendesk y Shopify Inbox, y si no encuentra ninguna muestra un aviso con el Instagram."
+        "content": "t:ajustes.chat.parrafo"
       }
     ]
   },

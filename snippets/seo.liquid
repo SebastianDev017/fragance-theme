@@ -1,0 +1,244 @@
+{%- comment -%}
+  Lo que la página le cuenta a las máquinas.
+
+  Dos públicos distintos y una sola fuente:
+
+    · los buscadores clásicos leen el `<title>`, la descripción y los datos
+      estructurados para decidir cómo se ve el resultado;
+    · los buscadores generativos (los que contestan en prosa) se apoyan mucho
+      más en datos estructurados explícitos y en preguntas escritas como
+      preguntas. Por eso el catálogo declara `Product` con su oferta real, y
+      las dudas de la portada declaran `FAQPage` desde la propia sección.
+
+  Regla que no se rompe: **aquí no se declara nada que la tienda no tenga.**
+  Sin reseñas no hay `aggregateRating`; sin política de devolución escrita no
+  hay `hasMerchantReturnPolicy`. Un dato estructurado inventado es exactamente
+  la clase de cosa por la que Google retira los resultados enriquecidos, y
+  además sería mentir.
+
+  Uso: {% render 'seo' %} — una sola vez, en el `<head>`.
+{%- endcomment -%}
+
+{%- liquid
+  comment
+    La descripción: la de la página si la tiene, y si no una construida con lo
+    que sí es cierto de ese objeto. Nunca se deja vacía — una tienda sin
+    descripción se la inventa el buscador recortando el primer párrafo.
+  endcomment
+  assign desc = page_description
+
+  if desc == blank
+    case template.name
+      when 'product'
+        assign desc = product.description | strip_html | truncatewords: 34
+        if desc == blank
+          assign desc = 'seo.producto' | t: nombre: product.title, marca: product.vendor, tienda: shop.name
+        endif
+      when 'collection'
+        assign desc = collection.description | strip_html | truncatewords: 34
+        if desc == blank
+          assign desc = 'seo.coleccion' | t: titulo: collection.title, tienda: shop.name
+        endif
+      when 'article'
+        assign desc = article.excerpt_or_content | strip_html | truncatewords: 34
+      else
+        assign desc = shop.description | default: shop.name
+    endcase
+  endif
+  assign desc = desc | strip_html | strip | truncate: 300
+
+  comment
+    La imagen para compartir. Orden: la del objeto, la que ponga el
+    comerciante en los ajustes, y si no hay ninguna, ninguna — una tarjeta sin
+    foto se ve mejor que una tarjeta con el logo estirado.
+  endcomment
+  assign og_img = null
+  if template.name == 'product' and product.featured_media.preview_image
+    assign og_img = product.featured_media.preview_image
+  elsif template.name == 'article' and article.image
+    assign og_img = article.image
+  elsif template.name == 'collection' and collection.featured_image
+    assign og_img = collection.featured_image
+  elsif settings.imagen_compartir
+    assign og_img = settings.imagen_compartir
+  endif
+
+  assign og_tipo = 'website'
+  if template.name == 'product'
+    assign og_tipo = 'product'
+  elsif template.name == 'article'
+    assign og_tipo = 'article'
+  endif
+-%}
+
+<meta name="description" content="{{ desc | escape }}">
+{%- comment -%}
+  Sin esto Google recorta la miniatura del resultado a un sello diminuto, y en
+  una tienda de perfumería la foto del frasco es media decisión.
+{%- endcomment -%}
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+
+<meta property="og:site_name" content="{{ shop.name | escape }}">
+<meta property="og:type" content="{{ og_tipo }}">
+<meta property="og:title" content="{{ page_title | escape }}">
+<meta property="og:description" content="{{ desc | escape }}">
+<meta property="og:url" content="{{ canonical_url }}">
+<meta property="og:locale" content="{{ request.locale.iso_code }}">
+{%- if og_img -%}
+  <meta property="og:image" content="https:{{ og_img | image_url: width: 1200 }}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="{{ 1200 | divided_by: og_img.aspect_ratio | round }}">
+  <meta property="og:image:alt" content="{{ og_img.alt | default: page_title | escape }}">
+{%- endif -%}
+<meta name="twitter:card" content="{% if og_img %}summary_large_image{% else %}summary{% endif %}">
+<meta name="twitter:title" content="{{ page_title | escape }}">
+<meta name="twitter:description" content="{{ desc | escape }}">
+{%- if og_img -%}
+  <meta name="twitter:image" content="https:{{ og_img | image_url: width: 1200 }}">
+{%- endif -%}
+
+{%- comment -%}
+  ---------------------------------------------------------------------------
+  Datos estructurados
+
+  Un solo `@graph` en vez de tres bloques sueltos: así la tienda, el sitio y
+  el producto quedan enlazados por `@id` y el buscador entiende que hablan de
+  la misma entidad, en vez de leer tres fichas que se repiten.
+  ---------------------------------------------------------------------------
+{%- endcomment -%}
+{%- capture grafo -%}
+  {
+    "@type": "Store",
+    "@id": {{ shop.url | append: '#tienda' | json }},
+    "name": {{ shop.name | json }},
+    "url": {{ shop.url | json }},
+    {%- if shop.description != blank %}
+    "description": {{ shop.description | json }},
+    {%- endif %}
+    {%- if settings.favicon %}
+    "image": {{ settings.favicon | image_url: width: 512 | prepend: 'https:' | json }},
+    {%- endif %}
+    {%- if settings.instagram != blank %}
+    "sameAs": [{{ settings.instagram | json }}],
+    {%- endif %}
+    "currenciesAccepted": {{ cart.currency.iso_code | json }},
+    "areaServed": { "@type": "Country", "name": "Venezuela" }
+  },
+  {
+    "@type": "WebSite",
+    "@id": {{ shop.url | append: '#sitio' | json }},
+    "url": {{ shop.url | json }},
+    "name": {{ shop.name | json }},
+    "publisher": { "@id": {{ shop.url | append: '#tienda' | json }} },
+    "inLanguage": {{ request.locale.iso_code | json }},
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": {{ shop.url | append: routes.search_url | append: '?q={consulta}' | json }}
+      },
+      "query-input": "required name=consulta"
+    }
+  }
+
+  {%- if template.name == 'product' and product -%}
+    ,{
+      "@type": "Product",
+      "@id": {{ canonical_url | append: '#producto' | json }},
+      "name": {{ product.title | json }},
+      "url": {{ canonical_url | json }},
+      {%- if product.description != blank %}
+      "description": {{ product.description | strip_html | truncatewords: 60 | json }},
+      {%- endif %}
+      {%- if product.vendor != blank %}
+      "brand": { "@type": "Brand", "name": {{ product.vendor | json }} },
+      {%- endif %}
+      {%- if product.type != blank %}
+      "category": {{ product.type | json }},
+      {%- endif %}
+      {%- if product.images.size > 0 %}
+      "image": [
+        {%- for imagen in product.images limit: 6 -%}
+          {{ imagen | image_url: width: 1200 | prepend: 'https:' | json }}{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ],
+      {%- endif %}
+      "offers": [
+        {%- for v in product.variants -%}
+        {
+          "@type": "Offer",
+          "name": {{ v.title | json }},
+          "url": {{ canonical_url | append: '?variant=' | append: v.id | json }},
+          "sku": {{ v.sku | default: v.id | json }},
+          "price": {{ v.price | divided_by: 100.0 | json }},
+          "priceCurrency": {{ cart.currency.iso_code | json }},
+          "availability": "https://schema.org/{% if v.available %}InStock{% else %}OutOfStock{% endif %}",
+          "seller": { "@id": {{ shop.url | append: '#tienda' | json }} }
+        }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": {{ 'general.inicio' | t | json }}, "item": {{ shop.url | json }} },
+        {%- if collection %}
+        { "@type": "ListItem", "position": 2, "name": {{ collection.title | json }}, "item": {{ shop.url | append: collection.url | json }} },
+        { "@type": "ListItem", "position": 3, "name": {{ product.title | json }} }
+        {%- else %}
+        { "@type": "ListItem", "position": 2, "name": {{ product.title | json }} }
+        {%- endif %}
+      ]
+    }
+  {%- endif -%}
+
+  {%- if template.name == 'collection' and collection -%}
+    ,{
+      "@type": "CollectionPage",
+      "@id": {{ canonical_url | append: '#coleccion' | json }},
+      "name": {{ collection.title | json }},
+      "url": {{ canonical_url | json }},
+      "isPartOf": { "@id": {{ shop.url | append: '#sitio' | json }} },
+      "mainEntity": {
+        "@type": "ItemList",
+        "numberOfItems": {{ collection.products_count }},
+        "itemListElement": [
+          {%- for producto in collection.products limit: 24 -%}
+          {
+            "@type": "ListItem",
+            "position": {{ forloop.index }},
+            "url": {{ shop.url | append: producto.url | json }},
+            "name": {{ producto.title | json }}
+          }{% unless forloop.last %},{% endunless %}
+          {%- endfor -%}
+        ]
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": {{ 'general.inicio' | t | json }}, "item": {{ shop.url | json }} },
+        { "@type": "ListItem", "position": 2, "name": {{ collection.title | json }} }
+      ]
+    }
+  {%- endif -%}
+
+  {%- if template.name == 'article' and article -%}
+    ,{
+      "@type": "BlogPosting",
+      "@id": {{ canonical_url | append: '#articulo' | json }},
+      "headline": {{ article.title | json }},
+      "url": {{ canonical_url | json }},
+      "datePublished": {{ article.published_at | date: '%Y-%m-%d' | json }},
+      {%- if article.image %}
+      "image": {{ article.image | image_url: width: 1200 | prepend: 'https:' | json }},
+      {%- endif %}
+      "author": { "@type": "Person", "name": {{ article.author | default: shop.name | json }} },
+      "publisher": { "@id": {{ shop.url | append: '#tienda' | json }} }
+    }
+  {%- endif -%}
+{%- endcapture -%}
+
+<script type="application/ld+json">
+{ "@context": "https://schema.org", "@graph": [ {{ grafo }} ] }
+</script>

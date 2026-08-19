@@ -61,6 +61,52 @@
   {%- endif -%}
 </section>
 
+{%- comment -%}
+  Las mismas preguntas, en `FAQPage`.
+
+  Va aquí y no en snippets/seo.liquid porque el dato tiene que salir de los
+  bloques REALES de esta sección: si el comerciante cambia una respuesta en el
+  editor, cambia también lo que lee el buscador. Un `FAQPage` escrito a mano en
+  otro archivo se desincroniza el primer día.
+
+  Esto es lo que más peso tiene para los buscadores que contestan en prosa: una
+  pregunta escrita como pregunta, con su respuesta completa al lado, es
+  exactamente la forma que citan.
+
+  `strip_html` porque la respuesta puede traer marcado del editor y el JSON-LD
+  de una FAQ admite texto, no un párrafo con etiquetas sueltas.
+{%- endcomment -%}
+{%- if section.blocks.size > 0 -%}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign i = forloop.index
+          assign p = block.settings.pregunta
+          if p == blank
+            assign clave = 'secciones.claro.preguntas.' | append: i | append: '.p'
+            assign p = clave | t
+          endif
+          assign r = block.settings.respuesta
+          if r == blank
+            assign clave = 'secciones.claro.preguntas.' | append: i | append: '.r'
+            assign r = clave | t
+          endif
+        -%}
+        {
+          "@type": "Question",
+          "name": {{ p | strip_html | strip | json }},
+          "acceptedAnswer": { "@type": "Answer", "text": {{ r | strip_html | strip | json }} }
+        }{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ]
+  }
+  </script>
+{%- endif -%}
+
 {% schema %}
 {
   "name": "t:secciones.claro.nombre",

@@ -12,6 +12,8 @@
    del header es un enlace de verdad a /cart.
    =========================================================================== */
 
+import { volarAlCarrito } from './animacion.js';
+
 const $ = (sel, raiz = document) => raiz.querySelector(sel);
 const $$ = (sel, raiz = document) => Array.from(raiz.querySelectorAll(sel));
 
@@ -155,6 +157,12 @@ export function conectarCarrito() {
     const boton = form.querySelector('[type="submit"]');
     boton?.classList.add('is-cargando');
 
+    /* El frasco sale volando ANTES de que conteste Shopify: la respuesta al
+       clic tiene que ser inmediata, y si al final la petición falla se abre
+       el cajón con el motivo escrito, que es una respuesta más clara que un
+       vuelo que no ocurrió. */
+    volarAlCarrito(fotoDelFormulario(form));
+
     try {
       const res = await fetch(`${window.Shopify?.routes?.root || '/'}cart/add.js`, {
         method: 'POST',
@@ -213,6 +221,17 @@ export function conectarCarrito() {
   });
 
   sincronizarContador();
+}
+
+/** De dónde sale el frasco que vuela: la foto que el cliente está mirando.
+ *  En la ficha es la imagen activa del visor; en una sugerencia del carrito o
+ *  en una tarjeta, la suya. Si no se encuentra ninguna no pasa nada — el vuelo
+ *  se salta y el resto del flujo sigue igual. */
+function fotoDelFormulario(form) {
+  const ficha = form.closest('.pdp');
+  if (ficha) return $('.pdp__img.is-on', ficha) || $('.pdp__img', ficha);
+  const caja = form.closest('.bundle, .tarjeta, article, li');
+  return caja ? $('img', caja) : null;
 }
 
 /** `/cart/change.js` con `line` (1-based) es la única forma segura de tocar

@@ -17,9 +17,13 @@ import './mundo.css';        /* la capa del mundo: va LA ÚLTIMA */
 import { iniciar, conectarEditorDeTemas } from './ui.js';
 import { conectarCarrito, conectarAtcFija } from './carrito.js';
 import { conectarMarquesina } from './marquesina.js';
+import { conectarRecorrido } from './recorrido.js';
+import { conectarAnimacion } from './animacion.js';
 
 iniciar();
 conectarCarrito();
 conectarAtcFija();
 conectarMarquesina();
+conectarRecorrido();
+conectarAnimacion();
 conectarEditorDeTemas();

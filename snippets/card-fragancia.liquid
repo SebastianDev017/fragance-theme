@@ -29,6 +29,11 @@
              sola vez aunque la pista imprima la lista dos veces
     nivel  → nivel del encabezado (2 en la portada, 3 dentro de una sección
              que ya tiene su propio h2). Por defecto, 3.
+    prioridad → true en las tarjetas que ya se ven al abrir la página. Su foto
+             deja de ser diferida y se pide con prioridad alta: en esta portada
+             la imagen más grande de la primera pantalla es la foto de la
+             primera tarjeta, y pedirla en diferido retrasa justo la métrica
+             que mide cuándo la página parece cargada.
 
   Uso: {% render 'card-fragancia', producto: producto, indice: forloop.index %}
 {%- endcomment -%}
@@ -90,9 +95,17 @@
                     {{ imagen | image_url: width: 700 }} 700w,
                     {{ imagen | image_url: width: 1000 }} 1000w"
             sizes="{{ tam }}"
-            alt=""
+            {%- comment -%}
+              El texto alternativo SÍ se escribe aunque el enlace de la foto
+              vaya `aria-hidden` (el nombre de al lado ya nombra la tarjeta, y
+              repetirlo obligaría al lector de pantalla a oír cada producto dos
+              veces). Google Imágenes lo lee igual, y en perfumería la foto del
+              frasco es media búsqueda.
+            {%- endcomment -%}
+            alt="{{ imagen.alt | default: producto.title | escape }}"
             width="{{ imagen.width }}" height="{{ imagen.height }}"
-            loading="lazy" decoding="async">
+            {% if prioridad and forloop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
+            decoding="async">
         {%- endfor -%}
       {%- else -%}
         <span class="tarjeta__sinfoto" aria-hidden="true"></span>

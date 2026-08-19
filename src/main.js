@@ -19,6 +19,8 @@ import { FRAGANCIAS, ENVIO_AFUERA, dol, desde, foto } from './data.js';
 import { iniciar, $, $$ } from './ui.js';
 import { conectarCarrito, conectarAtcFija } from './carrito.js';
 import { conectarMarquesina } from './marquesina.js';
+import { conectarRecorrido } from './recorrido.js';
+import { conectarAnimacion } from './animacion.js';
 
 const c = (usd) => Math.round(usd * 100);   // Liquid entrega céntimos
 
@@ -60,3 +62,5 @@ iniciar();
 conectarCarrito();
 conectarAtcFija();
 conectarMarquesina();
+conectarRecorrido();
+conectarAnimacion();
