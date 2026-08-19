@@ -12,30 +12,28 @@
     "muestrario": {
       "type": "muestrario",
       "settings": {
+        "coleccion": "",
         "cantidad": 8,
-        "columnas": 4,
+        "disposicion": "carrusel",
+        "velocidad": 5,
         "titulo": "Pruébalo en 5 ml. Cómpralo cuando estés seguro.",
         "texto": "Los perfumes que ya conoces, en decant para vivirlos una semana en tu piel.",
         "cta_texto": "Ver los decants",
+        "cta_url": "",
         "cta2_texto": "Pregúntanos por el chat",
+        "cta2_url": "",
         "cta2_chat": true,
-        "velocidad": 5,
-        "disposicion": "carrusel"
+        "seguro": "Si no es tuyo, ahí acaba. Si lo es, el frasco te sale exactamente eso menos."
       }
     },
     "cinta": {
       "type": "ticker",
-      "settings": {
-        "estilo": "tinta",
-        "tamano": 26,
-        "velocidad": 4,
-        "separador": "gota"
-      },
       "blocks": {
         "b1": {
           "type": "frase",
           "settings": {
             "texto": "Decants desde 5 ml",
+            "destacado": false,
             "icono": "gota"
           }
         },
@@ -43,6 +41,7 @@
           "type": "frase",
           "settings": {
             "texto": "Envíos a toda Venezuela",
+            "destacado": false,
             "icono": "camion"
           }
         },
@@ -50,6 +49,7 @@
           "type": "frase",
           "settings": {
             "texto": "100% originales",
+            "destacado": false,
             "icono": "escudo"
           }
         },
@@ -57,7 +57,8 @@
           "type": "frase",
           "settings": {
             "texto": "Te descontamos el decant del frasco",
-            "destacado": true
+            "destacado": true,
+            "icono": "ninguno"
           }
         }
       },
@@ -66,7 +67,17 @@
         "b2",
         "b3",
         "b4"
-      ]
+      ],
+      "settings": {
+        "estilo": "tinta",
+        "tamano": 26,
+        "velocidad": 4,
+        "inclinacion": 0,
+        "direccion": "izquierda",
+        "separador": "gota",
+        "separador_texto": "·",
+        "titulo_oculto": ""
+      }
     },
     "ritual": {
       "type": "ritual",
@@ -236,6 +247,24 @@
         "ancla": "claro"
       }
     },
+    "catalogo_carrusel_JVD7XP": {
+      "type": "catalogo-carrusel",
+      "name": "t:secciones.carrusel.presets.novedades",
+      "settings": {
+        "coleccion": "frontpage",
+        "limite": 9,
+        "por_vista": 3,
+        "por_vista_movil": 1,
+        "sangrar": false,
+        "barra": true,
+        "ratio": "4/5",
+        "eyebrow": "",
+        "titulo": "",
+        "texto": "",
+        "ver_todo": "Ver todo lo nuevo",
+        "ancla": "carrusel"
+      }
+    },
     "cierre": {
       "type": "cierre",
       "settings": {
@@ -256,6 +285,7 @@
     "ritual",
     "cuenta",
     "claro",
+    "catalogo_carrusel_JVD7XP",
     "cierre"
   ]
 }
