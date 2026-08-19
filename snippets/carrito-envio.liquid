@@ -18,6 +18,16 @@
   assign umbral = settings.envio_umbral | default: 0 | times: 100
   assign total = cart.total_price | default: 0
   assign falta = umbral | minus: total
+  comment
+    El importe se formatea ANTES de entrar en la traducción.
+
+    `'clave' | t: monto: falta | money` no hace lo que parece: Liquid aplica
+    `money` al resultado de `t`, no a `falta`. La traducción recibía el número
+    en céntimos crudo y encima el `money` se comía la frase entera, así que la
+    barra decía «$0.00» en vez de «te faltan $12.00».
+  endcomment
+  assign falta_txt = falta | money
+
   assign pct = 0
   if umbral > 0
     assign pct = total | times: 100 | divided_by: umbral
@@ -31,7 +41,7 @@
   <div class="envio{% if falta <= 0 %} envio--logrado{% endif %}" data-envio>
     <p class="envio__txt">
       {%- if falta > 0 -%}
-        {{ 'carrito.envio.falta_html' | t: monto: falta | money }}
+        {{ 'carrito.envio.falta_html' | t: monto: falta_txt }}
       {%- else -%}
         {% render 'icono', tipo: 'check', tam: 15 %}
         <span>{{ 'carrito.envio.logrado' | t }}</span>
