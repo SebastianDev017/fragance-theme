@@ -177,8 +177,14 @@ export function volarAlCarrito(origen) {
   clon.removeAttribute('loading');
   clon.removeAttribute('sizes');
   clon.setAttribute('aria-hidden', 'true');
+  /* `fixed` y NO `absolute`: los dos extremos del vuelo se miden con
+     `getBoundingClientRect`, que da coordenadas de VENTANA. Con el clon
+     absoluto, añadir al carrito a media página lo manda a la altura del
+     documento y el frasco sale volando fuera de la pantalla. */
   Object.assign(clon.style, {
     position: 'fixed',
+    top: '0',
+    left: '0',
     zIndex: '90',
     margin: '0',
     pointerEvents: 'none',
@@ -186,25 +192,47 @@ export function volarAlCarrito(origen) {
     objectFit: 'contain',
   });
   document.body.appendChild(clon);
-  Flip.fit(clon, foto, { absolute: true });
 
-  const r = destino.getBoundingClientRect();
+  /* Dos llamadas a `Flip.fit`: la primera coloca el clon EXACTAMENTE encima
+     de la foto (sin duración, instantánea) y la segunda devuelve el tween que
+     lo lleva hasta el icono del carrito. Es la forma idiomática, y la que
+     acierta el destino aunque la cabecera sea fija. */
+  Flip.fit(clon, foto, { scale: true });
+
   gsap.timeline({ onComplete: () => clon.remove() })
-    .to(clon, {
-      duration: 0.7,
-      ease: 'power2.in',
-      left: r.left + r.width / 2,
-      top: r.top + r.height / 2,
-      width: 26,
-      height: 26,
-      xPercent: -50,
-      yPercent: -50,
-      opacity: 0.15,
-      rotate: 12,
-    })
+    .add(Flip.fit(clon, destino, {
+      scale: true, duration: 0.72, ease: 'power2.inOut',
+    }), 0)
+    .to(clon, { opacity: 0.12, duration: 0.26, ease: 'power2.in' }, 0.46)
     .fromTo(destino, { scale: 1 }, {
       scale: 1.16, duration: 0.16, yoyo: true, repeat: 1, ease: 'power2.out',
-    }, '-=0.12');
+    }, 0.64);
+}
+
+/* ---------------------------------------------------------------------------
+   5. el carrito se llena de arriba abajo
+
+   Cuando el cajón se abre, las líneas entran una detrás de otra. No es
+   adorno: el cajón se repinta ENTERO en cada cambio (lo recalcula Liquid), y
+   sin nada que marque el orden, un carrito de cinco líneas aparece de golpe y
+   cuesta ver cuál acaba de cambiar. Entrando en orden, la vista sigue sola la
+   línea nueva.
+
+   Se llama desde el carrito después de cada repintado.
+   --------------------------------------------------------------------------- */
+
+export function entrarCarrito(panel) {
+  if (REDUCIDO || !panel) return;
+  const piezas = $$('.dlinea, .envio, .bundles', panel);
+  if (!piezas.length) return;
+  gsap.from(piezas, {
+    opacity: 0,
+    y: 14,
+    duration: 0.5,
+    ease: 'power3.out',
+    stagger: 0.05,
+    overwrite: true,
+  });
 }
 
 /* ---------------------------------------------------------------------------

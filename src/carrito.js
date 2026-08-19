@@ -12,7 +12,7 @@
    del header es un enlace de verdad a /cart.
    =========================================================================== */
 
-import { volarAlCarrito } from './animacion.js';
+import { volarAlCarrito, entrarCarrito } from './animacion.js';
 
 const $ = (sel, raiz = document) => raiz.querySelector(sel);
 const $$ = (sel, raiz = document) => Array.from(raiz.querySelectorAll(sel));
@@ -44,6 +44,7 @@ async function repintar() {
   if (abierto) { nuevo.classList.add('is-on'); nuevo.hidden = false; }
   drawer.replaceWith(nuevo);
 
+  if (abierto) entrarCarrito(nuevo);
   sincronizarContador();
 }
 
@@ -99,7 +100,10 @@ export function abrirCarrito() {
   devolverFoco = document.activeElement;
   drawer.hidden = false;
   /* un fotograma antes de la clase: si no, la transición no arranca */
-  requestAnimationFrame(() => drawer.classList.add('is-on'));
+  requestAnimationFrame(() => {
+    drawer.classList.add('is-on');
+    entrarCarrito(drawer);
+  });
   document.documentElement.style.overflow = 'hidden';
   window.DropScentsLenis?.stop();
   $('.drawer__cerrar', drawer)?.focus();
