@@ -60,11 +60,17 @@ export function conectarRecorrido(raiz = document) {
       /* La cabecera es FIJA: clavar la sección en `top: 0` la mete debajo y el
          titular sale cortado por la píldora. Se clava justo por debajo, y el
          hueco es el mismo token que usa el documento — si mañana crece la
-         barra, esto crece con ella. */
-      const hueco = () => {
-        const v = getComputedStyle(document.documentElement).getPropertyValue('--nav-hueco');
-        return Math.round(parseFloat(v) || 0);
-      };
+         barra, esto crece con ella.
+
+         OJO: `--nav-hueco` NO se puede leer del `:root`. Una propiedad
+         personalizada devuelve su TEXTO, no un valor calculado, así que ahí
+         `getPropertyValue` da la cadena `clamp(5.4rem, 9vh, 7rem)` y
+         `parseFloat` la convierte en NaN. El mismo número, ya resuelto a
+         píxeles, está en el `padding-top` del `body`, que es justo el hueco
+         que el documento le deja a la barra. */
+      const hueco = () => Math.round(
+        parseFloat(getComputedStyle(document.body).paddingTop) || 0
+      );
 
       /* La posición la fija SIEMPRE el progreso del trigger, también al
          refrescar: si no, al volver a la página a media altura la tira
