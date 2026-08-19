@@ -9,7 +9,16 @@
  */
 {
   "current": {
+    "estetica": "blush",
+    "lavado_fuerza": 100,
+    "fuentes_marca": true,
+    "ancho_max": 1200,
+    "tarjeta_fondo": "uniforme",
+    "imagen_ratio": "1/1",
+    "imagen_encaje": "contain",
     "instagram": "https://instagram.com/dropscents",
+    "envio_umbral": 20,
+    "bundle_max": 3,
     "content_for_index": [],
     "blocks": {
       "6615124273980966592": {
@@ -17,12 +26,6 @@
         "disabled": false,
         "settings": {}
       }
-    },
-    "envio_umbral": 20,
-    "bundle_max": 3,
-    "estetica": "blush",
-    "tarjeta_fondo": "uniforme",
-    "lavado_fuerza": 100,
-    "fuentes_marca": true
+    }
   }
 }
