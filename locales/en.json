@@ -88,7 +88,12 @@
       "titulo": "Search"
     },
     "carrito": {
-      "titulo": "Cart"
+      "titulo": "Cart",
+      "n": {
+        "zero": "Cart, empty",
+        "one": "Cart, 1 item",
+        "other": "Cart, {{ count }} items"
+      }
     },
     "chat": {
       "abrir": "Open chat",

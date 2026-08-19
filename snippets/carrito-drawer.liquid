@@ -26,6 +26,13 @@
       <h2 class="dcart__t">
         {{ 'general.carrito.titulo' | t }}
         <span class="dcart__n" data-cart-count>{{ cart.item_count }}</span>
+        {%- comment -%}
+          La etiqueta del icono del carrito, ya traducida y con el plural
+          resuelto por Liquid. El JavaScript la COPIA al enlace de la cabecera
+          después de cada cambio; así no hay que llevar plantillas de plural al
+          bundle ni recordar traducirlas.
+        {%- endcomment -%}
+        <span hidden data-cart-aria>{{ 'general.carrito.n' | t: count: cart.item_count }}</span>
       </h2>
       <button class="drawer__cerrar" type="button" data-drawer-cerrar
         aria-label="{{ 'general.accesibilidad.cerrar_menu' | t }}">

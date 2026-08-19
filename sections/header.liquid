@@ -70,11 +70,18 @@
       </a>
     {%- endif -%}
 
+    {%- comment -%}
+      El número de la burbuja va `aria-hidden` y la cuenta se dice ENTERA en la
+      etiqueta. Con el número visible y la etiqueta diciendo sólo «Carrito», el
+      nombre accesible y el texto que se ve no coinciden: quien maneja el sitio
+      por voz dice «carrito» y el navegador busca un control que pone «1».
+    {%- endcomment -%}
     <a class="nav__ico nav__ico--carrito" href="{{ routes.cart_url }}"
       {% if section.settings.carrito_modo == 'drawer' %}data-abrir-carrito aria-haspopup="dialog"{% endif %}
-      aria-label="{{ 'general.carrito.titulo' | t }}">
+      data-cart-aria-destino
+      aria-label="{{ 'general.carrito.n' | t: count: cart.item_count }}">
       {% render 'icono', tipo: 'carrito', tam: 19 %}
-      <span class="nav__cuenta-carrito" data-cart-count {% if cart.item_count == 0 %}hidden{% endif %}>
+      <span class="nav__cuenta-carrito" aria-hidden="true" data-cart-count {% if cart.item_count == 0 %}hidden{% endif %}>
         {{ cart.item_count }}
       </span>
     </a>

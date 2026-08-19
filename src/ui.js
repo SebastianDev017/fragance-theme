@@ -110,16 +110,40 @@ function conectarComparador() {
     if (out.link) out.link.href = d.url || '#';
   }
 
+  /* Las pestañas son pestañas de verdad: una sola entra en el orden de
+     tabulación y entre ellas se anda con las flechas. Es lo que espera quien
+     oye «pestaña 1 de 6», y sin ello el patrón está a medias — que es peor
+     que no usarlo, porque promete un teclado que no responde. */
   const chips = $$('.chip', picker);
+
+  function elegir(chip, animar = true, mover = true) {
+    chips.forEach((c) => {
+      const activo = c === chip;
+      c.setAttribute('aria-selected', String(activo));
+      c.tabIndex = activo ? 0 : -1;
+    });
+    if (chip.id) compare.setAttribute('aria-labelledby', chip.id);
+    if (mover) chip.focus();
+    pintar(chip, animar);
+  }
+
   chips.forEach((chip) => {
-    chip.addEventListener('click', () => {
-      chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
-      pintar(chip);
+    chip.addEventListener('click', () => elegir(chip, true, false));
+    chip.addEventListener('keydown', (e) => {
+      const i = chips.indexOf(chip);
+      let j = null;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') j = (i + 1) % chips.length;
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') j = (i - 1 + chips.length) % chips.length;
+      else if (e.key === 'Home') j = 0;
+      else if (e.key === 'End') j = chips.length - 1;
+      if (j === null) return;
+      e.preventDefault();
+      elegir(chips[j]);
     });
   });
 
-  const inicial = chips.find((c) => c.getAttribute('aria-pressed') === 'true') || chips[0];
-  if (inicial) pintar(inicial, false);
+  const inicial = chips.find((c) => c.getAttribute('aria-selected') === 'true') || chips[0];
+  if (inicial) elegir(inicial, false, false);
 }
 
 /* ===========================================================================

@@ -31,7 +31,8 @@ compare.dataset.moneyFormat = '${{amount_no_decimals}}';
 
 const picker = $('.picker');
 picker.innerHTML = FRAGANCIAS.slice(0, 6).map((f, i) => `
-  <button class="chip" type="button" aria-pressed="${i === 0}"
+  <button class="chip" type="button" id="chip-maqueta-${i}" role="tab"
+    aria-controls="compare" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}"
     data-id="${f.id}"
     data-nombre="${f.marca} ${f.nombre} · ${f.tipo}"
     data-d5="${c(f.usd.d5)}" data-d10="${c(f.usd.d10)}" data-full="${c(f.usd.full)}"

@@ -88,7 +88,12 @@
       "titulo": "Buscar"
     },
     "carrito": {
-      "titulo": "Carrito"
+      "titulo": "Carrito",
+      "n": {
+        "zero": "Carrito, vacío",
+        "one": "Carrito, 1 artículo",
+        "other": "Carrito, {{ count }} artículos"
+      }
     },
     "chat": {
       "abrir": "Abrir el chat",

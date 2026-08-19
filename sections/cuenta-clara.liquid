@@ -95,9 +95,11 @@
             endif
           -%}
           <button class="chip{% unless producto %} chip--vacio{% endunless %}" type="button"
+            id="chip-{{ section.id }}-{{ forloop.index }}"
             role="tab"
+            aria-controls="compare"
             aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
-            aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
+            tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
             data-nombre="{{ nombre | escape }}"
             data-d5="{{ v_d5.price | default: 0 }}"
             data-d10="{{ v_d10.price | default: 0 }}"
@@ -130,8 +132,10 @@
             endif
           -%}
           <button class="chip" type="button" role="tab"
+            id="chip-{{ section.id }}-{{ forloop.index }}"
+            aria-controls="compare"
             aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
-            aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
+            tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
             data-nombre="{{ nombre | escape }}"
             data-d5="{{ v_d5.price | default: 0 }}"
             data-d10="{{ v_d10.price | default: 0 }}"
@@ -142,7 +146,13 @@
       {%- endif -%}
     </div>
 
-    <div class="compare" id="compare" aria-live="polite"
+    {%- comment -%}
+      El panel es de verdad el panel de las pestañas de arriba, así que se
+      declara como tal. Antes llevaba `aria-live`: con el papel puesto sobra y
+      además duplicaba el anuncio — el lector ya lee el panel al cambiar de
+      pestaña, y con la región viva lo leía otra vez entero.
+    {%- endcomment -%}
+    <div class="compare" id="compare" role="tabpanel" tabindex="0"
       data-money-format="{{ shop.money_format | escape }}"
       data-envio-afuera="{{ section.settings.courier | times: 100 }}">
 

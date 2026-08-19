@@ -86,6 +86,14 @@ function sincronizarContador() {
     el.textContent = n;
     el.hidden = n === '0';
   });
+
+  /* La etiqueta del icono la escribe Liquid dentro del cajón, con su plural ya
+     resuelto y traducida. Aquí sólo se copia: así el bundle no necesita saber
+     nada de plurales ni de idiomas. */
+  const etiqueta = $('[data-carrito-drawer] [data-cart-aria]')?.textContent.trim();
+  if (etiqueta) {
+    $$('[data-cart-aria-destino]').forEach((el) => el.setAttribute('aria-label', etiqueta));
+  }
 }
 
 /* ---------------------------------------------------------------------------

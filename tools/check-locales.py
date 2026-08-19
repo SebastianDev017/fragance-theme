@@ -19,13 +19,21 @@ def carga(nombre):
     return json.loads(s)
 
 
+# Formas de plural de Shopify. Una clave que resuelve a un diccionario SOLO de
+# estas formas es una traduccion valida, no un nodo intermedio: `| t: count: n`
+# elige la forma. Sin esto el comprobador daba por perdida toda clave con plural.
+PLURALES = {'zero', 'one', 'two', 'few', 'many', 'other'}
+
+
 def tiene(arbol, clave):
     nodo = arbol
     for parte in clave.split('.'):
         if not isinstance(nodo, dict) or parte not in nodo:
             return False
         nodo = nodo[parte]
-    return isinstance(nodo, str)
+    if isinstance(nodo, str):
+        return True
+    return isinstance(nodo, dict) and bool(nodo) and set(nodo) <= PLURALES
 
 
 es = carga('es.default.json')

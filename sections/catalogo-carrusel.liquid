@@ -42,8 +42,15 @@
     <div class="carrusel{% if section.settings.sangrar %} carrusel--sangra{% endif %}"
       data-carrusel
       {% if section.settings.avance == 'scroll' %}data-recorrido{% endif %}>
+      {%- comment -%}
+        `role="region"` sobre el `<ul>` PISA el papel de lista, y entonces sus
+        `<li>` quedan sueltos: el lector de pantalla deja de decir «1 de 9».
+        Una lista admite `aria-label` de por sí, así que la etiqueta se queda y
+        el papel no hace falta. El `tabindex` es lo que deja recorrerla con las
+        flechas del teclado.
+      {%- endcomment -%}
       <ul class="carrusel__pista" data-carrusel-pista
-        tabindex="0" role="region"
+        tabindex="0"
         aria-label="{{ 'secciones.carrusel.aria' | t }}">
         {%- for producto in coleccion.products limit: limite -%}
           <li class="carrusel__slide">
