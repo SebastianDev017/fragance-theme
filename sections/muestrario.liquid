@@ -60,9 +60,14 @@
   comment
     La duración de una vuelta crece con el número de tarjetas para que la
     VELOCIDAD sea la misma cargue lo que cargue el comerciante.
+
+    Medido en la tienda: con la primera fórmula salían 112 s por vuelta y eso
+    no se lee como «se mueve», se lee como quieto. La mitad (≈48 s con ocho
+    fragancias) es el paso al que se nota el desplazamiento sin marear ni
+    impedir leer un nombre al pasar.
   endcomment
   assign por_tarjeta = 11 | minus: section.settings.velocidad
-  assign dur = n | times: repetir | times: por_tarjeta | at_least: 24
+  assign dur = n | times: repetir | times: por_tarjeta | divided_by: 2 | at_least: 18
 -%}
 
 <section class="portada">
@@ -158,7 +163,7 @@
         { "value": "rejilla", "label": "t:secciones.muestrario.disposiciones.rejilla" }
       ]
     },
-    { "type": "range", "id": "velocidad", "min": 1, "max": 10, "step": 1, "label": "t:secciones.ticker.velocidad", "default": 4 },
+    { "type": "range", "id": "velocidad", "min": 1, "max": 10, "step": 1, "label": "t:secciones.ticker.velocidad", "default": 5 },
     { "type": "header", "content": "t:comun.textos" },
     { "type": "paragraph", "content": "t:comun.vacio_traduce" },
     { "type": "text", "id": "titulo", "label": "t:comun.titular", "default": "Pruébalo en 5 ml. Cómpralo cuando estés seguro." },
@@ -173,7 +178,7 @@
   "presets": [
     {
       "name": "t:secciones.muestrario.presets.muralla",
-      "settings": { "cantidad": 8, "disposicion": "carrusel", "velocidad": 4 }
+      "settings": { "cantidad": 8, "disposicion": "carrusel", "velocidad": 5 }
     },
     {
       "name": "t:secciones.muestrario.presets.ancha",

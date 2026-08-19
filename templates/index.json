@@ -18,7 +18,9 @@
         "texto": "Los perfumes que ya conoces, en decant para vivirlos una semana en tu piel.",
         "cta_texto": "Ver los decants",
         "cta2_texto": "Pregúntanos por el chat",
-        "cta2_chat": true
+        "cta2_chat": true,
+        "velocidad": 5,
+        "disposicion": "carrusel"
       }
     },
     "cinta": {
