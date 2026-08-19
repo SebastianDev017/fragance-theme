@@ -10,13 +10,20 @@
   {%- if section.blocks.size > 0 -%}
     <div class="foot__cols">
       {%- for block in section.blocks -%}
-        <div class="foot__col" {{ block.shopify_attributes }}>
+        {%- comment -%}
+          El contenido se arma primero y la columna se dibuja después. Un
+          bloque de menú sin menú elegido dejaba una celda vacía en la rejilla,
+          y en el pie eso se ve como un agujero del ancho de media pantalla —
+          no como algo pendiente, como algo roto. Sin contenido, no hay
+          columna, y las que quedan se reparten el sitio.
+
+          En el editor sí se dibuja siempre: si no, el comerciante no entiende
+          por qué el bloque que acaba de añadir no aparece, y encima no tendría
+          dónde pulsar para configurarlo.
+        {%- endcomment -%}
+        {%- capture contenido -%}
           {%- case block.type -%}
             {%- when 'menu' -%}
-              {%- comment -%}
-                Sin menu no hay columna. Un titulo con nada debajo se lee como
-                algo roto, no como algo pendiente de rellenar.
-              {%- endcomment -%}
               {%- if block.settings.menu != blank -%}
                 {%- if block.settings.titulo != blank -%}
                   <h2 class="foot__col-tit">{{ block.settings.titulo }}</h2>
@@ -27,10 +34,6 @@
                   {%- endfor -%}
                 </ul>
               {%- elsif request.design_mode -%}
-                {%- comment -%}
-                  En el editor si se avisa: si no, el comerciante no entiende
-                  por que el bloque que acaba de anadir no aparece.
-                {%- endcomment -%}
                 <p class="aviso-vacio aviso-vacio--suelto">{{ 'general.vacio.elige_menu' | t }}</p>
               {%- endif -%}
 
@@ -48,7 +51,11 @@
                 </button>
               {%- endif -%}
           {%- endcase -%}
-        </div>
+        {%- endcapture -%}
+
+        {%- if contenido != blank or request.design_mode -%}
+          <div class="foot__col" {{ block.shopify_attributes }}>{{ contenido }}</div>
+        {%- endif -%}
       {%- endfor -%}
     </div>
   {%- endif -%}
