@@ -10,8 +10,17 @@
   {
     "name": "Marca",
     "settings": [
-      { "type": "image_picker", "id": "favicon", "label": "Favicon" },
-      { "type": "url", "id": "instagram", "label": "Instagram", "info": "También es el respaldo del botón de chat mientras no haya app instalada." }
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      },
+      {
+        "type": "url",
+        "id": "instagram",
+        "label": "Instagram",
+        "info": "También es el respaldo del botón de chat mientras no haya app instalada."
+      }
     ]
   },
   {
@@ -20,6 +29,75 @@
       {
         "type": "paragraph",
         "content": "Todos los botones de chat del tema llaman a la misma función. Para conectar tu app, define window.DropScentsChat = () => tuPlugin.abrir(). Si no hay ninguna, el tema prueba las APIs de Crisp, Tawk, Tidio, Intercom, Zendesk y Shopify Inbox, y si no encuentra ninguna muestra un aviso con el Instagram."
+      }
+    ]
+  },
+  {
+    "name": "t:ajustes.carrito.grupo",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "t:ajustes.carrito.nota"
+      },
+      {
+        "type": "number",
+        "id": "envio_umbral",
+        "label": "t:ajustes.carrito.umbral",
+        "info": "t:ajustes.carrito.umbral_info",
+        "default": 20
+      },
+      {
+        "type": "collection",
+        "id": "bundle_coleccion",
+        "label": "t:ajustes.carrito.bundle_coleccion",
+        "info": "t:ajustes.carrito.bundle_info"
+      },
+      {
+        "type": "text",
+        "id": "bundle_titulo",
+        "label": "t:ajustes.carrito.bundle_titulo",
+        "default": "Súmale otro por probar"
+      },
+      {
+        "type": "range",
+        "id": "bundle_max",
+        "min": 2,
+        "max": 6,
+        "step": 1,
+        "label": "t:ajustes.carrito.bundle_max",
+        "default": 3
+      }
+    ]
+  },
+  {
+    "name": "t:ajustes.urgencia.grupo",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "t:ajustes.urgencia.nota"
+      },
+      {
+        "type": "checkbox",
+        "id": "stock_mostrar",
+        "label": "t:ajustes.urgencia.mostrar",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "stock_umbral",
+        "min": 1,
+        "max": 20,
+        "step": 1,
+        "label": "t:ajustes.urgencia.umbral",
+        "info": "t:ajustes.urgencia.umbral_info",
+        "default": 6
+      },
+      {
+        "type": "text",
+        "id": "entrega_nota",
+        "label": "t:ajustes.urgencia.entrega",
+        "info": "t:ajustes.urgencia.entrega_info",
+        "default": "Pídelo hoy y lo tienes en Caracas en 24–48 h."
       }
     ]
   }

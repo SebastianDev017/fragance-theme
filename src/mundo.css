@@ -244,6 +244,82 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
   color: var(--ink);
 }
 
+/* ---------------------------------------------------------------------------
+   2b. la marquesina de la portada
+
+   Bucle de CSS puro, misma técnica que la cinta: la pista lleva DOS copias de
+   la lista y la animación desplaza el 50%, así que el salto cae justo donde
+   empieza la segunda y no se ve el corte.
+   --------------------------------------------------------------------------- */
+.marquesina {
+  position: relative;
+  /* a sangre: el carrusel llega a los dos cantos de la ventana, que es lo que
+     hace que se lea como algo que sigue, no como una fila que se acabó */
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  overflow: hidden;
+  /* los extremos se desvanecen en vez de cortarse en seco */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+.marquesina__pista { display: flex; width: max-content; }
+.marquesina__grupo {
+  display: flex;
+  gap: clamp(1rem, 2vw, 1.75rem);
+  margin: 0;
+  padding: .5rem clamp(.5rem, 1vw, .875rem);
+  list-style: none;
+}
+.marquesina__item { width: clamp(15rem, 21vw, 19.5rem); flex: none; display: flex; }
+.marquesina__item > .tarjeta { width: 100%; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .marquesina__pista { animation: correr var(--marq-dur, 60s) linear infinite; }
+  @keyframes correr { to { transform: translateX(-50%); } }
+
+  /* Se detiene al pasar por encima Y al enfocar con el teclado: si no, el
+     foco entra en una tarjeta que sigue moviéndose. */
+  .marquesina:hover .marquesina__pista,
+  .marquesina:focus-within .marquesina__pista { animation-play-state: paused; }
+}
+
+/* Sin animación, la pista tiene que poder recorrerse con el dedo. */
+@media (prefers-reduced-motion: reduce) {
+  .marquesina { overflow-x: auto; scroll-snap-type: x mandatory; }
+  .marquesina__grupo:nth-child(2) { display: none; }
+  .marquesina__item { scroll-snap-align: start; }
+}
+
+/* El comerciante puede pedir rejilla en vez de carrusel: entonces la pista
+   deja de correr y las dos copias se funden en una sola rejilla. */
+.marquesina--rejilla { width: auto; margin-inline: 0; overflow: visible; mask-image: none; -webkit-mask-image: none; }
+.marquesina--rejilla .marquesina__pista { display: block; width: auto; animation: none; }
+.marquesina--rejilla .marquesina__grupo:nth-child(2) { display: none; }
+.marquesina--rejilla .marquesina__grupo {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  padding-inline: 0;
+}
+.marquesina--rejilla .marquesina__item { width: auto; }
+@media (max-width: 1000px) { .marquesina--rejilla .marquesina__grupo { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px)  { .marquesina--rejilla .marquesina__grupo { grid-template-columns: 1fr; } }
+
+/* La línea que desarma la objeción, justo debajo del botón. */
+.portada__seguro {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  margin: 1.3rem auto 0;
+  padding: .5rem .95rem;
+  border-radius: var(--r-pill);
+  background: rgba(255,255,255,.6);
+  border: 1px solid rgba(255,255,255,.9);
+  font-size: .84rem;
+  color: var(--ink-2);
+  text-wrap: balance;
+}
+.portada__seguro svg { color: var(--punch); flex: none; }
+
 /* La entrada: las tarjetas aparecen en orden de lectura, una sola vez. */
 @media (prefers-reduced-motion: no-preference) {
   .rejilla > * {
@@ -288,14 +364,20 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
 /* ---------------------------------------------------------------------------
    4. el chrome: la cabecera flotante
    --------------------------------------------------------------------------- */
+/* FIJA, no `sticky`: acompaña todo el scroll y el carrito queda siempre a un
+   clic. El documento le deja su hueco con `body { padding-top }`, así que no
+   tapa nada. Y despegada del canto: pegada arriba parecía una barra del
+   navegador, no una pieza del sitio. */
 .nav,
 .nav.is-stuck {
-  position: sticky;
-  top: clamp(.6rem, 1.4vh, 1rem);
+  position: fixed;
+  top: var(--nav-arriba);
+  left: 0;
+  right: 0;
   z-index: 50;
   width: min(calc(100% - var(--gutter) * 2), var(--maxw));
   margin-inline: auto;
-  padding: .55rem .6rem .55rem 1.35rem;
+  padding: .6rem .65rem .6rem 1.4rem;
   border-radius: var(--r-pill);
   background: rgba(255,255,255,.52);
   border: 1px solid rgba(255,255,255,.7);
@@ -619,3 +701,253 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
   border-style: solid;
   background: rgba(255,255,255,.34);
 }
+
+/* ---------------------------------------------------------------------------
+   10. el carrito lateral
+   --------------------------------------------------------------------------- */
+.drawer--carrito .drawer__panel--carrito {
+  display: flex;
+  flex-direction: column;
+  width: min(29rem, 100vw);
+  padding: 0;
+  overflow: hidden;
+}
+.drawer--carrito.is-ocupado { cursor: progress; }
+.drawer--carrito.is-ocupado .dcart__lista { opacity: .5; pointer-events: none; }
+.dcart__lista { transition: opacity .18s var(--ease); }
+
+.dcart__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.35rem 1rem;
+  border-bottom: 1px solid var(--line-soft);
+}
+.dcart__t {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  font-family: var(--font-d);
+  font-weight: 600;
+  font-size: 1.25rem;
+  letter-spacing: -.025em;
+  margin: 0;
+}
+.dcart__n {
+  display: grid;
+  place-items: center;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  padding-inline: .4rem;
+  border-radius: var(--r-pill);
+  background: var(--punch);
+  color: #fff;
+  font-family: var(--font-b);
+  font-size: .72rem;
+  font-weight: 700;
+}
+
+/* ---------- la barra del envío gratis ----------
+   El *goal gradient*: cuanto más cerca se ve la meta, más empuja. Por eso la
+   barra dice lo que FALTA en dinero, no un porcentaje abstracto. */
+.envio { padding: 1rem 1.35rem 1.05rem; border-bottom: 1px solid var(--line-soft); }
+.envio__txt {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  margin-bottom: .6rem;
+  font-size: .88rem;
+  color: var(--ink-2);
+}
+.envio__txt b { color: var(--ink); font-weight: 700; }
+.envio__pista {
+  height: 7px;
+  border-radius: var(--r-pill);
+  background: var(--stock-2);
+  overflow: hidden;
+}
+.envio__barra {
+  display: block;
+  height: 100%;
+  border-radius: var(--r-pill);
+  background: var(--punch);
+  /* La barra CRECE a la vista al añadir algo: ver la meta acercarse es el
+     efecto entero, y sin transición no se ve acercarse. */
+  transition: width .6s var(--ease);
+}
+.envio--logrado .envio__barra { background: #1F7A5C; }
+.envio--logrado .envio__txt { color: #14614A; font-weight: 600; }
+.envio--logrado .envio__txt svg { color: #14614A; }
+
+/* ---------- las líneas ---------- */
+.dcart__form { flex: 1; min-height: 0; overflow-y: auto; }
+.dcart__lista { list-style: none; margin: 0; padding: .4rem 1.35rem; display: grid; }
+.dlinea {
+  position: relative;
+  display: grid;
+  grid-template-columns: 72px 1fr 24px;
+  gap: .9rem;
+  align-items: start;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+.dlinea:last-child { border-bottom: 0; }
+.dlinea__foto {
+  display: block;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--r-md);
+  background: var(--campo, var(--stock-2));
+  overflow: hidden;
+  isolation: isolate;
+}
+.dlinea__foto img { width: 100%; height: 100%; object-fit: contain; padding: 6px; mix-blend-mode: multiply; }
+.dlinea__marca { font-size: .62rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); }
+.dlinea__nombre { font-family: var(--font-d); font-weight: 600; font-size: 1rem; line-height: 1.15; margin-top: .2rem; }
+.dlinea__var { font-size: .78rem; color: var(--ink-3); margin-top: .2rem; }
+.dlinea__pie { display: flex; align-items: center; justify-content: space-between; gap: .8rem; margin-top: .7rem; }
+.dlinea__total { font-weight: 600; font-variant-numeric: tabular-nums lining-nums; }
+.dlinea__quitar {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--r-pill);
+  color: var(--ink-3);
+  transition: color var(--t), background var(--t);
+}
+.dlinea__quitar:hover { color: var(--ink); background: var(--stock-2); }
+.cantidad--mini { transform: scale(.88); transform-origin: left center; }
+
+/* ---------- el pie ---------- */
+.dcart__pie {
+  padding: 1.1rem 1.35rem 1.35rem;
+  border-top: 1px solid var(--line);
+  background: rgba(255,255,255,.5);
+}
+.dcart__sub { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+.dcart__sub strong { font-family: var(--font-d); font-weight: 600; font-size: 1.6rem; letter-spacing: -.03em; }
+.dcart__fine { font-size: .76rem; color: var(--ink-3); margin-top: .2rem; }
+.dcart__pagar { width: 100%; margin-top: 1rem; }
+.dcart__ver {
+  display: block;
+  text-align: center;
+  margin-top: .85rem;
+  font-size: .86rem;
+  color: var(--ink-2);
+  text-decoration: underline;
+}
+.dcart__vacio { padding: 2.5rem 1.35rem; display: grid; gap: 1.2rem; justify-items: start; }
+.dcart__vacio-t { color: var(--ink-2); }
+.dcart__actualizar { margin: 0 1.35rem 1rem; }
+
+/* ---------------------------------------------------------------------------
+   11. las sugerencias
+
+   Quien ya tiene algo en el carrito dijo el sí difícil. Sumar un decant de $8
+   no es una decisión nueva: es la misma otra vez, y al lado de lo que ya va a
+   pagar casi no pesa.
+   --------------------------------------------------------------------------- */
+.bundles { padding: 1.1rem 1.35rem 1.2rem; border-top: 1px solid var(--line-soft); }
+.bundles__h { font-family: var(--font-d); font-weight: 600; font-size: 1.02rem; letter-spacing: -.02em; margin: 0; }
+.bundles__sub { font-size: .78rem; color: var(--ink-3); margin-top: .3rem; }
+.bundles__lista { list-style: none; margin: .9rem 0 0; padding: 0; display: grid; gap: .55rem; }
+.bundle {
+  display: grid;
+  grid-template-columns: 46px 1fr auto;
+  gap: .75rem;
+  align-items: center;
+  padding: .55rem;
+  border-radius: var(--r-md);
+  background: rgba(255,255,255,.55);
+  border: 1px solid rgba(255,255,255,.85);
+}
+.bundle__foto {
+  aspect-ratio: 1 / 1;
+  border-radius: var(--r-sm);
+  background: var(--campo, var(--stock-2));
+  overflow: hidden;
+  isolation: isolate;
+}
+.bundle__foto img { width: 100%; height: 100%; object-fit: contain; padding: 4px; mix-blend-mode: multiply; }
+.bundle__marca { font-size: .58rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); }
+.bundle__nombre { font-weight: 600; font-size: .9rem; line-height: 1.2; }
+.bundle__precio { font-size: .76rem; color: var(--ink-3); margin-top: .1rem; }
+.bundle__precio b { color: var(--ink); }
+.bundle__b {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--ink);
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background var(--t), color var(--t);
+}
+.bundle__b:hover { background: var(--ink); color: #fff; }
+.bundle__b.is-cargando { opacity: .5; pointer-events: none; }
+
+/* En la página del carrito las sugerencias respiran más y van en fila. */
+.carrito .bundles { border: 0; padding-inline: var(--edge); margin-top: 2.5rem; }
+@media (min-width: 760px) {
+  .carrito .bundles__lista { grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); }
+}
+.carrito .envio { padding-inline: var(--edge); border: 0; max-width: 34rem; margin-bottom: 1.5rem; }
+
+/* ---------------------------------------------------------------------------
+   12. el aviso de existencias
+
+   Sale del inventario REAL (ver snippets/urgencia.liquid) o no sale.
+   --------------------------------------------------------------------------- */
+.urgencia--pastilla {
+  position: absolute;
+  z-index: 3;
+  left: .7rem;
+  top: .7rem;
+  padding: .35rem .7rem;
+  border-radius: var(--r-pill);
+  background: var(--punch);
+  color: #fff;
+  font-size: .66rem;
+  font-weight: 700;
+  letter-spacing: .02em;
+}
+.urgencia--linea {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  margin: -.6rem 0 1.4rem;
+  font-size: .86rem;
+  font-weight: 600;
+  color: var(--punch-2);
+}
+.urgencia__pulso {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--punch);
+  flex: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .urgencia__pulso { animation: latir 1.9s var(--ease) infinite; }
+  @keyframes latir {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(212,32,96,.55); }
+    70%      { box-shadow: 0 0 0 7px rgba(212,32,96,0); }
+  }
+}
+
+.pdp__entrega {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  margin-top: 1.4rem;
+  padding: .55rem .9rem;
+  border-radius: var(--r-pill);
+  background: rgba(255,255,255,.6);
+  border: 1px solid rgba(255,255,255,.9);
+  font-size: .85rem;
+  color: var(--ink-2);
+}
+.pdp__entrega svg { color: var(--punch); flex: none; }

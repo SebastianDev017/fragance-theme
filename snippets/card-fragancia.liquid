@@ -22,6 +22,9 @@
     ratio  → proporción del marco de la foto ('1/1', '4/5'…). Lo eligen las
              secciones de catálogo desde el editor.
     indice → posición en la rejilla; alimenta el escalonado de la entrada
+    clon   → 2 en la copia del carrusel: la saca del orden de tabulación y la
+             esconde del lector de pantalla, para que el catálogo aparezca UNA
+             sola vez aunque la pista imprima la lista dos veces
     nivel  → nivel del encabezado (2 en la portada, 3 dentro de una sección
              que ya tiene su propio h2). Por defecto, 3.
 
@@ -54,13 +57,23 @@
   assign nivel = nivel | default: 3
   assign indice = indice | default: 0
   assign ratio = ratio | default: '1/1'
+  assign es_clon = false
+  if clon and clon > 1
+    assign es_clon = true
+  endif
 -%}
 
 {%- capture campo -%}{% render 'campo', producto: producto %}{%- endcapture -%}
 {%- assign campo = campo | strip | split: '|' -%}
 
+{%- comment -%}
+  `data-reveal-card` sólo cuando la tarjeta va en una rejilla. En el carrusel
+  no: el reveal es un `gsap.from(opacity: 0)` con ScrollTrigger, y sobre una
+  pista que se mueve sola volvía a dispararse y apagaba las tarjetas.
+{%- endcomment -%}
 <article class="tarjeta{% unless producto.available %} tarjeta--agotada{% endunless %}"
-  data-reveal-card
+  {% unless clon %}data-reveal-card{% endunless %}
+  {% if es_clon %}aria-hidden="true"{% endif %}
   style="--campo: {{ campo[0] }}; --i: {{ indice }}; --marco-ratio: {{ ratio }};">
 
   <div class="tarjeta__marco{% if n_img > 1 %} tarjeta__marco--galeria{% endif %}"
@@ -91,18 +104,25 @@
         (z-index + stopPropagation en el JS), si no el clic navega al producto.
       {%- endcomment -%}
       <button class="tarjeta__nav tarjeta__nav--prev" type="button" data-galeria-paso="-1"
+        {% if es_clon %}tabindex="-1"{% endif %}
         aria-label="{{ 'general.accesibilidad.imagen_anterior' | t }}">
         {% render 'icono', tipo: 'izquierda', tam: 15, grosor: 2 %}
       </button>
       <button class="tarjeta__nav tarjeta__nav--next" type="button" data-galeria-paso="1"
+        {% if es_clon %}tabindex="-1"{% endif %}
         aria-label="{{ 'general.accesibilidad.imagen_siguiente' | t }}">
         {% render 'icono', tipo: 'derecha', tam: 15, grosor: 2 %}
       </button>
     {%- endif -%}
 
-    {%- unless producto.available -%}
+    {%- if producto.available -%}
+      {%- comment -%}
+        Sale del inventario real, o no sale. Ver snippets/urgencia.liquid.
+      {%- endcomment -%}
+      {% render 'urgencia', variante: entrada, forma: 'pastilla' %}
+    {%- else -%}
       <span class="tarjeta__sello">{{ 'productos.agotado' | t }}</span>
-    {%- endunless -%}
+    {%- endif -%}
   </div>
 
   <div class="tarjeta__cuerpo">
@@ -111,7 +131,7 @@
     {%- endif -%}
 
     <h{{ nivel }} class="tarjeta__nombre">
-      <a href="{{ producto.url }}">{{ producto.title }}</a>
+      <a href="{{ producto.url }}"{% if es_clon %} tabindex="-1"{% endif %}>{{ producto.title }}</a>
     </h{{ nivel }}>
 
     {%- if producto.type != blank -%}

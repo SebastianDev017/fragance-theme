@@ -1,0 +1,127 @@
+{%- comment -%}
+  El panel del carrito lateral.
+
+  Vive en un SNIPPET y no directamente en una sección porque hace falta en dos
+  sitios: dentro de `sections/header.liquid` (que es donde el comerciante
+  elige si quiere cajón o sólo página) y dentro de `sections/carrito-drawer.liquid`,
+  que existe únicamente para que la Section Rendering API pueda volver a
+  pintarlo tras cada cambio. Un solo marcado, dos puntos de entrada.
+
+  Regla: **el JavaScript no calcula precios.** Cada cambio se manda a Shopify
+  y luego se pide a Liquid la sección recalculada. Un carrito que suma en el
+  cliente acaba enseñando un total distinto al del checkout.
+
+  Sin JavaScript sigue siendo usable: el panel está en el DOM, las cantidades
+  son un `<form>` a `/cart` con `updates[]` POSICIONALES —el orden de los
+  inputs ES el orden de las líneas— y el icono del header es un enlace real.
+{%- endcomment -%}
+
+<div class="drawer drawer--carrito" id="carrito-drawer" data-carrito-drawer hidden>
+  <div class="drawer__fondo" data-drawer-cerrar></div>
+
+  <aside class="drawer__panel drawer__panel--carrito" role="dialog" aria-modal="true"
+    aria-label="{{ 'general.carrito.titulo' | t }}">
+
+    <header class="dcart__top">
+      <h2 class="dcart__t">
+        {{ 'general.carrito.titulo' | t }}
+        <span class="dcart__n" data-cart-count>{{ cart.item_count }}</span>
+      </h2>
+      <button class="drawer__cerrar" type="button" data-drawer-cerrar
+        aria-label="{{ 'general.accesibilidad.cerrar_menu' | t }}">
+        {% render 'icono', tipo: 'cerrar', tam: 16 %}
+      </button>
+    </header>
+
+    {%- if cart.item_count > 0 -%}
+      {% render 'carrito-envio' %}
+
+      <form class="dcart__form" action="{{ routes.cart_url }}" method="post" novalidate data-carrito-form>
+        <ul class="dcart__lista" role="list">
+          {%- for item in cart.items -%}
+            {%- capture c -%}{% render 'campo', producto: item.product %}{%- endcapture -%}
+            {%- assign c = c | strip | split: '|' -%}
+
+            <li class="dlinea" style="--campo: {{ c[0] }};">
+              <a class="dlinea__foto" href="{{ item.url }}" tabindex="-1" aria-hidden="true">
+                {%- if item.image -%}
+                  <img src="{{ item.image | image_url: width: 200 }}" alt=""
+                    width="100" height="100" loading="lazy" decoding="async">
+                {%- endif -%}
+              </a>
+
+              <div class="dlinea__txt">
+                {%- if item.product.vendor != blank -%}
+                  <p class="dlinea__marca">{{ item.product.vendor }}</p>
+                {%- endif -%}
+                <p class="dlinea__nombre"><a href="{{ item.url }}">{{ item.product.title }}</a></p>
+                {%- unless item.product.has_only_default_variant -%}
+                  <p class="dlinea__var">{{ item.variant.title }}</p>
+                {%- endunless -%}
+
+                <div class="dlinea__pie">
+                  <div class="cantidad cantidad--mini">
+                    <label class="visually-hidden" for="dc-{{ item.index | plus: 1 }}">
+                      {{ 'productos.cantidad' | t }}
+                    </label>
+                    <button class="cantidad__b" type="button" data-cantidad="-1"
+                      aria-label="{{ 'productos.quitar_uno' | t }}">{% render 'icono', tipo: 'menos', tam: 13 %}</button>
+                    <input id="dc-{{ item.index | plus: 1 }}" class="cantidad__i" type="number"
+                      name="updates[]" value="{{ item.quantity }}" min="0" inputmode="numeric"
+                      data-linea="{{ item.index | plus: 1 }}">
+                    <button class="cantidad__b" type="button" data-cantidad="1"
+                      aria-label="{{ 'productos.anadir_uno' | t }}">{% render 'icono', tipo: 'mas', tam: 13 %}</button>
+                  </div>
+                  <p class="dlinea__total">{{ item.original_line_price | money }}</p>
+                </div>
+              </div>
+
+              <a class="dlinea__quitar" href="{{ item.url_to_remove }}"
+                aria-label="{{ 'carrito.quitar' | t }}" data-quitar>
+                {% render 'icono', tipo: 'cerrar', tam: 13 %}
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+
+        <noscript>
+          <button class="btn btn--ghost dcart__actualizar" type="submit" name="update">
+            {{ 'carrito.actualizar' | t }}
+          </button>
+        </noscript>
+      </form>
+
+      {% render 'carrito-bundles' %}
+
+      <footer class="dcart__pie">
+        <p class="dcart__sub">
+          <span>{{ 'carrito.subtotal' | t }}</span>
+          <strong data-cart-total>{{ cart.total_price | money }}</strong>
+        </p>
+        <p class="dcart__fine">{{ 'carrito.impuestos' | t }}</p>
+
+        <form action="{{ routes.cart_url }}" method="post" novalidate>
+          <button class="btn btn--ink btn--lg dcart__pagar" type="submit" name="checkout">
+            {{ 'carrito.pagar' | t }}
+          </button>
+        </form>
+
+        <a class="dcart__ver" href="{{ routes.cart_url }}">{{ 'carrito.ver_carrito' | t }}</a>
+      </footer>
+
+    {%- else -%}
+      <div class="dcart__vacio">
+        <p class="dcart__vacio-t">{{ 'carrito.vacio_texto' | t }}</p>
+        <a class="btn btn--ink btn--lg" href="{{ routes.all_products_collection_url }}" data-drawer-cerrar>
+          {{ 'carrito.vacio_cta' | t }}
+        </a>
+      </div>
+
+      {%- comment -%}
+        Con el carrito vacío las sugerencias son lo ÚNICO útil que se puede
+        poner aquí: quien lo abrió estaba buscando algo.
+      {%- endcomment -%}
+      {% render 'carrito-bundles' %}
+    {%- endif -%}
+  </aside>
+</div>

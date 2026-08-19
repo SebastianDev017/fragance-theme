@@ -15,6 +15,8 @@ import './tienda.css';
 import './coleccion.css';
 import './mundo.css';        /* la capa del mundo: va LA ÚLTIMA */
 import { iniciar, conectarEditorDeTemas } from './ui.js';
+import { conectarCarrito } from './carrito.js';
 
 iniciar();
+conectarCarrito();
 conectarEditorDeTemas();

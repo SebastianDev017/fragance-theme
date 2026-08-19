@@ -97,6 +97,12 @@
   --edge: max(var(--gutter), (100% - var(--maxw)) / 2);
   --pad: var(--edge);   /* alias heredado */
 
+  /* La cabecera es FIJA y flota separada del canto. Este es el hueco que
+     tiene que dejarle el documento; si se toca el alto de la barra, se toca
+     aquí. */
+  --nav-arriba: clamp(1rem, 2.2vh, 1.7rem);
+  --nav-hueco:  clamp(5.4rem, 9vh, 7rem);
+
   --ease: cubic-bezier(.22, 1, .36, 1);
   --t: .28s var(--ease);
 
@@ -113,6 +119,7 @@ html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; overflow-x: clip
 
 body {
   margin: 0;
+  padding-top: var(--nav-hueco);
   font-family: var(--font-b);
   font-size: 1rem;
   line-height: 1.6;

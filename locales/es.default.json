@@ -27,7 +27,18 @@
     "titulo": "Tu carrito",
     "vacio_cta": "Ver los decants",
     "vacio_texto": "Empieza por un decant: cuestan poco y te dicen todo.",
-    "vacio_titulo": "Tu carrito está vacío."
+    "vacio_titulo": "Tu carrito está vacío.",
+    "envio": {
+      "falta_html": "Te faltan <b>{{ monto }}</b> para el envío gratis",
+      "logrado": "¡Listo! Tu envío va gratis",
+      "aria": "Progreso hacia el envío gratis"
+    },
+    "ver_carrito": "Ver el carrito completo",
+    "bundle": {
+      "titulo": "Súmale otro por probar",
+      "sub": "Decants de 5 ml. Lo que pagues por cada uno se te descuenta de su frasco.",
+      "anadir_aria": "Añadir {{ nombre }} al carrito"
+    }
   },
   "colecciones": {
     "aplicar": "Aplicar",
@@ -62,7 +73,8 @@
       "pie": "Pie de página",
       "siguiente": "Siguiente",
       "skip_to_content": "Saltar al contenido",
-      "indice_campos": "Índice de campos del muestrario"
+      "indice_campos": "Índice de campos del muestrario",
+      "carrusel_portada": "Fragancias destacadas"
     },
     "anterior": "Anterior",
     "buscar": {
@@ -142,6 +154,10 @@
       "1": "Llévate la muestra",
       "2": "Vívela una semana. Si no es la tuya, ahí acaba.",
       "3": "El frasco, menos lo que pagaste"
+    },
+    "stock": {
+      "uno": "Queda 1 en existencia",
+      "varios": "Quedan {{ n }} en existencia"
     }
   },
   "secciones": {

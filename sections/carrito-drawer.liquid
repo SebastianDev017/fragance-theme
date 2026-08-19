@@ -1,0 +1,17 @@
+{%- comment -%}
+  Sección envoltorio del carrito lateral.
+
+  No dibuja nada por su cuenta: existe para que el JavaScript pueda pedir
+  `/?section_id=carrito-drawer` y recibir el panel recalculado por Liquid
+  después de cada cambio. El marcado vive en el snippet, que es el mismo que
+  usa la cabecera.
+{%- endcomment -%}
+
+{% render 'carrito-drawer' %}
+
+{% schema %}
+{
+  "name": "t:secciones.carrito_drawer.nombre",
+  "settings": []
+}
+{% endschema %}

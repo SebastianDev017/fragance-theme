@@ -1,0 +1,46 @@
+{%- comment -%}
+  La barra del envío gratis.
+
+  Es la pieza que más mueve la aguja de un carrito y la razón es conocida: el
+  *goal gradient* — cuanto más cerca se ve la meta, más empuja. Por eso la
+  barra enseña LO QUE FALTA en dinero, no un porcentaje abstracto, y cuando ya
+  se alcanzó lo dice y se calla.
+
+  El umbral lo pone el comerciante en los ajustes del tema, así que la barra
+  del cajón lateral y la de la página del carrito dicen siempre lo mismo.
+
+  Si el umbral está en 0 la barra no existe: no se inventa una meta.
+
+  Uso: {% render 'carrito-envio' %}
+{%- endcomment -%}
+
+{%- liquid
+  assign umbral = settings.envio_umbral | default: 0 | times: 100
+  assign total = cart.total_price | default: 0
+  assign falta = umbral | minus: total
+  assign pct = 0
+  if umbral > 0
+    assign pct = total | times: 100 | divided_by: umbral
+    if pct > 100
+      assign pct = 100
+    endif
+  endif
+-%}
+
+{%- if umbral > 0 -%}
+  <div class="envio{% if falta <= 0 %} envio--logrado{% endif %}" data-envio>
+    <p class="envio__txt">
+      {%- if falta > 0 -%}
+        {{ 'carrito.envio.falta_html' | t: monto: falta | money }}
+      {%- else -%}
+        {% render 'icono', tipo: 'check', tam: 15 %}
+        <span>{{ 'carrito.envio.logrado' | t }}</span>
+      {%- endif -%}
+    </p>
+    <div class="envio__pista" role="progressbar"
+      aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ pct }}"
+      aria-label="{{ 'carrito.envio.aria' | t }}">
+      <span class="envio__barra" style="width: {{ pct }}%;"></span>
+    </div>
+  </div>
+{%- endif -%}

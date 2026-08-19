@@ -27,7 +27,18 @@
     "titulo": "Your cart",
     "vacio_cta": "Browse the decants",
     "vacio_texto": "Start with a decant: they cost little and tell you everything.",
-    "vacio_titulo": "Your cart is empty."
+    "vacio_titulo": "Your cart is empty.",
+    "envio": {
+      "falta_html": "You are <b>{{ monto }}</b> away from free shipping",
+      "logrado": "Done — your shipping is free",
+      "aria": "Progress towards free shipping"
+    },
+    "ver_carrito": "View the full cart",
+    "bundle": {
+      "titulo": "Add one more to try",
+      "sub": "5 ml decants. Whatever you pay for each one comes off its full bottle.",
+      "anadir_aria": "Add {{ nombre }} to the cart"
+    }
   },
   "colecciones": {
     "aplicar": "Apply",
@@ -62,7 +73,8 @@
       "pie": "Footer",
       "siguiente": "Next",
       "skip_to_content": "Skip to content",
-      "indice_campos": "Sample deck field index"
+      "indice_campos": "Sample deck field index",
+      "carrusel_portada": "Featured fragrances"
     },
     "anterior": "Previous",
     "buscar": {
@@ -142,6 +154,10 @@
       "1": "Take the sample",
       "2": "Live with it for a week. If it is not yours, it ends there.",
       "3": "The bottle, minus what you paid"
+    },
+    "stock": {
+      "uno": "Only 1 left",
+      "varios": "Only {{ n }} left"
     }
   },
   "secciones": {

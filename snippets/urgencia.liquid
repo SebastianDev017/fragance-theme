@@ -1,0 +1,60 @@
+{%- comment -%}
+  El aviso de existencias.
+
+  REGLA QUE NO SE NEGOCIA: esto sale del inventario REAL de Shopify. Nunca se
+  inventa un número, nunca se enseña un contador que no corresponde a unidades
+  que existen. Un «quedan 2» falso funciona una vez y quema la tienda para
+  siempre, y además es la clase de cosa por la que un negocio se mete en
+  problemas legales.
+
+  Por eso sólo se dibuja cuando se cumplen las tres:
+    1. el comerciante lo tiene activado (ajuste del tema);
+    2. la variante lleva seguimiento de inventario en Shopify;
+    3. quedan unidades, y son pocas (por debajo del umbral).
+
+  Si el producto no lleva seguimiento —que es el caso mientras no se cargue el
+  inventario— no se pinta NADA. El silencio es la respuesta correcta.
+
+  Parámetros:
+    variante → la variante a mirar. Obligatorio.
+    forma    → 'pastilla' (sobre la foto de la tarjeta) o 'linea' (en la ficha)
+
+  Uso: {% render 'urgencia', variante: v, forma: 'linea' %}
+{%- endcomment -%}
+
+{%- liquid
+  assign mostrar = false
+  assign quedan = 0
+
+  if settings.stock_mostrar and variante
+    comment
+      `inventory_management` vacío = Shopify no cuenta unidades de esta
+      variante, así que `inventory_quantity` no significa nada.
+    endcomment
+    if variante.inventory_management != blank and variante.available
+      assign quedan = variante.inventory_quantity
+      if quedan > 0 and quedan <= settings.stock_umbral
+        assign mostrar = true
+      endif
+    endif
+  endif
+
+  assign forma = forma | default: 'linea'
+-%}
+
+{%- if mostrar -%}
+  {%- if quedan == 1 -%}
+    {%- assign texto = 'productos.stock.uno' | t -%}
+  {%- else -%}
+    {%- assign texto = 'productos.stock.varios' | t: n: quedan -%}
+  {%- endif -%}
+
+  {%- if forma == 'pastilla' -%}
+    <span class="urgencia urgencia--pastilla">{{ texto }}</span>
+  {%- else -%}
+    <p class="urgencia urgencia--linea">
+      <span class="urgencia__pulso" aria-hidden="true"></span>
+      <span>{{ texto }}</span>
+    </p>
+  {%- endif -%}
+{%- endif -%}

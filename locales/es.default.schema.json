@@ -99,7 +99,14 @@
       "mostrar_cuenta": "Mostrar cuenta",
       "mostrar_idioma": "Mostrar selector de idioma",
       "nombre": "Cabecera",
-      "texto_chat": "Texto del botón de chat"
+      "texto_chat": "Texto del botón de chat",
+      "carrito": "Carrito",
+      "carrito_modo": "Al pulsar el carrito",
+      "carrito_modo_info": "Con el cajón, el icono sigue siendo un enlace real a /cart: funciona sin JavaScript y se puede abrir en otra pestaña.",
+      "carrito_modos": {
+        "drawer": "Abrir el cajón lateral",
+        "pagina": "Ir a la página del carrito"
+      }
     },
     "carrito": {
       "nombre": "Carrito"
@@ -343,7 +350,37 @@
         "corta": "Portada · tres fragancias",
         "chat": "Portada · con chat",
         "columna": "Portada · seis en tres columnas"
-      }
+      },
+      "disposiciones": {
+        "carrusel": "Carrusel que corre solo",
+        "rejilla": "Rejilla quieta"
+      },
+      "seguro": "Línea de seguridad",
+      "seguro_info": "Va debajo del botón: quien ya iba a pulsar no la necesita, y quien dudaba la lee justo cuando dudaba."
+    },
+    "carrito_drawer": {
+      "nombre": "Carrito lateral"
+    }
+  },
+  "ajustes": {
+    "carrito": {
+      "grupo": "Carrito",
+      "nota": "Estos valores los comparten el cajón lateral y la página del carrito, para que nunca digan cosas distintas.",
+      "umbral": "Envío gratis desde",
+      "umbral_info": "En la moneda de la tienda. Con 0 la barra de progreso no aparece.",
+      "bundle_coleccion": "Colección para sugerir",
+      "bundle_info": "Se ofrece sólo la variante de 5 ml, y nunca un producto que ya esté en el carrito.",
+      "bundle_titulo": "Título de las sugerencias",
+      "bundle_max": "Cuántas sugerir"
+    },
+    "urgencia": {
+      "grupo": "Existencias y entrega",
+      "nota": "El aviso de existencias sale del inventario REAL de Shopify. Si la variante no lleva seguimiento de inventario no se muestra nada: nunca se inventa un número.",
+      "mostrar": "Avisar cuando queden pocas",
+      "umbral": "Avisar a partir de",
+      "umbral_info": "Unidades o menos. Sólo con seguimiento de inventario activado en el producto.",
+      "entrega": "Nota de entrega",
+      "entrega_info": "Sale en la ficha, debajo del botón. Que sea verdad."
     }
   }
 }

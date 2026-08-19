@@ -99,7 +99,14 @@
       "mostrar_cuenta": "Show account",
       "mostrar_idioma": "Show language picker",
       "nombre": "Header",
-      "texto_chat": "Chat button text"
+      "texto_chat": "Chat button text",
+      "carrito": "Cart",
+      "carrito_modo": "When the cart is clicked",
+      "carrito_modo_info": "With the drawer, the icon is still a real link to /cart: it works without JavaScript and can be opened in a new tab.",
+      "carrito_modos": {
+        "drawer": "Open the side drawer",
+        "pagina": "Go to the cart page"
+      }
     },
     "carrito": {
       "nombre": "Cart"
@@ -343,7 +350,37 @@
         "corta": "Home · three fragrances",
         "chat": "Home · with chat",
         "columna": "Home · six in three columns"
-      }
+      },
+      "disposiciones": {
+        "carrusel": "Auto-running carousel",
+        "rejilla": "Static grid"
+      },
+      "seguro": "Reassurance line",
+      "seguro_info": "Sits under the button: whoever was going to click does not need it, and whoever hesitated reads it exactly while hesitating."
+    },
+    "carrito_drawer": {
+      "nombre": "Cart drawer"
+    }
+  },
+  "ajustes": {
+    "carrito": {
+      "grupo": "Cart",
+      "nota": "The drawer and the cart page share these values so they never disagree.",
+      "umbral": "Free shipping from",
+      "umbral_info": "In the store currency. Set to 0 to hide the progress bar.",
+      "bundle_coleccion": "Collection to suggest from",
+      "bundle_info": "Only the 5 ml variant is offered, and never a product already in the cart.",
+      "bundle_titulo": "Suggestions heading",
+      "bundle_max": "How many to suggest"
+    },
+    "urgencia": {
+      "grupo": "Stock and delivery",
+      "nota": "The stock notice comes from REAL Shopify inventory. If the variant does not track inventory, nothing is shown: a number is never invented.",
+      "mostrar": "Warn when few are left",
+      "umbral": "Warn at or below",
+      "umbral_info": "Units or fewer. Only where inventory tracking is on for the product.",
+      "entrega": "Delivery note",
+      "entrega_info": "Shows on the product page, under the button. Make it true."
     }
   }
 }

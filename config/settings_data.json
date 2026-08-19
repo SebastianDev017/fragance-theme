@@ -17,6 +17,8 @@
         "disabled": false,
         "settings": {}
       }
-    }
+    },
+    "envio_umbral": 20,
+    "bundle_max": 3
   }
 }

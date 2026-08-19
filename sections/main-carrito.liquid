@@ -19,6 +19,12 @@
   </header>
 
   {%- if cart.item_count > 0 -%}
+    {%- comment -%}
+      La misma barra y las mismas sugerencias que en el cajón: quien abre la
+      página no debería recibir menos que quien compra desde el lateral.
+    {%- endcomment -%}
+    {% render 'carrito-envio' %}
+
     <form action="{{ routes.cart_url }}" method="post" novalidate class="carrito__form" data-carrito-form>
       <ul class="carrito__lista" role="list">
         {%- for item in cart.items -%}
@@ -108,6 +114,8 @@
         </div>
       </div>
     </form>
+
+    {% render 'carrito-bundles' %}
   {%- else -%}
     <div class="vacio-pagina">
       <p class="vacio-pagina__t">{{ 'carrito.vacio_texto' | t }}</p>

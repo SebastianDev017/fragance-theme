@@ -4,6 +4,11 @@
   El contenido cae sobre el mismo contenedor que el resto de la página
   (--edge en el CSS), no de borde a borde de la pantalla.
 
+  El carrito se elige aquí: «sólo página» o «cajón lateral + página». Con
+  cajón, el icono SIGUE siendo un enlace real a `/cart` —así funciona sin
+  JavaScript y se puede abrir en otra pestaña—; el JS sólo intercepta el clic
+  normal para abrir el panel.
+
   Móvil y escritorio no muestran lo mismo a propósito:
     · escritorio → enlaces + iconos (buscar, cuenta, carrito) + botón de chat
     · móvil      → sólo el carrito y la hamburguesa; todo lo demás vive en el
@@ -66,6 +71,7 @@
     {%- endif -%}
 
     <a class="nav__ico nav__ico--carrito" href="{{ routes.cart_url }}"
+      {% if section.settings.carrito_modo == 'drawer' %}data-abrir-carrito aria-haspopup="dialog"{% endif %}
       aria-label="{{ 'general.carrito.titulo' | t }}">
       {% render 'icono', tipo: 'carrito', tam: 19 %}
       <span class="nav__cuenta-carrito" data-cart-count {% if cart.item_count == 0 %}hidden{% endif %}>
@@ -161,6 +167,14 @@
   </aside>
 </div>
 
+{%- comment -%}
+  El panel del carrito. Se dibuja SÓLO si el comerciante eligió cajón: con
+  «sólo página» no viaja ni un byte de más.
+{%- endcomment -%}
+{%- if section.settings.carrito_modo == 'drawer' -%}
+  {% render 'carrito-drawer' %}
+{%- endif -%}
+
 {% schema %}
 {
   "name": "t:secciones.cabecera.nombre",
@@ -174,6 +188,19 @@
     { "type": "checkbox", "id": "mostrar_buscar", "label": "t:secciones.cabecera.mostrar_buscar", "default": true },
     { "type": "checkbox", "id": "mostrar_cuenta", "label": "t:secciones.cabecera.mostrar_cuenta", "default": true },
     { "type": "checkbox", "id": "mostrar_idioma", "label": "t:secciones.cabecera.mostrar_idioma", "default": true },
+    { "type": "header", "content": "t:secciones.cabecera.carrito" },
+    {
+      "type": "select",
+      "id": "carrito_modo",
+      "label": "t:secciones.cabecera.carrito_modo",
+      "info": "t:secciones.cabecera.carrito_modo_info",
+      "default": "drawer",
+      "options": [
+        { "value": "drawer", "label": "t:secciones.cabecera.carrito_modos.drawer" },
+        { "value": "pagina", "label": "t:secciones.cabecera.carrito_modos.pagina" }
+      ]
+    },
+    { "type": "header", "content": "t:secciones.cabecera.acciones" },
     { "type": "checkbox", "id": "mostrar_chat", "label": "t:secciones.cabecera.mostrar_chat", "default": true },
     { "type": "text", "id": "texto_chat", "label": "t:secciones.cabecera.texto_chat", "default": "Abrir el chat" }
   ]

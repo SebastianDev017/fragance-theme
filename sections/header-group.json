@@ -17,7 +17,8 @@
         "wordmark": "DropScents",
         "menu": "main-menu",
         "mostrar_chat": true,
-        "texto_chat": "Abrir el chat"
+        "texto_chat": "Abrir el chat",
+        "carrito_modo": "drawer"
       }
     }
   },

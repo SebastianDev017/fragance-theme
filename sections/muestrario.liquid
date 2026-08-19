@@ -1,13 +1,22 @@
 {%- comment -%}
-  La portada: el titular y las fragancias.
+  La portada: el gancho y las fragancias en movimiento.
 
-  Un titular centrado con aire de sobra, dos botones, y debajo una fila de
-  tarjetas de vidrio sobre el degradado. Nada más. La pregunta que tiene que
-  responder esta pantalla es «cuánto me cuesta probar uno», y todo lo que no
-  ayude a responderla sobra.
+  Un titular centrado con aire, dos botones, la línea que quita el miedo, y
+  debajo un carrusel que corre solo de derecha a izquierda y se detiene al
+  pasar por encima.
 
-  El escalonado de la entrada (`--i`) hace que las tarjetas aparezcan una
-  detrás de otra en orden de lectura, una sola vez al cargar.
+  Por qué carrusel y no rejilla: en la primera pantalla el trabajo no es
+  «enseñar el catálogo», es que la mano se quede quieta mirando. Algo que se
+  mueve retiene, y ver pasar ocho frascos conocidos hace el trabajo que ningún
+  párrafo hace — reconoce la marca antes de leer el precio.
+
+  El bucle es CSS puro, la misma técnica que la cinta: la lista se imprime DOS
+  veces y la animación desplaza exactamente el 50%, así que el salto cae donde
+  empieza la segunda copia y no se ve el corte. Sin JavaScript, y con
+  `prefers-reduced-motion` se queda quieto y se puede recorrer con el dedo.
+
+  La segunda copia va `aria-hidden` y fuera del orden de tabulación: para un
+  lector de pantalla el catálogo aparece UNA vez.
 {%- endcomment -%}
 
 {%- liquid
@@ -26,6 +35,34 @@
 
   assign tope = section.settings.cantidad
   assign n = productos.size
+  if n > tope
+    assign n = tope
+  endif
+
+  comment
+    Cuántas veces se repite la lista DENTRO de cada copia. Con 4 fragancias y
+    una sola pasada, la pista mide menos que la ventana y al saltar al 50% se
+    ve el hueco. Se repite hasta juntar al menos 10 tarjetas por copia.
+    (Liquid no tiene `ceil`: se divide y se suma uno si hubo resto.)
+  endcomment
+  assign repetir = 1
+  if n > 0
+    assign repetir = 10 | divided_by: n
+    assign resto = 10 | modulo: n
+    if resto > 0
+      assign repetir = repetir | plus: 1
+    endif
+    if repetir < 1
+      assign repetir = 1
+    endif
+  endif
+
+  comment
+    La duración de una vuelta crece con el número de tarjetas para que la
+    VELOCIDAD sea la misma cargue lo que cargue el comerciante.
+  endcomment
+  assign por_tarjeta = 11 | minus: section.settings.velocidad
+  assign dur = n | times: repetir | times: por_tarjeta | at_least: 24
 -%}
 
 <section class="portada">
@@ -59,19 +96,48 @@
         {%- endif -%}
       {%- endif -%}
     </div>
+
+    {%- comment -%}
+      La línea que desarma la objeción antes de que se formule. Va DEBAJO del
+      botón a propósito: quien ya iba a pulsar no la necesita, y quien dudaba
+      la lee justo cuando estaba dudando.
+    {%- endcomment -%}
+    {%- if section.settings.seguro != blank -%}
+      <p class="portada__seguro">
+        {% render 'icono', tipo: 'escudo', tam: 15 %}
+        <span>{{ section.settings.seguro }}</span>
+      </p>
+    {%- endif -%}
   </header>
 
-  <div class="rejilla" style="--cols: {{ section.settings.columnas }};">
-    {%- if n > 0 -%}
-      {%- for producto in productos limit: tope -%}
-        {% render 'card-fragancia', producto: producto, indice: forloop.index, nivel: 2 %}
-      {%- endfor -%}
-    {%- else -%}
+  {%- if n > 0 -%}
+    <div class="marquesina{% if section.settings.disposicion == 'rejilla' %} marquesina--rejilla{% endif %}"
+      style="--marq-dur: {{ dur }}s;"
+      aria-label="{{ 'general.accesibilidad.carrusel_portada' | t }}">
+      <div class="marquesina__pista">
+        {%- for copia in (1..2) -%}
+          <ul class="marquesina__grupo" role="list" {% unless forloop.first %}aria-hidden="true"{% endunless %}>
+            {%- for vuelta in (1..repetir) -%}
+              {%- for producto in productos limit: tope -%}
+                <li class="marquesina__item">
+                  {% render 'card-fragancia',
+                       producto: producto,
+                       nivel: 2,
+                       clon: copia %}
+                </li>
+              {%- endfor -%}
+            {%- endfor -%}
+          </ul>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- else -%}
+    <div class="rejilla" style="--cols: 4;">
       {%- for i in (1..4) -%}
         {% render 'card-vacia', indice: forloop.index %}
       {%- endfor -%}
-    {%- endif -%}
-  </div>
+    </div>
+  {%- endif -%}
 </section>
 
 {% schema %}
@@ -81,8 +147,18 @@
   "class": "seccion-portada",
   "settings": [
     { "type": "collection", "id": "coleccion", "label": "t:comun.coleccion" },
-    { "type": "range", "id": "cantidad", "min": 3, "max": 24, "step": 1, "label": "t:comun.numero", "default": 4 },
-    { "type": "range", "id": "columnas", "min": 2, "max": 5, "step": 1, "label": "t:comun.columnas", "default": 4 },
+    { "type": "range", "id": "cantidad", "min": 3, "max": 24, "step": 1, "label": "t:comun.numero", "default": 8 },
+    {
+      "type": "select",
+      "id": "disposicion",
+      "label": "t:comun.disposicion",
+      "default": "carrusel",
+      "options": [
+        { "value": "carrusel", "label": "t:secciones.muestrario.disposiciones.carrusel" },
+        { "value": "rejilla", "label": "t:secciones.muestrario.disposiciones.rejilla" }
+      ]
+    },
+    { "type": "range", "id": "velocidad", "min": 1, "max": 10, "step": 1, "label": "t:secciones.ticker.velocidad", "default": 4 },
     { "type": "header", "content": "t:comun.textos" },
     { "type": "paragraph", "content": "t:comun.vacio_traduce" },
     { "type": "text", "id": "titulo", "label": "t:comun.titular", "default": "Pruébalo en 5 ml. Cómpralo cuando estés seguro." },
@@ -91,28 +167,29 @@
     { "type": "url", "id": "cta_url", "label": "t:comun.boton_enlace" },
     { "type": "text", "id": "cta2_texto", "label": "t:comun.boton_2", "default": "Pregúntanos por el chat" },
     { "type": "url", "id": "cta2_url", "label": "t:comun.boton_2_enlace" },
-    { "type": "checkbox", "id": "cta2_chat", "label": "t:comun.boton_2_chat", "default": true }
+    { "type": "checkbox", "id": "cta2_chat", "label": "t:comun.boton_2_chat", "default": true },
+    { "type": "text", "id": "seguro", "label": "t:secciones.muestrario.seguro", "info": "t:secciones.muestrario.seguro_info", "default": "Si no es tuyo, ahí acaba. Si lo es, el frasco te sale exactamente eso menos." }
   ],
   "presets": [
     {
       "name": "t:secciones.muestrario.presets.muralla",
-      "settings": { "cantidad": 4, "columnas": 4 }
+      "settings": { "cantidad": 8, "disposicion": "carrusel", "velocidad": 4 }
     },
     {
       "name": "t:secciones.muestrario.presets.ancha",
-      "settings": { "cantidad": 8, "columnas": 4 }
+      "settings": { "cantidad": 12, "disposicion": "carrusel", "velocidad": 6 }
     },
     {
       "name": "t:secciones.muestrario.presets.corta",
-      "settings": { "cantidad": 3, "columnas": 3, "titulo": "Empieza por 5 ml.", "texto": "Tres para probar esta semana. Lo que pagas por el decant se te descuenta del frasco." }
+      "settings": { "cantidad": 4, "disposicion": "rejilla", "titulo": "Empieza por 5 ml.", "texto": "Lo que pagas por el decant se te descuenta del frasco completo." }
     },
     {
       "name": "t:secciones.muestrario.presets.chat",
-      "settings": { "cantidad": 4, "columnas": 4, "cta_texto": "Ver el catálogo", "cta2_texto": "Pregúntanos", "cta2_chat": true }
+      "settings": { "cantidad": 8, "disposicion": "carrusel", "cta_texto": "Ver el catálogo", "cta2_texto": "Pregúntanos", "cta2_chat": true }
     },
     {
       "name": "t:secciones.muestrario.presets.columna",
-      "settings": { "cantidad": 6, "columnas": 3 }
+      "settings": { "cantidad": 6, "disposicion": "carrusel", "velocidad": 2 }
     }
   ]
 }

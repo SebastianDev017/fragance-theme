@@ -1,0 +1,99 @@
+{%- comment -%}
+  «Súmale otro por probar»: los decants sugeridos.
+
+  Por qué funciona aquí y no en la portada: quien ya tiene algo en el carrito
+  ha dicho el sí difícil. Sumar un decant de $8 no es una decisión nueva, es
+  la misma decisión otra vez, y el precio de entrada la hace casi gratuita al
+  lado de lo que ya va a pagar.
+
+  Sólo se ofrece la variante de 5 ml —la muestra— y sólo de productos que NO
+  están ya en el carrito: repetir lo que alguien acaba de meter es la forma
+  más rápida de que deje de mirar esta zona.
+
+  Añadir NO requiere JavaScript: cada sugerencia es su propio formulario a
+  `/cart/add`. Con JS, el cajón lo intercepta y no recarga.
+
+  Uso: {% render 'carrito-bundles' %}
+{%- endcomment -%}
+
+{%- liquid
+  assign col = settings.bundle_coleccion
+  assign tope = settings.bundle_max | default: 3
+
+  comment
+    Los handles que ya están en el carrito, en una cadena para poder
+    preguntar con `contains` sin un bucle anidado por cada candidato.
+  endcomment
+  assign ya = ''
+  for item in cart.items
+    assign ya = ya | append: '|' | append: item.product.handle
+  endfor
+  assign ya = ya | append: '|'
+-%}
+
+{%- if col and col.products.size > 0 -%}
+  {%- assign pintadas = 0 -%}
+  {%- capture lista -%}
+    {%- for p in col.products -%}
+      {%- if pintadas >= tope -%}{%- break -%}{%- endif -%}
+
+      {%- assign clave = '|' | append: p.handle | append: '|' -%}
+      {%- unless ya contains clave -%}
+        {%- liquid
+          assign v5 = null
+          for v in p.variants
+            if v.title contains 'Decant 5' and v.available
+              assign v5 = v
+              break
+            endif
+          endfor
+        -%}
+
+        {%- if v5 -%}
+          {%- assign pintadas = pintadas | plus: 1 -%}
+          {%- capture campo -%}{% render 'campo', producto: p %}{%- endcapture -%}
+          {%- assign campo = campo | strip | split: '|' -%}
+
+          <li class="bundle" style="--campo: {{ campo[0] }};">
+            <a class="bundle__foto" href="{{ p.url }}" tabindex="-1" aria-hidden="true">
+              {%- if p.featured_image -%}
+                <img src="{{ p.featured_image | image_url: width: 160 }}" alt=""
+                  width="80" height="80" loading="lazy" decoding="async">
+              {%- endif -%}
+            </a>
+
+            <div class="bundle__txt">
+              <p class="bundle__marca">{{ p.vendor }}</p>
+              <p class="bundle__nombre"><a href="{{ p.url }}">{{ p.title }}</a></p>
+              <p class="bundle__precio">{{ v5.title }} · <b>{{ v5.price | money }}</b></p>
+            </div>
+
+            <form action="{{ routes.cart_add_url }}" method="post" data-bundle-form>
+              <input type="hidden" name="id" value="{{ v5.id }}">
+              <input type="hidden" name="quantity" value="1">
+              <button class="bundle__b" type="submit"
+                aria-label="{{ 'carrito.bundle.anadir_aria' | t: nombre: p.title }}">
+                {% render 'icono', tipo: 'mas', tam: 15 %}
+              </button>
+            </form>
+          </li>
+        {%- endif -%}
+      {%- endunless -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+
+  {%- if pintadas > 0 -%}
+    <section class="bundles" aria-labelledby="bundles-t">
+      {%- comment -%}
+        OJO con `| default: 'clave' | t`: si el ajuste tiene valor, `default`
+        lo deja pasar y `t` traduciría el texto del comerciante como si fuera
+        una clave. El respaldo va con un `if`, como en el resto del tema.
+      {%- endcomment -%}
+      {%- assign titulo = settings.bundle_titulo -%}
+      {%- if titulo == blank -%}{%- assign titulo = 'carrito.bundle.titulo' | t -%}{%- endif -%}
+      <h3 class="bundles__h" id="bundles-t">{{ titulo }}</h3>
+      <p class="bundles__sub">{{ 'carrito.bundle.sub' | t }}</p>
+      <ul class="bundles__lista" role="list">{{ lista }}</ul>
+    </section>
+  {%- endif -%}
+{%- endif -%}

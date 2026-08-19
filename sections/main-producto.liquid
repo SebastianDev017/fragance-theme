@@ -127,6 +127,13 @@
       <span class="pdp__impuestos">{{ 'productos.impuestos' | t }}</span>
     </p>
 
+    {%- comment -%}
+      Urgencia REAL: sale del inventario de Shopify o no sale. Y debajo, la
+      nota de entrega, que es urgencia honesta de otro tipo — no dice «corre
+      que se acaba», dice cuándo lo tienes en la mano.
+    {%- endcomment -%}
+    {% render 'urgencia', variante: v, forma: 'linea' %}
+
     {%- form 'product', p, class: 'pdp__form', id: 'form-producto' -%}
       {%- if p.has_only_default_variant -%}
         <input type="hidden" name="id" value="{{ v.id }}">
@@ -228,6 +235,13 @@
       <li><span class="etapas__n">02</span><span>{{ 'productos.etapas.2' | t }}</span></li>
       <li class="etapas__sellada"><span class="etapas__n">03</span><span>{{ 'productos.etapas.3' | t }}</span></li>
     </ol>
+
+    {%- if settings.entrega_nota != blank -%}
+      <p class="pdp__entrega">
+        {% render 'icono', tipo: 'camion', tam: 16 %}
+        <span>{{ settings.entrega_nota }}</span>
+      </p>
+    {%- endif -%}
 
     <ul class="pdp__promesas" role="list">
       <li>{% render 'icono', tipo: 'camion', tam: 18 %}<span>{{ 'productos.promesa_envio' | t }}</span></li>
