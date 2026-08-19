@@ -135,9 +135,23 @@
       "@type": "SearchAction",
       "target": {
         "@type": "EntryPoint",
-        "urlTemplate": {{ shop.url | append: routes.search_url | append: '?q={consulta}' | json }}
+        {%- comment -%}
+          La plantilla lleva `{search_term_string}` entre llaves, y esas llaves
+          NO pueden ir dentro de un `{{ }}`: el lexer de Liquid de Shopify ve
+          la llave suelta, se pierde buscando el cierre y RECHAZA el archivo
+          entero. El sintoma es de los que cuestan una tarde — el archivo no
+          llega al tema y la pagina dice «Could not find asset», como si nunca
+          se hubiera subido. Ni `theme check` ni el validador lo ven; lo canta
+          `shopify theme push`.
+
+          Dentro de un `capture` las llaves son texto y no pasa nada.
+        {%- endcomment -%}
+        {%- capture plantilla_busqueda -%}
+          {{- shop.url }}{{ routes.search_url }}?q={search_term_string}
+        {%- endcapture -%}
+        "urlTemplate": {{ plantilla_busqueda | strip | json }}
       },
-      "query-input": "required name=consulta"
+      "query-input": "required name=search_term_string"
     }
   }
 
