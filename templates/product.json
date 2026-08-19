@@ -33,7 +33,8 @@
       "settings": {
         "disposicion": "dos",
         "primera_abierta": false,
-        "eyebrow": ""
+        "eyebrow": "",
+        "datos_buscadores": false
       },
       "blocks": {
         "q1": {

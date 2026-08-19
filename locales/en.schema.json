@@ -171,7 +171,9 @@
         "envios": "Straight answers — shipping and payment"
       },
       "primera_abierta": "Open the first one",
-      "respuesta": "Answer"
+      "respuesta": "Answer",
+      "datos": "Declare them to search engines",
+      "datos_info": "Sends these questions and answers to Google and to the search engines that answer in prose. Leave it on for ONE page — the homepage — and off wherever the section repeats: the same list declared across twenty product pages does not add up, it dilutes."
     },
     "coleccion": {
       "cabecera": "Header",

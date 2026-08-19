@@ -246,6 +246,7 @@
   "seo": {
     "eslogan": "Decants de 5 y 10 ml y frascos originales, con envío a toda Venezuela",
     "producto": "{{ nombre }} de {{ marca }} en decant de 5 y 10 ml, y el frasco completo sellado. En {{ tienda }} lo pruebas primero y te descontamos el decant del frasco.",
-    "coleccion": "{{ titulo }} en {{ tienda }}: decants de 5 y 10 ml para probar y frascos originales sellados, con envío a toda Venezuela."
+    "coleccion": "{{ titulo }} en {{ tienda }}: decants de 5 y 10 ml para probar y frascos originales sellados, con envío a toda Venezuela.",
+    "inicio": "{{ tienda }} vende decants de 5 y 10 ml de fragancias de diseñador para que las pruebes una semana antes de decidir, y el frasco completo sellado al mismo precio que afuera. Lo que pagas por el decant se te descuenta del frasco. Envíos a toda Venezuela."
   }
 }

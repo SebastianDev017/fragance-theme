@@ -42,7 +42,15 @@
       when 'article'
         assign desc = article.excerpt_or_content | strip_html | truncatewords: 34
       else
-        assign desc = shop.description | default: shop.name
+        comment
+          La portada: `shop.description` suele estar vacía en una tienda nueva,
+          y caer en el nombre deja «DropScents» como descripción — que en un
+          resultado de búsqueda no dice absolutamente nada de qué se vende.
+        endcomment
+        assign desc = shop.description
+        if desc == blank
+          assign desc = 'seo.inicio' | t: tienda: shop.name
+        endif
     endcase
   endif
   assign desc = desc | strip_html | strip | truncate: 300
@@ -69,6 +77,17 @@
   elsif template.name == 'article'
     assign og_tipo = 'article'
   endif
+
+  comment
+    El título que se comparte es el mismo que el de la pestaña, incluido el
+    eslogan de la portada: si no, en WhatsApp la tienda entera se anuncia con
+    una palabra.
+  endcomment
+  assign titulo_social = page_title
+  if template.name == 'index'
+    assign eslogan = 'seo.eslogan' | t
+    assign titulo_social = shop.name | append: ' — ' | append: eslogan
+  endif
 -%}
 
 <meta name="description" content="{{ desc | escape }}">
@@ -80,7 +99,7 @@
 
 <meta property="og:site_name" content="{{ shop.name | escape }}">
 <meta property="og:type" content="{{ og_tipo }}">
-<meta property="og:title" content="{{ page_title | escape }}">
+<meta property="og:title" content="{{ titulo_social | escape }}">
 <meta property="og:description" content="{{ desc | escape }}">
 <meta property="og:url" content="{{ canonical_url }}">
 <meta property="og:locale" content="{{ request.locale.iso_code }}">
@@ -91,7 +110,7 @@
   <meta property="og:image:alt" content="{{ og_img.alt | default: page_title | escape }}">
 {%- endif -%}
 <meta name="twitter:card" content="{% if og_img %}summary_large_image{% else %}summary{% endif %}">
-<meta name="twitter:title" content="{{ page_title | escape }}">
+<meta name="twitter:title" content="{{ titulo_social | escape }}">
 <meta name="twitter:description" content="{{ desc | escape }}">
 {%- if og_img -%}
   <meta name="twitter:image" content="https:{{ og_img | image_url: width: 1200 }}">

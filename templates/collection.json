@@ -62,7 +62,8 @@
         "disposicion": "dos",
         "primera_abierta": false,
         "eyebrow": "",
-        "texto": ""
+        "texto": "",
+        "datos_buscadores": false
       },
       "blocks": {
         "q1": {

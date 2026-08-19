@@ -76,7 +76,7 @@
   `strip_html` porque la respuesta puede traer marcado del editor y el JSON-LD
   de una FAQ admite texto, no un párrafo con etiquetas sueltas.
 {%- endcomment -%}
-{%- if section.blocks.size > 0 -%}
+{%- if section.settings.datos_buscadores and section.blocks.size > 0 -%}
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -122,6 +122,13 @@
         { "value": "dos", "label": "t:secciones.claro.disposiciones.dos" },
         { "value": "centrada", "label": "t:secciones.claro.disposiciones.centrada" }
       ]
+    },
+    {
+      "type": "checkbox",
+      "id": "datos_buscadores",
+      "label": "t:secciones.claro.datos",
+      "info": "t:secciones.claro.datos_info",
+      "default": true
     },
     { "type": "checkbox", "id": "primera_abierta", "label": "t:secciones.claro.primera_abierta", "default": true },
     { "type": "header", "content": "t:comun.textos" },

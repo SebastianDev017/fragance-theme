@@ -171,7 +171,9 @@
         "envios": "Hablemos claro — envíos y pagos"
       },
       "primera_abierta": "Abrir la primera",
-      "respuesta": "Respuesta"
+      "respuesta": "Respuesta",
+      "datos": "Declararlas a los buscadores",
+      "datos_info": "Manda estas preguntas y respuestas a Google y a los buscadores que contestan en prosa. Déjalo encendido en UNA página —la portada— y apágalo donde la sección se repite: la misma lista declarada en veinte fichas de producto no suma, se diluye."
     },
     "coleccion": {
       "cabecera": "Cabecera",

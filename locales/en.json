@@ -246,6 +246,7 @@
   "seo": {
     "eslogan": "5 and 10 ml decants and sealed designer bottles, shipped anywhere in Venezuela",
     "producto": "{{ marca }} {{ nombre }} in 5 and 10 ml decants, plus the sealed full bottle. At {{ tienda }} you try it first and we take the decant off the bottle.",
-    "coleccion": "{{ titulo }} at {{ tienda }}: 5 and 10 ml decants to try and sealed original bottles, shipped anywhere in Venezuela."
+    "coleccion": "{{ titulo }} at {{ tienda }}: 5 and 10 ml decants to try and sealed original bottles, shipped anywhere in Venezuela.",
+    "inicio": "{{ tienda }} sells 5 and 10 ml decants of designer fragrances so you can live with one for a week before deciding, plus the sealed full bottle at the same price you would pay abroad. Whatever you pay for the decant comes off the bottle. Shipping anywhere in Venezuela."
   }
 }
