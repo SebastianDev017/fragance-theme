@@ -330,13 +330,56 @@
    verdad ha enganchado, no Liquid: si no hay recorrido que hacer —tres
    tarjetas y una pantalla ancha— la sección se queda como estaba.
    --------------------------------------------------------------------------- */
+/* La sección ocupa EXACTAMENTE lo que queda de ventana por debajo de la
+   cabecera fija, y de ahí para dentro todo es flexible. Es la única forma de
+   garantizar que la tarjeta cabe entera sea cual sea el alto de la pantalla:
+   mientras el scroll gobierna la tira, una tarjeta cortada por abajo no se
+   puede terminar de ver de ninguna manera — no hay scroll con el que bajar. */
 .carrusel-sec.is-recorrido {
-  min-height: 100svh;
+  height: calc(100svh - var(--nav-hueco));
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-block: clamp(3rem, 7vh, 5.5rem);
+  padding-block: clamp(1rem, 2.5vh, 2rem);
 }
+.is-recorrido .sec-head { margin-bottom: clamp(1rem, 2.5vh, 2rem); }
+.is-recorrido .h2 { font-size: clamp(1.9rem, 3.4vw, 3.2rem); }
+
+.is-recorrido .carrusel { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+.is-recorrido .carrusel__pista { flex: 1 1 auto; min-height: 0; align-items: stretch; }
+/* `min-height: 0` en la cadena entera: sin eso un hijo flexible se niega a
+   encogerse por debajo de su contenido y la tarjeta desborda igual. */
+.is-recorrido .carrusel__slide,
+.is-recorrido .tarjeta { min-height: 0; }
+/* Sólo el marco de la foto se estira: el cuerpo (marca, nombre, notas,
+   precio) mide lo que mide su texto. Sin fijarlo, `.tarjeta__cuerpo` también
+   lleva `flex: 1` y se reparte la tarjeta a medias con la foto. */
+.is-recorrido .tarjeta__marco { flex: 1 1 auto; min-height: 0; }
+.is-recorrido .tarjeta__cuerpo { flex: 0 0 auto; }
+/* Menos acolchado abajo, pero el que le hace falta a la sombra de la tarjeta:
+   el `overflow-x: auto` de la pista recorta también en vertical. */
+.is-recorrido .carrusel__pista { padding-block: .9rem 2.4rem; }
+
+/* El ancho lo pone la ALTURA disponible; «cuántas por vista» sólo pone el
+   techo. Con la ventana baja, tres tarjetas anchas no caben de alto. */
+.is-recorrido .carrusel__slide {
+  flex-basis: min(
+    calc((100% - (var(--porvista-movil, 1) - 1) * var(--hueco-carrusel)) / var(--porvista-movil, 1)),
+    34svh
+  );
+}
+@media (min-width: 750px) {
+  .is-recorrido .carrusel__slide {
+    flex-basis: min(
+      calc((100% - (var(--porvista, 4) - 1) * var(--hueco-carrusel)) / var(--porvista, 4)),
+      34svh
+    );
+  }
+  .is-recorrido .carrusel--sangra .carrusel__slide {
+    flex-basis: min(calc(100% / (var(--porvista, 4) + .24)), 34svh);
+  }
+}
+
 /* El snap tira de la pista hacia la tarjeta más cercana; con el scroll
    gobernando la posición, eso se siente como un tirón en cada paso. */
 .is-recorrido .carrusel__pista { scroll-snap-type: none; }
@@ -344,7 +387,8 @@
    teniendo camino — la pista es `region` con `tabindex`, y las flechas del
    teclado la recorren igual. */
 .is-recorrido .carrusel__mandos { display: none; }
-.is-recorrido .carrusel__barra { margin-top: 2rem; }
+.is-recorrido .carrusel__barra { margin-top: clamp(.9rem, 2vh, 1.5rem); }
+.is-recorrido .estanteria__mas { margin-top: clamp(.9rem, 2vh, 1.5rem); }
 .carrusel--vacia { opacity: .6; }
 .carrusel__pista--vacia { pointer-events: none; }
 

@@ -57,6 +57,15 @@ export function conectarRecorrido(raiz = document) {
 
       seccion.classList.add('is-recorrido');
 
+      /* La cabecera es FIJA: clavar la sección en `top: 0` la mete debajo y el
+         titular sale cortado por la píldora. Se clava justo por debajo, y el
+         hueco es el mismo token que usa el documento — si mañana crece la
+         barra, esto crece con ella. */
+      const hueco = () => {
+        const v = getComputedStyle(document.documentElement).getPropertyValue('--nav-hueco');
+        return Math.round(parseFloat(v) || 0);
+      };
+
       /* La posición la fija SIEMPRE el progreso del trigger, también al
          refrescar: si no, al volver a la página a media altura la tira
          aparece al principio y el resto del recorrido queda muerto. */
@@ -64,7 +73,7 @@ export function conectarRecorrido(raiz = document) {
 
       const st = ScrollTrigger.create({
         trigger: seccion,
-        start: 'top top',
+        start: () => `top ${hueco()}`,
         end: () => `+=${Math.max(largo(), 1)}`,
         pin: true,
         anticipatePin: 1,

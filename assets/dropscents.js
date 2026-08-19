@@ -4137,21 +4137,24 @@ function lh(s = document) {
       const n = () => Math.max(e.scrollWidth - e.clientWidth, 0);
       if (n() < d_) return;
       i.classList.add("is-recorrido");
-      const o = (c) => {
-        e.scrollLeft = c.progress * n();
-      }, a = ct.create({
+      const o = () => {
+        const u = getComputedStyle(document.documentElement).getPropertyValue("--nav-hueco");
+        return Math.round(parseFloat(u) || 0);
+      }, a = (u) => {
+        e.scrollLeft = u.progress * n();
+      }, c = ct.create({
         trigger: i,
-        start: "top top",
+        start: () => `top ${o()}`,
         end: () => `+=${Math.max(n(), 1)}`,
         pin: !0,
         anticipatePin: 1,
         scrub: !0,
         invalidateOnRefresh: !0,
-        onUpdate: o,
-        onRefresh: o
+        onUpdate: a,
+        onRefresh: a
       });
       return () => {
-        a.kill(), i.classList.remove("is-recorrido"), e.scrollLeft = 0;
+        c.kill(), i.classList.remove("is-recorrido"), e.scrollLeft = 0;
       };
     });
   });
