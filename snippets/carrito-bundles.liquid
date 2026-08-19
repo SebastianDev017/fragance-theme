@@ -18,6 +18,13 @@
 
 {%- liquid
   assign col = settings.bundle_coleccion
+  comment
+    Sin colección elegida se cae al catálogo entero, igual que la portada: un
+    carrito sin sugerencias por un ajuste vacío es una venta que no ocurre.
+  endcomment
+  unless col and col.products.size > 0
+    assign col = collections.all
+  endunless
   assign tope = settings.bundle_max | default: 3
 
   comment

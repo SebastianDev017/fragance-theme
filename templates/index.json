@@ -12,7 +12,7 @@
     "muestrario": {
       "type": "muestrario",
       "settings": {
-        "cantidad": 4,
+        "cantidad": 8,
         "columnas": 4,
         "titulo": "Pruébalo en 5 ml. Cómpralo cuando estés seguro.",
         "texto": "Los perfumes que ya conoces, en decant para vivirlos una semana en tu piel.",

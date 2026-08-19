@@ -708,10 +708,16 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
 .drawer--carrito .drawer__panel--carrito {
   display: flex;
   flex-direction: column;
+  /* El panel base es el del menú lateral, que reparte con `space-between`
+     (logo arriba, enlaces en medio, accesos abajo). Aquí eso empujaba el
+     estado vacío al fondo y dejaba media pantalla hueca. */
+  justify-content: flex-start;
+  gap: 0;
   width: min(29rem, 100vw);
   padding: 0;
   overflow: hidden;
 }
+.dcart__vacio { padding-top: 1.8rem; }
 .drawer--carrito.is-ocupado { cursor: progress; }
 .drawer--carrito.is-ocupado .dcart__lista { opacity: .5; pointer-events: none; }
 .dcart__lista { transition: opacity .18s var(--ease); }
