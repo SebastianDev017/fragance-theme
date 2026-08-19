@@ -255,14 +255,15 @@
         "limite": 9,
         "por_vista": 3,
         "por_vista_movil": 1,
-        "sangrar": false,
+        "sangrar": true,
         "barra": true,
         "ratio": "4/5",
         "eyebrow": "",
         "titulo": "",
         "texto": "",
         "ver_todo": "Ver todo lo nuevo",
-        "ancla": "carrusel"
+        "ancla": "carrusel",
+        "avance": "scroll"
       }
     },
     "cierre": {
