@@ -710,6 +710,10 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
   gap: 1.6rem;
 }
 .vacio-pagina__t { font-size: 1.05rem; max-width: 40ch; }
+/* El aire de abajo estaba puesto para cuando el estado vacío era lo último de
+   la página. Con las sugerencias debajo, ese hueco deja de ser aire y pasa a
+   ser una pausa donde no hay nada que pausar. */
+.vacio-pagina:not(:last-child) { padding-bottom: clamp(1.5rem, 4vh, 3rem); }
 
 /* ---------------------------------------------------------------------------
    9. el pie con las columnas a medio llenar
