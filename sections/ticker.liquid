@@ -22,7 +22,16 @@
 
 <section class="ticker ticker--{{ section.settings.estilo }}"
   style="--ticker-dur: {{ dur }}s; --ticker-inclina: {{ section.settings.inclinacion }}deg; --ticker-tam: {{ section.settings.tamano }}px;"
-  aria-label="{{ section.settings.titulo_oculto | default: shop.name | escape }}">
+  {%- comment -%}
+    Caía en el nombre de la tienda, así que un lector de pantalla anunciaba
+    «DropScents, región» y dentro leía tres frases sueltas sobre envíos. El
+    nombre de una región tiene que decir QUÉ hay dentro.
+  {%- endcomment -%}
+  {%- assign aria_cinta = section.settings.titulo_oculto -%}
+  {%- if aria_cinta == blank -%}
+    {%- assign aria_cinta = 'secciones.ticker.aria' | t -%}
+  {%- endif -%}
+  aria-label="{{ aria_cinta | escape }}">
 
   {%- if n > 0 -%}
     <div class="ticker__pista{% if section.settings.direccion == 'derecha' %} ticker__pista--rev{% endif %}">
