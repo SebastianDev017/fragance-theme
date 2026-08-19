@@ -54,7 +54,9 @@
       assign sombra    = 'rgba(31,27,36,.16)'
 
     else
-      comment  blush: la dirección que fijó el cliente  endcomment
+      comment
+        blush: la dirección que fijó el cliente
+      endcomment
       assign c_fondo   = '#F2F0F5'
       assign c_fondo2  = '#EFECF2'
       assign c_tinta   = '#2B0F33'
@@ -90,18 +92,33 @@
   endcomment
   assign lav = settings.lavado_fuerza | default: 100
 
-  comment  ---- forma de los botones ---------------------------------------  endcomment
+  comment
+    ---- forma de los botones ---------------------------------------------
+  endcomment
+  comment
+    OJO: `when 'x' then assign ...` NO es Liquid. `then` no existe, y con él
+    el snippet entero revienta en silencio: `render` no dice nada y el bloque
+    de tokens simplemente no llega al `<head>`. Cada rama va en su renglón.
+  endcomment
   case settings.boton_forma
-    when 'recto'      then assign r_boton = '0px'
-    when 'redondeado' then assign r_boton = '12px'
-    else                   assign r_boton = '999px'
+    when 'recto'
+      assign r_boton = '0px'
+    when 'redondeado'
+      assign r_boton = '12px'
+    else
+      assign r_boton = '999px'
   endcase
 
-  comment  ---- sombra de las tarjetas -------------------------------------  endcomment
+  comment
+    ---- sombra de las tarjetas -------------------------------------------
+  endcomment
   case settings.tarjeta_sombra
-    when 'ninguna' then assign s_tarjeta = 'none'
-    when 'marcada' then assign s_tarjeta = '0 4px 10px rgba(0,0,0,.05), 0 30px 60px -26px ' | append: sombra
-    else                assign s_tarjeta = '0 2px 6px rgba(0,0,0,.04), 0 18px 44px -22px ' | append: sombra
+    when 'ninguna'
+      assign s_tarjeta = 'none'
+    when 'marcada'
+      assign s_tarjeta = '0 4px 10px rgba(0,0,0,.05), 0 30px 60px -26px ' | append: sombra
+    else
+      assign s_tarjeta = '0 2px 6px rgba(0,0,0,.04), 0 18px 44px -22px ' | append: sombra
   endcase
 
   assign escala = settings.escala_texto | default: 100
