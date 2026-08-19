@@ -1,20 +1,66 @@
 {%- comment -%}
-  El catálogo, en carrusel.
+  El catálogo.
 
-  Mismo contenido y mismas tarjetas que la sección «Catálogo»; lo que cambia
-  es que aquí se arrastra en horizontal en vez de apilarse en rejilla.
+  UNA sección para enseñar productos de una colección, y dos formas de
+  colocarlos: en rejilla o en tira horizontal. Antes eran dos secciones
+  distintas —«Estantería» y «Catálogo en carrusel»— que compartían el mismo
+  encabezado, la misma tarjeta, el mismo botón de «ver todo» y el mismo estado
+  vacío; lo único que cambiaba era el `display` de la lista. Dos archivos para
+  eso son dos sitios donde arreglar cada cosa, y en el editor dos entradas que
+  hay que comparar para saber cuál se quiere.
 
-  El desplazamiento es `scroll-snap` nativo: con el dedo, con la rueda o con
-  las flechas del teclado funciona igual, y si el JavaScript no llega la lista
-  sigue siendo scrolleable. Las flechas sólo añaden comodidad.
+  Para eso están los presets: la sección es una y de ella salen la rejilla
+  ancha, el muro, el dúo, la tira, el escaparate y el recorrido.
+
+  El TIPO de sección conserva el nombre `catalogo-carrusel` aunque ahora haga
+  las dos cosas: las plantillas JSON la referencian por ese nombre, y
+  renombrarlo dejaría sin sección a la portada y a la ficha de producto.
+
+  En rejilla, cuántos productos salen NO se pide aparte: es filas × columnas,
+  para que lo que el comerciante ve en el editor sea lo que sale en la tienda
+  y no queden huecos a media fila.
+
+  En tira, el desplazamiento es `scroll-snap` nativo: con el dedo, con la
+  rueda o con las flechas del teclado funciona igual, y si el JavaScript no
+  llega la lista sigue siendo scrolleable. Las flechas y el arrastre sólo
+  añaden comodidad.
 {%- endcomment -%}
 
 {%- liquid
+  comment
+    Un ajuste de tipo `collection` devuelve el OBJETO, no el handle. Y
+    `products_count` de una colección vacía o sin elegir es nil, así que hay
+    que forzarlo a número antes de comparar.
+  endcomment
   assign coleccion = section.settings.coleccion
   assign cuantos = coleccion.products_count | default: 0 | plus: 0
-  assign limite = section.settings.limite | default: 12
+
+  assign rejilla = false
+  if section.settings.disposicion == 'rejilla'
+    assign rejilla = true
+  endif
+
+  assign cols = section.settings.columnas | default: 4
+  assign cols_movil = section.settings.columnas_movil | default: 1
+  assign filas = section.settings.filas | default: 2
   assign porver = section.settings.por_vista | default: 4
   assign porver_movil = section.settings.por_vista_movil | default: 1
+
+  if rejilla
+    assign limite = cols | times: filas
+  else
+    assign limite = section.settings.limite | default: 12
+  endif
+
+  comment
+    El recorrido (la tira que avanza con el scroll de la página) sólo existe
+    en tira. En rejilla no hay nada que recorrer, y dejar la clase puesta
+    clavaría la sección para no mover nada.
+  endcomment
+  assign recorrido = false
+  if rejilla == false and section.settings.avance == 'scroll'
+    assign recorrido = true
+  endif
 
   assign titulo = section.settings.titulo
   if titulo == blank
@@ -22,9 +68,9 @@
   endif
 -%}
 
-<section class="carrusel-sec{% if section.settings.avance == 'scroll' %} carrusel-sec--recorrido{% endif %}"
-  id="{{ section.settings.ancla | default: 'carrusel' }}"
-  style="--porvista: {{ porver }}; --porvista-movil: {{ porver_movil }};">
+<section class="carrusel-sec{% if recorrido %} carrusel-sec--recorrido{% endif %}"
+  id="{{ section.settings.ancla | default: 'catalogo' }}"
+  style="--porvista: {{ porver }}; --porvista-movil: {{ porver_movil }}; --cols: {{ cols }}; --cols-movil: {{ cols_movil }};">
 
   <header class="sec-head sec-head--row">
     <div>
@@ -39,43 +85,65 @@
   </header>
 
   {%- if cuantos > 0 -%}
-    <div class="carrusel{% if section.settings.sangrar %} carrusel--sangra{% endif %}"
-      data-carrusel
-      {% if section.settings.avance == 'scroll' %}data-recorrido{% endif %}>
-      {%- comment -%}
-        `role="region"` sobre el `<ul>` PISA el papel de lista, y entonces sus
-        `<li>` quedan sueltos: el lector de pantalla deja de decir «1 de 9».
-        Una lista admite `aria-label` de por sí, así que la etiqueta se queda y
-        el papel no hace falta. El `tabindex` es lo que deja recorrerla con las
-        flechas del teclado.
-      {%- endcomment -%}
-      <ul class="carrusel__pista" data-carrusel-pista
-        tabindex="0"
-        aria-label="{{ 'secciones.carrusel.aria' | t }}">
+    {%- if rejilla -%}
+      <div class="shelf">
         {%- for producto in coleccion.products limit: limite -%}
-          <li class="carrusel__slide">
-            {% render 'card-fragancia', producto: producto, ratio: section.settings.ratio, tam: '(min-width: 750px) 30vw, 80vw' %}
-          </li>
+          {%- comment -%}
+            Las de la primera fila se ven sin bajar: su foto va sin diferir.
+          {%- endcomment -%}
+          {%- liquid
+            assign arriba = false
+            if forloop.index <= cols
+              assign arriba = true
+            endif
+          -%}
+          {% render 'card-fragancia',
+               producto: producto,
+               ratio: section.settings.ratio,
+               indice: forloop.index,
+               prioridad: arriba %}
         {%- endfor -%}
-      </ul>
-
-      <div class="carrusel__mandos">
-        <button class="carrusel__flecha" type="button" data-carrusel-paso="-1"
-          aria-label="{{ 'general.accesibilidad.anterior' | t }}">
-          {% render 'icono', tipo: 'izquierda', tam: 20, grosor: 2 %}
-        </button>
-        <button class="carrusel__flecha" type="button" data-carrusel-paso="1"
-          aria-label="{{ 'general.accesibilidad.siguiente' | t }}">
-          {% render 'icono', tipo: 'derecha', tam: 20, grosor: 2 %}
-        </button>
       </div>
 
-      {%- if section.settings.barra -%}
-        <div class="carrusel__barra" aria-hidden="true"><span data-carrusel-progreso></span></div>
-      {%- endif -%}
-    </div>
+    {%- else -%}
+      <div class="carrusel{% if section.settings.sangrar %} carrusel--sangra{% endif %}"
+        data-carrusel
+        {% if recorrido %}data-recorrido{% endif %}>
+        {%- comment -%}
+          `role="region"` sobre el `<ul>` PISA el papel de lista, y entonces sus
+          `<li>` quedan sueltos: el lector de pantalla deja de decir «1 de 9».
+          Una lista admite `aria-label` de por sí, así que la etiqueta se queda
+          y el papel no hace falta. El `tabindex` es lo que deja recorrerla con
+          las flechas del teclado.
+        {%- endcomment -%}
+        <ul class="carrusel__pista" data-carrusel-pista
+          tabindex="0"
+          aria-label="{{ 'secciones.carrusel.aria' | t }}">
+          {%- for producto in coleccion.products limit: limite -%}
+            <li class="carrusel__slide">
+              {% render 'card-fragancia', producto: producto, ratio: section.settings.ratio, tam: '(min-width: 750px) 30vw, 80vw' %}
+            </li>
+          {%- endfor -%}
+        </ul>
 
-    {%- if section.settings.ver_todo != blank -%}
+        <div class="carrusel__mandos">
+          <button class="carrusel__flecha" type="button" data-carrusel-paso="-1"
+            aria-label="{{ 'general.accesibilidad.anterior' | t }}">
+            {% render 'icono', tipo: 'izquierda', tam: 20, grosor: 2 %}
+          </button>
+          <button class="carrusel__flecha" type="button" data-carrusel-paso="1"
+            aria-label="{{ 'general.accesibilidad.siguiente' | t }}">
+            {% render 'icono', tipo: 'derecha', tam: 20, grosor: 2 %}
+          </button>
+        </div>
+
+        {%- if section.settings.barra -%}
+          <div class="carrusel__barra" aria-hidden="true"><span data-carrusel-progreso></span></div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.ver_todo != blank and cuantos > limite -%}
       <p class="estanteria__mas">
         <a class="btn btn--ghost" href="{{ coleccion.url }}">
           {{ section.settings.ver_todo }}
@@ -83,14 +151,27 @@
         </a>
       </p>
     {%- endif -%}
+
   {%- else -%}
-    <div class="carrusel carrusel--vacia" aria-hidden="true">
-      <ul class="carrusel__pista">
-        {%- for i in (1..4) -%}
-          <li class="carrusel__slide">{% render 'card-vacia', ratio: section.settings.ratio %}</li>
+    {%- comment -%}
+      Sin colección (o vacía) salen tarjetas de marcador: se entiende que falta
+      contenido, no que el tema esté roto. Y el aviso dice QUÉ falta.
+    {%- endcomment -%}
+    {%- if rejilla -%}
+      <div class="shelf shelf--vacia" aria-hidden="true">
+        {%- for i in (1..cols) -%}
+          {% render 'card-vacia', ratio: section.settings.ratio %}
         {%- endfor -%}
-      </ul>
-    </div>
+      </div>
+    {%- else -%}
+      <div class="carrusel carrusel--vacia" aria-hidden="true">
+        <ul class="carrusel__pista">
+          {%- for i in (1..4) -%}
+            <li class="carrusel__slide">{% render 'card-vacia', ratio: section.settings.ratio %}</li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
     <p class="aviso-vacio">
       {%- if coleccion == blank -%}
         {{ 'general.vacio.elige_coleccion' | t }}
@@ -107,21 +188,14 @@
   "tag": "div",
   "settings": [
     { "type": "collection", "id": "coleccion", "label": "t:comun.coleccion" },
-    { "type": "header", "content": "t:secciones.carrusel.ajustes" },
-    { "type": "range", "id": "limite", "min": 4, "max": 24, "step": 1, "label": "t:secciones.carrusel.limite", "default": 12 },
-    { "type": "range", "id": "por_vista", "min": 2, "max": 6, "step": 1, "label": "t:secciones.carrusel.por_vista", "default": 4 },
-    { "type": "range", "id": "por_vista_movil", "min": 1, "max": 3, "step": 1, "label": "t:secciones.carrusel.por_vista_movil", "default": 1 },
-    { "type": "checkbox", "id": "sangrar", "label": "t:secciones.carrusel.sangrar", "info": "t:secciones.carrusel.sangrar_info", "default": true },
-    { "type": "checkbox", "id": "barra", "label": "t:secciones.carrusel.barra", "default": true },
     {
       "type": "select",
-      "id": "avance",
-      "label": "t:secciones.carrusel.avance",
-      "info": "t:secciones.carrusel.avance_info",
-      "default": "arrastre",
+      "id": "disposicion",
+      "label": "t:comun.disposicion",
+      "default": "carrusel",
       "options": [
-        { "value": "arrastre", "label": "t:secciones.carrusel.avances.arrastre" },
-        { "value": "scroll", "label": "t:secciones.carrusel.avances.scroll" }
+        { "value": "carrusel", "label": "t:secciones.carrusel.disposiciones.carrusel" },
+        { "value": "rejilla", "label": "t:secciones.carrusel.disposiciones.rejilla" }
       ]
     },
     {
@@ -138,38 +212,75 @@
         { "value": "16/9", "label": "t:comun.ratios.panoramica" }
       ]
     },
+    { "type": "header", "content": "t:comun.rejilla", "info": "t:secciones.carrusel.solo_rejilla" },
+    { "type": "range", "id": "columnas", "min": 2, "max": 6, "step": 1, "label": "t:comun.columnas", "default": 4 },
+    { "type": "range", "id": "filas", "min": 1, "max": 8, "step": 1, "label": "t:comun.filas", "default": 2 },
+    { "type": "range", "id": "columnas_movil", "min": 1, "max": 3, "step": 1, "label": "t:comun.columnas_movil", "default": 1 },
+    { "type": "header", "content": "t:secciones.carrusel.ajustes", "info": "t:secciones.carrusel.solo_tira" },
+    { "type": "range", "id": "limite", "min": 4, "max": 24, "step": 1, "label": "t:secciones.carrusel.limite", "default": 12 },
+    { "type": "range", "id": "por_vista", "min": 2, "max": 6, "step": 1, "label": "t:secciones.carrusel.por_vista", "default": 4 },
+    { "type": "range", "id": "por_vista_movil", "min": 1, "max": 3, "step": 1, "label": "t:secciones.carrusel.por_vista_movil", "default": 1 },
+    { "type": "checkbox", "id": "sangrar", "label": "t:secciones.carrusel.sangrar", "info": "t:secciones.carrusel.sangrar_info", "default": true },
+    { "type": "checkbox", "id": "barra", "label": "t:secciones.carrusel.barra", "default": true },
+    {
+      "type": "select",
+      "id": "avance",
+      "label": "t:secciones.carrusel.avance",
+      "info": "t:secciones.carrusel.avance_info",
+      "default": "arrastre",
+      "options": [
+        { "value": "arrastre", "label": "t:secciones.carrusel.avances.arrastre" },
+        { "value": "scroll", "label": "t:secciones.carrusel.avances.scroll" }
+      ]
+    },
     { "type": "header", "content": "t:comun.textos" },
     { "type": "paragraph", "content": "t:comun.vacio_traduce" },
     { "type": "text", "id": "eyebrow", "label": "t:comun.antetitulo" },
     { "type": "text", "id": "titulo", "label": "t:comun.titular" },
     { "type": "textarea", "id": "texto", "label": "t:comun.texto" },
     { "type": "text", "id": "ver_todo", "label": "t:secciones.estanteria.ver_todo" },
-    { "type": "text", "id": "ancla", "label": "t:comun.ancla", "default": "carrusel" }
+    { "type": "text", "id": "ancla", "label": "t:comun.ancla", "default": "catalogo" }
   ],
   "presets": [
     {
       "name": "t:secciones.carrusel.presets.vitrina",
-      "settings": { "por_vista": 4, "por_vista_movil": 1, "limite": 12, "ratio": "1/1", "sangrar": true, "avance": "arrastre" }
+      "settings": { "disposicion": "carrusel", "por_vista": 4, "por_vista_movil": 1, "limite": 12, "ratio": "1/1", "sangrar": true, "avance": "arrastre" }
     },
     {
       "name": "t:secciones.carrusel.presets.novedades",
-      "settings": { "por_vista": 3, "por_vista_movil": 1, "limite": 9, "ratio": "4/5", "sangrar": false, "ver_todo": "Ver todo lo nuevo" }
-    },
-    {
-      "name": "t:secciones.carrusel.presets.tira",
-      "settings": { "por_vista": 6, "por_vista_movil": 2, "limite": 18, "ratio": "1/1", "sangrar": true, "barra": false }
-    },
-    {
-      "name": "t:secciones.carrusel.presets.relacionados",
-      "settings": { "por_vista": 4, "por_vista_movil": 2, "limite": 8, "ratio": "3/4", "sangrar": false }
+      "settings": { "disposicion": "carrusel", "por_vista": 3, "por_vista_movil": 1, "limite": 9, "ratio": "4/5", "sangrar": false, "ver_todo": "Ver todo lo nuevo" }
     },
     {
       "name": "t:secciones.carrusel.presets.recorrido",
-      "settings": { "por_vista": 3, "por_vista_movil": 1, "limite": 12, "ratio": "4/5", "sangrar": true, "barra": true, "avance": "scroll" }
+      "settings": { "disposicion": "carrusel", "por_vista": 3, "por_vista_movil": 1, "limite": 12, "ratio": "4/5", "sangrar": true, "barra": true, "avance": "scroll" }
+    },
+    {
+      "name": "t:secciones.carrusel.presets.tira",
+      "settings": { "disposicion": "carrusel", "por_vista": 6, "por_vista_movil": 2, "limite": 18, "ratio": "1/1", "sangrar": true, "barra": false }
     },
     {
       "name": "t:secciones.carrusel.presets.escaparate",
-      "settings": { "por_vista": 2, "por_vista_movil": 1, "limite": 6, "ratio": "5/4", "sangrar": true }
+      "settings": { "disposicion": "carrusel", "por_vista": 2, "por_vista_movil": 1, "limite": 6, "ratio": "5/4", "sangrar": true }
+    },
+    {
+      "name": "t:secciones.carrusel.presets.relacionados",
+      "settings": { "disposicion": "carrusel", "por_vista": 4, "por_vista_movil": 2, "limite": 8, "ratio": "3/4", "sangrar": false }
+    },
+    {
+      "name": "t:secciones.estanteria.presets.estanteria",
+      "settings": { "disposicion": "rejilla", "columnas": 4, "filas": 2, "columnas_movil": 1, "ratio": "1/1", "ver_todo": "Ver el catálogo completo", "titulo": "Las que reconoces sin que te digan el nombre.", "texto": "Nada raro, nada de nicho imposible de conseguir. Los que reconoces cuando pasan por al lado — y algunos que deberías conocer." }
+    },
+    {
+      "name": "t:secciones.estanteria.presets.destacados",
+      "settings": { "disposicion": "rejilla", "columnas": 3, "filas": 1, "columnas_movil": 1, "ratio": "4/5", "ver_todo": "" }
+    },
+    {
+      "name": "t:secciones.estanteria.presets.muro",
+      "settings": { "disposicion": "rejilla", "columnas": 6, "filas": 3, "columnas_movil": 2, "ratio": "1/1", "ver_todo": "" }
+    },
+    {
+      "name": "t:secciones.estanteria.presets.duo",
+      "settings": { "disposicion": "rejilla", "columnas": 2, "filas": 1, "columnas_movil": 1, "ratio": "5/4", "ver_todo": "" }
     }
   ]
 }

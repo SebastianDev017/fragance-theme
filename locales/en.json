@@ -9,7 +9,6 @@
  */
 {
   "blogs": {
-    "eyebrow": "Journal",
     "por": "By {{ autor }}",
     "vacio": "Nothing published here yet.",
     "volver": "Back to the journal"
@@ -45,7 +44,6 @@
     "aplicar": "Apply",
     "cerrar_filtros": "Close filters",
     "cuenta": "{{ count }} fragrances",
-    "eyebrow": "Catalogue",
     "filtrar": "Filter",
     "limpiar": "Clear filters",
     "ordenar": "Sort by",
@@ -55,8 +53,7 @@
     "precio_min": "Minimum price",
     "sin_productos": "This collection has no fragrances yet.",
     "sin_resultados_filtro": "No fragrance matches those filters. Try removing one.",
-    "todas": "All collections",
-    "ver_todo": "Browse the full catalogue"
+    "todas": "All collections"
   },
   "general": {
     "404": {
@@ -74,7 +71,6 @@
       "pie": "Footer",
       "siguiente": "Next",
       "skip_to_content": "Skip to content",
-      "indice_campos": "Sample deck field index",
       "carrusel_portada": "Featured fragrances"
     },
     "anterior": "Previous",
@@ -84,7 +80,6 @@
       "etiqueta": "Search the store",
       "placeholder": "Sauvage, Bleu de Chanel, Good Girl…",
       "pregunta": "Ask us on chat",
-      "resultados": "{{ count }} results for “{{ terms }}”",
       "sin_resultados": "We found nothing for “{{ terms }}”.",
       "titulo": "Search"
     },
@@ -121,13 +116,10 @@
       "elige_coleccion": "Pick a collection in this section’s settings.",
       "elige_menu": "Pick a menu for this column in the block settings.",
       "fragancia": "Fragrance",
-      "frasco": "Full bottle",
-      "frase": "A short line describing how it smells goes here.",
       "marca": "Brand",
       "nombre": "Fragrance name",
       "notas": "Note · Note · Note",
-      "ticker": "Add lines to the ticker from this section’s blocks.",
-      "campo": "Unassigned field"
+      "ticker": "Add lines to the ticker from this section’s blocks."
     },
     "volver_arriba": "Back to top"
   },
@@ -142,14 +134,12 @@
     "dudas": "Not sure which one to get? Message us and we will work it out",
     "frasco": "Full bottle",
     "impuestos": "Taxes included. Shipping calculated at checkout.",
-    "oferta": "On sale",
     "presentacion": "Size",
     "promesa_decant": "Whatever you pay for the decant comes off the bottle",
     "promesa_envio": "Free shipping from $20, anywhere in Venezuela",
     "promesa_original": "Sealed original bottle. No replicas, no “inspired by”",
     "quitar_uno": "Remove one",
     "ver_imagen": "View image {{ n }}",
-    "llevate": "Take the sample",
     "resta": {
       "titulo": "If you keep the bottle",
       "decant": "{{ variante }}, already paid",
@@ -209,17 +199,12 @@
       "titulo": "The bottle costs the same. What you save is everything else.",
       "total": "Bottle total"
     },
-    "estanteria": {
-      "titulo": "The ones you recognise without being told."
-    },
-    "hero": {
-      "subtitulo": "The fragrances you already know, as a decant you can live with for a week. And if it turns out to be yours, the full bottle at the same price as Amazon — only here, and in two days.",
-      "titulo_1": "Try it in 5 ml.",
-      "titulo_2": "Buy it once you are sure."
-    },
     "indice": {
       "subtitulo": "Each one as a 5 or 10 ml decant. Live with it a full week and decide then — not off a paper strip in a shop.",
-      "titulo": "Six ways to smell different this week."
+      "titulo": {
+        "one": "One way to smell different this week.",
+        "other": "{{ count }} ways to smell different this week."
+      }
     },
     "ritual": {
       "pasos": {
@@ -242,11 +227,6 @@
       },
       "texto": "A fragrance is not decided on a paper strip. It is decided six hours later, once it has mixed with you and somebody asks what you are wearing.",
       "titulo": "Nobody marries on the first date."
-    },
-    "vitrina": {
-      "subtitulo": "Original decants and full bottles, at the same price as abroad but here, in two days and with no customs.",
-      "titulo_1": "Try it in 5 ml.",
-      "titulo_2": "Buy it sure."
     },
     "ticker": {
       "aria": "What every order includes"

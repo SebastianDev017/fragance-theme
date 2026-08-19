@@ -85,10 +85,41 @@ for clave in sorted(usadas_schema):
     if not tiene(en_s, clave):
         fallos.append('en.schema.json: ' + clave)
 
+# ---------------------------------------------------------------------------
+# Y al reves: claves que ya no usa nadie. No rompen nada, pero al fusionar dos
+# secciones en una se quedan colgando y el siguiente que traduzca el tema paga
+# por traducir texto muerto. Se avisa, no se falla: hay claves que solo se
+# arman en tiempo de ejecucion.
+# ---------------------------------------------------------------------------
+def hojas(arbol, prefijo=''):
+    for k, v in arbol.items():
+        clave = '%s.%s' % (prefijo, k) if prefijo else k
+        if isinstance(v, dict):
+            # un diccionario de solo formas de plural ES una hoja
+            if set(v) <= PLURALES and v:
+                yield clave
+            else:
+                for h in hojas(v, clave):
+                    yield h
+        else:
+            yield clave
+
+vivas = set(usadas) | set(usadas_schema)
+# las dinamicas se dan por vivas por su prefijo
+prefijos = ('secciones.ritual.pasos.', 'secciones.claro.preguntas.')
+huerfanas = [c for c in hojas(es)
+             if c not in vivas and not c.startswith(prefijos)]
+huerfanas += ['(schema) ' + c for c in hojas(es_s) if c not in vivas]
+
 print('claves de tienda comprobadas: %d' % len(usadas))
 print('claves del editor comprobadas: %d' % len(usadas_schema))
 for d in sorted(set(dinamicas)):
     print('  clave dinámica en %s -> %s*' % d)
+if huerfanas:
+    print(chr(10) + 'SIN USAR (%d):' % len(huerfanas))
+    for h in sorted(huerfanas):
+        print('  ' + h)
+
 if fallos:
     print('\nFALTAN:')
     for f in fallos:

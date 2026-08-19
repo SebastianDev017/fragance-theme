@@ -977,6 +977,19 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
   font-size: .66rem;
   font-weight: 700;
   letter-spacing: .02em;
+  /* Nunca más ancha que su marco: en una rejilla de seis columnas la tarjeta
+     baja de 200 px y la pastilla se salía por el canto derecho. */
+  max-width: calc(100% - 1.4rem);
+}
+/* La tarjeta se mide a sí misma, así que los adornos pueden encoger cuando la
+   rejilla aprieta —seis columnas, dos en móvil— sin depender del ancho de la
+   VENTANA, que es lo que no dice nada aquí. */
+.tarjeta { container-type: inline-size; }
+@container (max-width: 215px) {
+  .urgencia--pastilla { font-size: .58rem; padding: .28rem .55rem; left: .5rem; top: .5rem; }
+  .tarjeta__sello { font-size: .6rem; padding: .28rem .55rem; left: .5rem; top: .5rem; }
+  .tarjeta__cuerpo { padding-inline: .45rem; }
+  .tarjeta__precio { flex-direction: column; align-items: flex-start; gap: .15rem; }
 }
 .urgencia--linea {
   display: inline-flex;

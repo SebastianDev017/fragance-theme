@@ -5978,7 +5978,7 @@ function Jh() {
   u && c(u, !1, !1);
 }
 function td() {
-  On(".card__slide, .mini__shot img, .pdp__img").forEach((s) => {
+  On(".card__slide, .pdp__img").forEach((s) => {
     const t = () => {
       if (s.parentElement.querySelector(".card__sinfoto")) return;
       const i = document.createElement("span");

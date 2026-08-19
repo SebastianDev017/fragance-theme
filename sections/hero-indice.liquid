@@ -33,9 +33,26 @@
   assign cuantos = coleccion.products_count | default: 0 | plus: 0
   assign limite = section.settings.limite | default: 6
 
+  comment
+    Cuántas se van a listar de verdad: el límite, o las que haya si son menos.
+    El titular por defecto DICE ese número, y un preset con límite 4 que
+    anuncia «seis maneras» es una promesa que la propia sección desmiente tres
+    líneas más abajo.
+  endcomment
+  assign listadas = limite
+  if cuantos < listadas
+    assign listadas = cuantos
+  endif
+
   assign titulo = section.settings.titulo
   if titulo == blank
-    assign titulo = 'secciones.indice.titulo' | t
+    comment
+      La variable TIENE que llamarse `count`: es la que mira Liquid para
+      elegir entre `one` y `other`. Con cualquier otro nombre no elige nada y
+      escupe el diccionario entero en el titular —
+      `{"one"=>"...", "other"=>"..."}`— tal cual, en la página.
+    endcomment
+    assign titulo = 'secciones.indice.titulo' | t: count: listadas
   endif
   assign sub = section.settings.subtitulo
   if sub == blank

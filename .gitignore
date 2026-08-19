@@ -164,3 +164,8 @@ qa/*
 
 # OJO: assets/ NO se ignora. Ahi viven los bundles compilados y las fuentes,
 # y Shopify los necesita en el repositorio para desplegar el tema.
+
+# Las plantillas que instancian TODOS los presets para revisarlos de una
+# pasada. Las genera tools/qa-presets.py y viven solo en el tema borrador de
+# QA: en el tema publicado serian tres plantillas que el comerciante nunca usa.
+templates/index.presets*.json

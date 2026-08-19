@@ -15,17 +15,14 @@
     "alineacion": "Alignment",
     "alineaciones": {
       "centro": "Centred",
-      "izquierda": "Left",
-      "offset": "Indented"
+      "izquierda": "Left"
     },
     "altura": "Height",
     "alturas": {
       "alta": "Three quarters",
       "auto": "Fit content",
-      "media": "Half screen",
       "pantalla": "Full screen"
     },
-    "ancho": "Width",
     "ancla": "Anchor (for in-page links)",
     "antetitulo": "Eyebrow",
     "boton": "Button",
@@ -71,9 +68,6 @@
     "texto": "Text",
     "textos": "Copy",
     "titular": "Heading",
-    "titular_1": "Heading, line 1",
-    "titular_2": "Heading, line 2",
-    "titular_3": "Heading, line 3",
     "vacio_traduce": "Leave a field blank and the translated version for the shopper’s language is used. Type something and yours wins.",
     "wordmark": "Brand name"
   },
@@ -133,7 +127,13 @@
       "avances": {
         "arrastre": "By dragging or with the arrows",
         "scroll": "With the page scroll"
-      }
+      },
+      "disposiciones": {
+        "carrusel": "Horizontal strip",
+        "rejilla": "Grid"
+      },
+      "solo_rejilla": "Grid layout only. How many products show is rows × columns, so what you see here is what ships — no half-empty last row.",
+      "solo_tira": "Horizontal strip layout only."
     },
     "cierre": {
       "estilos": {
@@ -183,7 +183,6 @@
         "simple": "Plain"
       },
       "migas": "Show breadcrumb",
-      "mostrar_orden": "Show sorting",
       "nombre": "Collection",
       "por_pagina": "Fragrances per page"
     },
@@ -231,30 +230,13 @@
       "valor_pago": "How you pay"
     },
     "estanteria": {
-      "nombre": "Catalogue",
       "presets": {
-        "compacta": "Catalogue — compact strip",
         "destacados": "Catalogue — three picks",
         "duo": "Catalogue — head to head",
         "estanteria": "Catalogue — the shelf",
         "muro": "Catalogue — full wall"
       },
       "ver_todo": "“See all” button"
-    },
-    "hero": {
-      "ayuda": "The 3D animation reads the collection to work out the “from” price. It needs products with a variant named “Decant 5 ml”.",
-      "nombre": "Hero — 3D decant",
-      "nota_cola": "Note — tail",
-      "nota_enlace": "Note — chat link text",
-      "presets": {
-        "bolivares": "Paying in bolívares",
-        "decant": "Hero — 3D decant",
-        "directo": "Straight to it",
-        "envio": "Shipping first",
-        "sin_remate": "No payoff"
-      },
-      "remate": "Payoff (appears as the bottle fills)",
-      "scroll": "Scroll hint"
     },
     "indice": {
       "limite": "How many fragrances in the list",
@@ -332,24 +314,6 @@
       "titulo_oculto": "Ticker name",
       "titulo_oculto_info": "Not visible: screen readers use it to announce what the ticker is.",
       "velocidad": "Speed"
-    },
-    "vitrina": {
-      "corte": "Where the colour splits",
-      "corte_info": "The line where the background goes from photo to light panel. The heading splits on the same line.",
-      "imagen": "Background image",
-      "imagen_info": "Landscape, at least 2000 px wide. Left empty, a brand gradient is used.",
-      "mostrar_tira": "Show the strip",
-      "nombre": "Hero — showcase",
-      "presets": {
-        "campana": "Campaign (photo first)",
-        "chat": "With chat button",
-        "editorial": "Editorial, no strip",
-        "franja": "Short band",
-        "vitrina": "Hero — showcase"
-      },
-      "tira": "Product strip",
-      "velo": "Darken the photo",
-      "zoom": "Photo zoom"
     },
     "muestrario": {
       "nombre": "Home hero",

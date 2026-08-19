@@ -153,7 +153,7 @@ function conectarComparador() {
 function conectarFotos() {
   /* Si una foto no carga se pone la silueta neutra en su sitio, en vez de
      dejar el icono de imagen rota del navegador. */
-  $$('.card__slide, .mini__shot img, .pdp__img').forEach((img) => {
+  $$('.card__slide, .pdp__img').forEach((img) => {
     const marcar = () => {
       if (img.parentElement.querySelector('.card__sinfoto')) return;
       const hueco = document.createElement('span');

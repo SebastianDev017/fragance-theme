@@ -9,7 +9,6 @@
  */
 {
   "blogs": {
-    "eyebrow": "Diario",
     "por": "Por {{ autor }}",
     "vacio": "Todavía no hay nada publicado aquí.",
     "volver": "Volver al diario"
@@ -45,7 +44,6 @@
     "aplicar": "Aplicar",
     "cerrar_filtros": "Cerrar los filtros",
     "cuenta": "{{ count }} fragancias",
-    "eyebrow": "Catálogo",
     "filtrar": "Filtrar",
     "limpiar": "Quitar los filtros",
     "ordenar": "Ordenar por",
@@ -55,8 +53,7 @@
     "precio_min": "Precio mínimo",
     "sin_productos": "Esta colección todavía no tiene fragancias.",
     "sin_resultados_filtro": "Con esos filtros no queda ninguna fragancia. Prueba a quitar alguno.",
-    "todas": "Todas las colecciones",
-    "ver_todo": "Ver todo el catálogo"
+    "todas": "Todas las colecciones"
   },
   "general": {
     "404": {
@@ -74,7 +71,6 @@
       "pie": "Pie de página",
       "siguiente": "Siguiente",
       "skip_to_content": "Saltar al contenido",
-      "indice_campos": "Índice de campos del muestrario",
       "carrusel_portada": "Fragancias destacadas"
     },
     "anterior": "Anterior",
@@ -84,7 +80,6 @@
       "etiqueta": "Buscar en la tienda",
       "placeholder": "Sauvage, Bleu de Chanel, Good Girl…",
       "pregunta": "Pregúntanos por el chat",
-      "resultados": "{{ count }} resultados para «{{ terms }}»",
       "sin_resultados": "No encontramos nada para «{{ terms }}».",
       "titulo": "Buscar"
     },
@@ -121,13 +116,10 @@
       "elige_coleccion": "Elige una colección en los ajustes de esta sección.",
       "elige_menu": "Elige un menú para esta columna en los ajustes del bloque.",
       "fragancia": "Fragancia",
-      "frasco": "Frasco",
-      "frase": "Aquí va la frase corta que describe cómo huele.",
       "marca": "Marca",
       "nombre": "Nombre de la fragancia",
       "notas": "Nota · Nota · Nota",
-      "ticker": "Añade frases a la cinta desde los bloques de esta sección.",
-      "campo": "Campo sin asignar"
+      "ticker": "Añade frases a la cinta desde los bloques de esta sección."
     },
     "volver_arriba": "Volver arriba"
   },
@@ -142,14 +134,12 @@
     "dudas": "¿No sabes cuál pedir? Escríbenos y lo vemos juntos",
     "frasco": "Frasco completo",
     "impuestos": "Impuestos incluidos. Envío calculado al pagar.",
-    "oferta": "Oferta",
     "presentacion": "Presentación",
     "promesa_decant": "Lo que pagues por el decant se te descuenta del frasco",
     "promesa_envio": "Envío gratis desde $20, a toda Venezuela",
     "promesa_original": "Frasco original sellado. Ni réplicas ni «inspirados en»",
     "quitar_uno": "Quitar uno",
     "ver_imagen": "Ver la imagen {{ n }}",
-    "llevate": "Llévate la muestra",
     "resta": {
       "titulo": "Si te quedas con el frasco",
       "decant": "{{ variante }}, ya pagado",
@@ -209,17 +199,12 @@
       "titulo": "El frasco cuesta lo mismo. Lo que te ahorras es todo lo demás.",
       "total": "Total del frasco"
     },
-    "estanteria": {
-      "titulo": "Las que reconoces sin que te digan el nombre."
-    },
-    "hero": {
-      "subtitulo": "Los perfumes que ya conoces, en decant para vivirlos una semana en tu piel. Y si es el tuyo, el frasco completo al mismo precio que en Amazon — solo que aquí, y en dos días.",
-      "titulo_1": "Pruébalo en 5 ml.",
-      "titulo_2": "Cómpralo cuando estés seguro."
-    },
     "indice": {
       "subtitulo": "Cada una en decant de 5 o 10 ml. Pruébala una semana entera y decide después, no en el papelito de la tienda.",
-      "titulo": "Seis maneras de oler distinto esta semana."
+      "titulo": {
+        "one": "Una manera de oler distinto esta semana.",
+        "other": "{{ count }} maneras de oler distinto esta semana."
+      }
     },
     "ritual": {
       "pasos": {
@@ -242,11 +227,6 @@
       },
       "texto": "Un perfume no se decide en el papelito de la tienda. Se decide a las seis horas, cuando ya se mezcló contigo y alguien te pregunta qué te pusiste.",
       "titulo": "Nadie se casa en la primera cita."
-    },
-    "vitrina": {
-      "subtitulo": "Decants y frascos originales, al mismo precio que afuera pero aquí, en dos días y sin aduana.",
-      "titulo_1": "Pruébalo en 5 ml.",
-      "titulo_2": "Cómpralo seguro."
     },
     "ticker": {
       "aria": "Lo que incluye cada pedido"

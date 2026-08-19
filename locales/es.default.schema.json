@@ -15,17 +15,14 @@
     "alineacion": "Alineación",
     "alineaciones": {
       "centro": "Centrada",
-      "izquierda": "A la izquierda",
-      "offset": "Desplazada"
+      "izquierda": "A la izquierda"
     },
     "altura": "Altura",
     "alturas": {
       "alta": "Tres cuartos",
       "auto": "La que necesite",
-      "media": "Media pantalla",
       "pantalla": "Pantalla completa"
     },
-    "ancho": "Ancho",
     "ancla": "Ancla (para los enlaces internos)",
     "antetitulo": "Antetítulo",
     "boton": "Botón",
@@ -71,9 +68,6 @@
     "texto": "Texto",
     "textos": "Textos",
     "titular": "Titular",
-    "titular_1": "Titular, línea 1",
-    "titular_2": "Titular, línea 2",
-    "titular_3": "Titular, línea 3",
     "vacio_traduce": "Deja un texto en blanco y saldrá la versión traducida al idioma que esté viendo el cliente. Escribe algo y mandará lo que escribas.",
     "wordmark": "Nombre de la marca"
   },
@@ -133,7 +127,13 @@
       "avances": {
         "arrastre": "Arrastrando o con las flechas",
         "scroll": "Con el scroll de la página"
-      }
+      },
+      "disposiciones": {
+        "carrusel": "Tira horizontal",
+        "rejilla": "Rejilla"
+      },
+      "solo_rejilla": "Solo cuando la disposición es en rejilla. Cuántos productos salen es filas × columnas: así lo que ves aquí es lo que sale en la tienda, sin huecos a media fila.",
+      "solo_tira": "Solo cuando la disposición es en tira horizontal."
     },
     "cierre": {
       "estilos": {
@@ -183,7 +183,6 @@
         "simple": "Simple"
       },
       "migas": "Mostrar migas de pan",
-      "mostrar_orden": "Mostrar el orden",
       "nombre": "Colección",
       "por_pagina": "Fragancias por página"
     },
@@ -231,30 +230,13 @@
       "valor_pago": "Cómo pagas"
     },
     "estanteria": {
-      "nombre": "Catálogo",
       "presets": {
-        "compacta": "Catálogo — tira compacta",
         "destacados": "Catálogo — tres destacados",
         "duo": "Catálogo — cara a cara",
         "estanteria": "Catálogo — la estantería",
         "muro": "Catálogo — muro completo"
       },
       "ver_todo": "Botón «ver todo»"
-    },
-    "hero": {
-      "ayuda": "La animación 3D usa la colección para calcular el precio «desde». Necesita productos con una variante que se llame «Decant 5 ml».",
-      "nombre": "Hero — decant 3D",
-      "nota_cola": "Nota — final",
-      "nota_enlace": "Nota — texto del enlace al chat",
-      "presets": {
-        "bolivares": "Pago en bolívares",
-        "decant": "Hero — decant 3D",
-        "directo": "Al grano",
-        "envio": "Con el envío por delante",
-        "sin_remate": "Sin remate final"
-      },
-      "remate": "Remate (aparece al llenarse el frasco)",
-      "scroll": "Pista de scroll"
     },
     "indice": {
       "limite": "Cuántas fragancias en la lista",
@@ -332,24 +314,6 @@
       "titulo_oculto": "Nombre de la cinta",
       "titulo_oculto_info": "No se ve: lo usan los lectores de pantalla para anunciar de qué va la cinta.",
       "velocidad": "Velocidad"
-    },
-    "vitrina": {
-      "corte": "Dónde parte el color",
-      "corte_info": "La línea donde el fondo pasa de foto a panel claro. El titular se parte por la misma línea.",
-      "imagen": "Foto de fondo",
-      "imagen_info": "Horizontal y de al menos 2000 px de ancho. Si la dejas vacía sale un fondo de marca.",
-      "mostrar_tira": "Mostrar la tira",
-      "nombre": "Hero — vitrina",
-      "presets": {
-        "campana": "Campaña (foto protagonista)",
-        "chat": "Con botón de chat",
-        "editorial": "Editorial, sin tira",
-        "franja": "Franja corta",
-        "vitrina": "Hero — vitrina"
-      },
-      "tira": "Tira de producto",
-      "velo": "Oscurecer la foto",
-      "zoom": "Acercamiento de la foto"
     },
     "muestrario": {
       "nombre": "Portada",
