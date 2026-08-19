@@ -25,6 +25,19 @@ eso apaga el producto. El color se gasta donde **identifica** algo:
 La forma blanda —vidrio, esquina redonda, sombra tintada— carga el carácter.
 La saturación, no.
 
+## Lo que el comerciante puede mover
+
+Los valores de abajo son los **de la estética Blush**, que es la que fijó el
+cliente y la que trae el tema por defecto. Todos salen de
+`snippets/tokens.liquid` y se pueden cambiar desde el editor: estética (Blush,
+Noche o Papel), colores, tipografía, medidas de la página, tarjetas de
+producto y botones.
+
+Dos decisiones que el sistema toma por defecto y conviene no deshacer sin
+pensarlo: **el marco de la foto es del mismo color en todas las tarjetas** —el
+tinte por fragancia existe, pero apagado, porque con ocho fotos encima suma
+demasiado color—, y **la foto va `contain`**, nunca recortada.
+
 ## Color
 
 ```

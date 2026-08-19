@@ -184,17 +184,59 @@ y con `prefers-reduced-motion` se queda quieto y se recorre con el dedo.
 La segunda copia va `aria-hidden` y sus enlaces con `tabindex="-1"`: para un
 lector de pantalla el catálogo aparece **una** vez.
 
-Dos cosas medidas en la tienda, no supuestas:
+Las **flechas** empujan la pista tocando el `animation-delay`: ese valor es el
+que decide en qué PUNTO de la vuelta está la animación, así que restarle
+tiempo la adelanta. Al soltar sigue corriendo desde donde quedó, en vez de
+saltar al principio como pasaría reiniciando la animación o escribiendo un
+`transform` encima.
+
+Tres cosas medidas en la tienda, no supuestas:
 
 - con pocas fragancias la pista mide menos que la ventana y al saltar al 50%
   se ve el hueco → la lista se repite dentro de cada copia hasta juntar 10;
 - 112 s por vuelta no se lee como «se mueve», se lee como quieto. Unos 48 s
-  con ocho fragancias es el paso donde se nota sin marear.
+  con ocho fragancias es el paso donde se nota sin marear;
+- la «línea negra» bajo cada tarjeta era su propia **sombra cortada en seco**
+  por el `overflow: hidden` de la pista. La sombra baja unos 40 px y el
+  recorte la partía por una recta. La pista le deja sitio arriba y abajo.
 
 ⚠️ Las tarjetas del carrusel **no** llevan `data-reveal-card`. El reveal es un
 `gsap.from(opacity: 0)` con `ScrollTrigger.batch`, y sobre una pista que se
 mueve sola volvía a dispararse y las apagaba. Ese era el bug de «los productos
 desaparecen al terminar de cargar».
+
+### Los ajustes del tema
+
+Todo lo que el comerciante puede mover vive en `snippets/tokens.liquid`, que
+se renderiza en el `<head>` **después** de la hoja de estilos y pisa sus
+valores por defecto. Seis grupos en el editor: estética, colores, tipografía,
+medidas, tarjetas de producto y botones.
+
+**Se resuelve entero en Liquid, en un solo bloque**, y no con reglas de CSS
+que compitan: con `[data-estetica]` en el `<html>` y `:root` en el `<head>`
+ambas valen (0,1,0) y ganaría el orden de aparición, que es justo la clase de
+detalle que después nadie entiende. La estética elige una paleta completa y
+los colores propios la pisan sólo si se enciende la casilla.
+
+Las tres estéticas son paletas completas, no un ajuste de una: **Blush** (la
+dirección fijada), **Noche** (fondo oscuro, acento vivo) y **Papel** (mínimo,
+sin color de fondo).
+
+⚠️ **`then` NO existe en Liquid.** Escribir `when 'x' then assign ...` revienta
+el snippet **en silencio**: `render` no dice nada, no sale un aviso en la
+página y `theme check` da 0 offenses. El síntoma es que todos los ajustes
+parecen no hacer nada. Se detecta mirando si el `<style>` llegó al `<head>`:
+
+```js
+[...document.querySelectorAll('head style')].some(s => s.textContent.includes('--pearl'))
+```
+
+Un ajuste que «no funciona» casi siempre es un snippet que no se ejecuta.
+
+⚠️ **Un estilo inline gana a `:root`.** `card-fragancia` escribía siempre un
+`--marco-ratio` inline con `1/1` por defecto, así que el ajuste global de
+proporción no habría hecho nada nunca. La variable inline se escribe **sólo**
+si la sección pidió una proporción a mano.
 
 ### La convención que sostiene todo
 
