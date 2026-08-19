@@ -125,18 +125,32 @@ body {
   line-height: 1.6;
   color: var(--ink);
 
-  /* Dos lavados sobre perla, y nada más. Va aquí y no en tres divs
-     desenfocados a 120px: ese desenfoque repinta en cada scroll y no aporta
-     nada que estas dos paradas no den. */
   background-color: var(--pearl);
-  background-image:
-    radial-gradient(72% 58% at 4% 0%,    var(--lavado-1) 0%, transparent 64%),
-    radial-gradient(76% 62% at 98% 100%, var(--lavado-2) 0%, transparent 66%);
-  background-attachment: fixed;
-  background-repeat: no-repeat;
   overflow-x: clip;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+/* Los dos lavados del fondo, en su propia capa fija.
+
+   Van en un pseudo-elemento y no en el `background` del body porque su fuerza
+   es un ajuste del tema: con `opacity` se atenúan los dos a la vez, y a 0 el
+   fondo queda liso. Es lo primero que hay que bajar si las fotos de producto
+   vuelven a pelear con el fondo.
+
+   Va en un div de una sola capa y no en tres blobs desenfocados a 120px: ese
+   desenfoque repinta en cada scroll y no aporta nada que estas dos paradas no
+   den. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: var(--lavado-op, 1);
+  background-image:
+    radial-gradient(72% 58% at 4% 0%,    var(--lavado-1) 0%, transparent 64%),
+    radial-gradient(76% 62% at 98% 100%, var(--lavado-2) 0%, transparent 66%);
 }
 
 h1, h2, h3 { font-family: var(--font-d); font-weight: 600; letter-spacing: -.03em; line-height: .95; margin: 0; }
@@ -176,7 +190,10 @@ img { max-width: 100%; display: block; }
 
 .sec-head { margin: 0 0 3.5rem; padding-inline: var(--edge); }
 .sec-head__p { color: var(--ink-2); font-size: clamp(1rem, 1.3vw, 1.15rem); max-width: 46ch; margin-top: 1.6rem; }
-.sec-head--offset { padding-left: calc(var(--edge) + clamp(0rem, 8vw, 8rem)); }
+/* `.sec-head--offset` desapareció a propósito. Metía el titular hasta 8rem
+   hacia dentro mientras las tarjetas de debajo seguían pegadas a --edge, y el
+   resultado era una sección con dos márgenes izquierdos distintos. En este
+   tema un bloque está al margen o está centrado; no hay tercera opción. */
 .sec-head--center { text-align: center; }
 .sec-head--center .sec-head__p { margin-inline: auto; }
 .sec-head--row { display: grid; gap: 2rem; }

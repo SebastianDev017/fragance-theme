@@ -16,8 +16,10 @@ import './coleccion.css';
 import './mundo.css';        /* la capa del mundo: va LA ÚLTIMA */
 import { iniciar, conectarEditorDeTemas } from './ui.js';
 import { conectarCarrito, conectarAtcFija } from './carrito.js';
+import { conectarMarquesina } from './marquesina.js';
 
 iniciar();
 conectarCarrito();
 conectarAtcFija();
+conectarMarquesina();
 conectarEditorDeTemas();

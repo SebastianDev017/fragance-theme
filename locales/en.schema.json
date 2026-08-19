@@ -381,6 +381,78 @@
       "umbral_info": "Units or fewer. Only where inventory tracking is on for the product.",
       "entrega": "Delivery note",
       "entrega_info": "Shows on the product page, under the button. Make it true."
+    },
+    "estetica": {
+      "grupo": "Aesthetic",
+      "nota": "Swaps the whole palette at once. It is the starting point: the groups below fine-tune whatever you pick here.",
+      "cual": "Theme aesthetic",
+      "opciones": {
+        "blush": "Blush — soft gradient and plum",
+        "noche": "Night — dark ground, vivid accent",
+        "papel": "Paper — minimal, no background colour"
+      }
+    },
+    "color": {
+      "grupo": "Colours",
+      "nota": "While \"use my colours\" is off, the aesthetic decides. Turn it on only if you want to take over all four.",
+      "propios": "Use my colours",
+      "fondo": "Background",
+      "tinta": "Ink",
+      "acento": "Accent",
+      "tarjeta": "Cards",
+      "lavado": "Background colour strength",
+      "lavado_info": "At 0 the background is flat. Lower it if product photos start fighting the background."
+    },
+    "tipografia": {
+      "grupo": "Typography",
+      "nota": "The brand faces are Clash Display and Switzer, and they ship with the theme. Turn the box off only to use Shopify fonts instead.",
+      "marca": "Use the brand faces",
+      "titulos": "Headings",
+      "texto": "Body"
+    },
+    "medidas": {
+      "grupo": "Page sizing",
+      "ancho": "Maximum content width",
+      "ancho_info": "Header, sections and footer all land on this same line.",
+      "canalon": "Side margin",
+      "canalon_info": "What is left at the sides when the window is narrow.",
+      "escala": "Text size",
+      "aire": "Space between sections",
+      "aire_info": "100% is the rhythm the theme was designed at."
+    },
+    "tarjetas": {
+      "grupo": "Product cards",
+      "fondo": "Photo frame background",
+      "fondo_info": "\"One tint per fragrance\" gives each perfume its own colour, taken from the real tone of its bottle.",
+      "fondos": {
+        "uniforme": "The same for all",
+        "tinte": "One tint per fragrance"
+      },
+      "radio": "Card corner radius",
+      "sombra": "Shadow",
+      "sombras": {
+        "ninguna": "None",
+        "suave": "Soft",
+        "marcada": "Strong"
+      },
+      "imagen": "The photo",
+      "imagen_radio": "Photo corner radius",
+      "encaje": "How the photo fits",
+      "encaje_info": "\"Whole\" never crops the bottle. \"Fill\" crops to cover the frame: use it only if your photos are already framed.",
+      "encajes": {
+        "contain": "Whole, never cropped",
+        "cover": "Fill the frame"
+      }
+    },
+    "botones": {
+      "grupo": "Buttons",
+      "forma": "Shape",
+      "formas": {
+        "pildora": "Pill",
+        "redondeado": "Rounded",
+        "recto": "Square"
+      },
+      "versalitas": "Uppercase label"
     }
   }
 }

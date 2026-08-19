@@ -19,6 +19,10 @@
       }
     },
     "envio_umbral": 20,
-    "bundle_max": 3
+    "bundle_max": 3,
+    "estetica": "blush",
+    "tarjeta_fondo": "uniforme",
+    "lavado_fuerza": 100,
+    "fuentes_marca": true
   }
 }

@@ -21,7 +21,7 @@
 -%}
 
 <section class="ritual" id="{{ section.settings.ancla | default: 'ritual' }}">
-  <header class="sec-head{% if section.settings.alinear == 'offset' %} sec-head--offset{% elsif section.settings.alinear == 'centro' %} sec-head--center{% endif %}">
+  <header class="sec-head{% if section.settings.alinear == 'centro' %} sec-head--center{% endif %}">
     {%- if section.settings.eyebrow != blank -%}
       <p class="eyebrow"><span class="dot" aria-hidden="true"></span> {{ section.settings.eyebrow }}</p>
     {%- endif -%}
@@ -83,10 +83,9 @@
       "type": "select",
       "id": "alinear",
       "label": "t:comun.alineacion",
-      "default": "offset",
+      "default": "izquierda",
       "options": [
         { "value": "izquierda", "label": "t:comun.alineaciones.izquierda" },
-        { "value": "offset", "label": "t:comun.alineaciones.offset" },
         { "value": "centro", "label": "t:comun.alineaciones.centro" }
       ]
     },
@@ -125,7 +124,7 @@
   "presets": [
     {
       "name": "t:secciones.ritual.presets.escalera",
-      "settings": { "disposicion": "escalera", "alinear": "offset" },
+      "settings": { "disposicion": "escalera", "alinear": "izquierda" },
       "blocks": [{ "type": "paso" }, { "type": "paso" }, { "type": "paso" }]
     },
     {

@@ -8,6 +8,298 @@
     "theme_support_email": "hola@dropscents.com"
   },
   {
+    "name": "t:ajustes.estetica.grupo",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "t:ajustes.estetica.nota"
+      },
+      {
+        "type": "select",
+        "id": "estetica",
+        "label": "t:ajustes.estetica.cual",
+        "default": "blush",
+        "options": [
+          {
+            "value": "blush",
+            "label": "t:ajustes.estetica.opciones.blush"
+          },
+          {
+            "value": "noche",
+            "label": "t:ajustes.estetica.opciones.noche"
+          },
+          {
+            "value": "papel",
+            "label": "t:ajustes.estetica.opciones.papel"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "t:ajustes.color.grupo",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "t:ajustes.color.nota"
+      },
+      {
+        "type": "checkbox",
+        "id": "colores_propios",
+        "label": "t:ajustes.color.propios",
+        "default": false
+      },
+      {
+        "type": "color",
+        "id": "color_fondo",
+        "label": "t:ajustes.color.fondo",
+        "default": "#F2F0F5"
+      },
+      {
+        "type": "color",
+        "id": "color_tinta",
+        "label": "t:ajustes.color.tinta",
+        "default": "#2B0F33"
+      },
+      {
+        "type": "color",
+        "id": "color_acento",
+        "label": "t:ajustes.color.acento",
+        "default": "#D42060"
+      },
+      {
+        "type": "color",
+        "id": "color_tarjeta",
+        "label": "t:ajustes.color.tarjeta",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "range",
+        "id": "lavado_fuerza",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "%",
+        "label": "t:ajustes.color.lavado",
+        "info": "t:ajustes.color.lavado_info",
+        "default": 100
+      }
+    ]
+  },
+  {
+    "name": "t:ajustes.tipografia.grupo",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "t:ajustes.tipografia.nota"
+      },
+      {
+        "type": "checkbox",
+        "id": "fuentes_marca",
+        "label": "t:ajustes.tipografia.marca",
+        "default": true
+      },
+      {
+        "type": "font_picker",
+        "id": "fuente_titulos",
+        "label": "t:ajustes.tipografia.titulos",
+        "default": "assistant_n7"
+      },
+      {
+        "type": "font_picker",
+        "id": "fuente_texto",
+        "label": "t:ajustes.tipografia.texto",
+        "default": "assistant_n4"
+      }
+    ]
+  },
+  {
+    "name": "t:ajustes.medidas.grupo",
+    "settings": [
+      {
+        "type": "range",
+        "id": "ancho_max",
+        "min": 1080,
+        "max": 1680,
+        "step": 20,
+        "unit": "px",
+        "label": "t:ajustes.medidas.ancho",
+        "info": "t:ajustes.medidas.ancho_info",
+        "default": 1360
+      },
+      {
+        "type": "range",
+        "id": "canalon",
+        "min": 12,
+        "max": 64,
+        "step": 4,
+        "unit": "px",
+        "label": "t:ajustes.medidas.canalon",
+        "info": "t:ajustes.medidas.canalon_info",
+        "default": 48
+      },
+      {
+        "type": "range",
+        "id": "escala_texto",
+        "min": 90,
+        "max": 115,
+        "step": 5,
+        "unit": "%",
+        "label": "t:ajustes.medidas.escala",
+        "default": 100
+      },
+      {
+        "type": "range",
+        "id": "aire_seccion",
+        "min": 60,
+        "max": 140,
+        "step": 10,
+        "unit": "%",
+        "label": "t:ajustes.medidas.aire",
+        "info": "t:ajustes.medidas.aire_info",
+        "default": 100
+      }
+    ]
+  },
+  {
+    "name": "t:ajustes.tarjetas.grupo",
+    "settings": [
+      {
+        "type": "select",
+        "id": "tarjeta_fondo",
+        "label": "t:ajustes.tarjetas.fondo",
+        "default": "uniforme",
+        "info": "t:ajustes.tarjetas.fondo_info",
+        "options": [
+          {
+            "value": "uniforme",
+            "label": "t:ajustes.tarjetas.fondos.uniforme"
+          },
+          {
+            "value": "tinte",
+            "label": "t:ajustes.tarjetas.fondos.tinte"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "tarjeta_radio",
+        "min": 0,
+        "max": 40,
+        "step": 4,
+        "unit": "px",
+        "label": "t:ajustes.tarjetas.radio",
+        "default": 32
+      },
+      {
+        "type": "select",
+        "id": "tarjeta_sombra",
+        "label": "t:ajustes.tarjetas.sombra",
+        "default": "suave",
+        "options": [
+          {
+            "value": "ninguna",
+            "label": "t:ajustes.tarjetas.sombras.ninguna"
+          },
+          {
+            "value": "suave",
+            "label": "t:ajustes.tarjetas.sombras.suave"
+          },
+          {
+            "value": "marcada",
+            "label": "t:ajustes.tarjetas.sombras.marcada"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "t:ajustes.tarjetas.imagen"
+      },
+      {
+        "type": "select",
+        "id": "imagen_ratio",
+        "label": "t:comun.ratio",
+        "default": "1/1",
+        "options": [
+          {
+            "value": "1/1",
+            "label": "t:comun.ratios.cuadrada"
+          },
+          {
+            "value": "4/5",
+            "label": "t:comun.ratios.vertical"
+          },
+          {
+            "value": "3/4",
+            "label": "t:comun.ratios.retrato"
+          },
+          {
+            "value": "5/4",
+            "label": "t:comun.ratios.horizontal"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "imagen_radio",
+        "min": 0,
+        "max": 36,
+        "step": 4,
+        "unit": "px",
+        "label": "t:ajustes.tarjetas.imagen_radio",
+        "default": 24
+      },
+      {
+        "type": "select",
+        "id": "imagen_encaje",
+        "label": "t:ajustes.tarjetas.encaje",
+        "default": "contain",
+        "info": "t:ajustes.tarjetas.encaje_info",
+        "options": [
+          {
+            "value": "contain",
+            "label": "t:ajustes.tarjetas.encajes.contain"
+          },
+          {
+            "value": "cover",
+            "label": "t:ajustes.tarjetas.encajes.cover"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "t:ajustes.botones.grupo",
+    "settings": [
+      {
+        "type": "select",
+        "id": "boton_forma",
+        "label": "t:ajustes.botones.forma",
+        "default": "pildora",
+        "options": [
+          {
+            "value": "pildora",
+            "label": "t:ajustes.botones.formas.pildora"
+          },
+          {
+            "value": "redondeado",
+            "label": "t:ajustes.botones.formas.redondeado"
+          },
+          {
+            "value": "recto",
+            "label": "t:ajustes.botones.formas.recto"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "boton_versalitas",
+        "label": "t:ajustes.botones.versalitas",
+        "default": false
+      }
+    ]
+  },
+  {
     "name": "Marca",
     "settings": [
       {

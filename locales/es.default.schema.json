@@ -381,6 +381,78 @@
       "umbral_info": "Unidades o menos. Sólo con seguimiento de inventario activado en el producto.",
       "entrega": "Nota de entrega",
       "entrega_info": "Sale en la ficha, debajo del botón. Que sea verdad."
+    },
+    "estetica": {
+      "grupo": "Estética",
+      "nota": "Cambia la paleta entera de golpe. Es el punto de partida: los grupos de abajo afinan sobre lo que elijas aquí.",
+      "cual": "Estética del tema",
+      "opciones": {
+        "blush": "Blush — degradado suave y ciruela",
+        "noche": "Noche — fondo oscuro y acento vivo",
+        "papel": "Papel — mínimo, sin color de fondo"
+      }
+    },
+    "color": {
+      "grupo": "Colores",
+      "nota": "Mientras «usar mis colores» esté apagado manda la estética. Enciéndelo sólo si quieres tomar el control de los cuatro.",
+      "propios": "Usar mis colores",
+      "fondo": "Fondo",
+      "tinta": "Tinta",
+      "acento": "Acento",
+      "tarjeta": "Tarjetas",
+      "lavado": "Fuerza del fondo de color",
+      "lavado_info": "A 0 el fondo queda liso. Bájalo si las fotos de producto empiezan a pelear con el fondo."
+    },
+    "tipografia": {
+      "grupo": "Tipografía",
+      "nota": "Las fuentes de la marca son Clash Display y Switzer, y viajan con el tema. Apaga la casilla sólo si quieres usar fuentes de Shopify.",
+      "marca": "Usar las fuentes de la marca",
+      "titulos": "Titulares",
+      "texto": "Texto"
+    },
+    "medidas": {
+      "grupo": "Medidas de la página",
+      "ancho": "Ancho máximo del contenido",
+      "ancho_info": "Cabecera, secciones y pie caen todos sobre esta misma línea.",
+      "canalon": "Margen lateral",
+      "canalon_info": "Lo que se deja a los lados cuando la ventana es angosta.",
+      "escala": "Tamaño del texto",
+      "aire": "Aire entre secciones",
+      "aire_info": "100% es el ritmo con el que se diseñó el tema."
+    },
+    "tarjetas": {
+      "grupo": "Tarjetas de producto",
+      "fondo": "Fondo del marco de la foto",
+      "fondo_info": "«Un tinte por fragancia» le da a cada perfume su propio color, sacado del tono real de su frasco.",
+      "fondos": {
+        "uniforme": "El mismo para todas",
+        "tinte": "Un tinte por fragancia"
+      },
+      "radio": "Redondeo de la tarjeta",
+      "sombra": "Sombra",
+      "sombras": {
+        "ninguna": "Ninguna",
+        "suave": "Suave",
+        "marcada": "Marcada"
+      },
+      "imagen": "La foto",
+      "imagen_radio": "Redondeo de la foto",
+      "encaje": "Cómo encaja la foto",
+      "encaje_info": "«Entera» nunca recorta el frasco. «Llenar» recorta para cubrir el marco: úsalo sólo si tus fotos ya vienen encuadradas.",
+      "encajes": {
+        "contain": "Entera, sin recortar",
+        "cover": "Llenar el marco"
+      }
+    },
+    "botones": {
+      "grupo": "Botones",
+      "forma": "Forma",
+      "formas": {
+        "pildora": "Píldora",
+        "redondeado": "Redondeado",
+        "recto": "Recto"
+      },
+      "versalitas": "Texto en versalitas"
     }
   }
 }

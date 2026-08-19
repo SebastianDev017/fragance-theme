@@ -1,0 +1,188 @@
+{%- comment -%}
+  Los ajustes del tema, traducidos a tokens CSS.
+
+  Va en el `<head>`, DESPUÉS de la hoja de estilos, y pisa los valores por
+  defecto de `src/styles.css`. Esa hoja sigue siendo la fuente de verdad del
+  sistema; esto es sólo la capa que el comerciante puede mover.
+
+  Todo se resuelve en Liquid, en un solo bloque, y no con reglas de CSS que
+  compitan por especificidad: la estética elige una paleta base y los colores
+  propios la pisan si el comerciante los enciende. Con `[data-estetica]` en el
+  `<html>` y `:root` aquí ambas valdrían (0,1,0) y ganaría el orden de
+  aparición, que es exactamente la clase de detalle que luego nadie entiende.
+{%- endcomment -%}
+
+{%- liquid
+  comment
+    ---- las tres estéticas -------------------------------------------------
+    Cada una es una paleta COMPLETA, no un ajuste de una. Se eligen aquí y no
+    en CSS para que los colores propios puedan pisarlas sin trucos.
+  endcomment
+  case settings.estetica
+    when 'noche'
+      assign c_fondo   = '#17141C'
+      assign c_fondo2  = '#221D2A'
+      assign c_tinta   = '#F6F1F9'
+      assign c_tinta2  = '#C9BED2'
+      assign c_tinta3  = '#9A8DA6'
+      assign c_acento  = '#FF5C8A'
+      assign c_acento2 = '#FF8AAD'
+      assign c_tarjeta = 'rgba(255,255,255,.07)'
+      assign c_borde   = 'rgba(255,255,255,.14)'
+      assign c_linea   = 'rgba(255,255,255,.16)'
+      assign c_linea2  = 'rgba(255,255,255,.08)'
+      assign c_rev     = '#17141C'
+      assign lav1      = 'rgba(214,120,255,.16)'
+      assign lav2      = 'rgba(80,140,255,.14)'
+      assign sombra    = 'rgba(0,0,0,.55)'
+
+    when 'papel'
+      assign c_fondo   = '#FAF9F7'
+      assign c_fondo2  = '#EFEDE9'
+      assign c_tinta   = '#1F1B24'
+      assign c_tinta2  = '#4A4453'
+      assign c_tinta3  = '#6B6474'
+      assign c_acento  = '#1F1B24'
+      assign c_acento2 = '#1F1B24'
+      assign c_tarjeta = '#FFFFFF'
+      assign c_borde   = 'rgba(31,27,36,.10)'
+      assign c_linea   = 'rgba(31,27,36,.14)'
+      assign c_linea2  = 'rgba(31,27,36,.07)'
+      assign c_rev     = '#FFFFFF'
+      assign lav1      = 'rgba(0,0,0,0)'
+      assign lav2      = 'rgba(0,0,0,0)'
+      assign sombra    = 'rgba(31,27,36,.16)'
+
+    else
+      comment  blush: la dirección que fijó el cliente  endcomment
+      assign c_fondo   = '#F2F0F5'
+      assign c_fondo2  = '#EFECF2'
+      assign c_tinta   = '#2B0F33'
+      assign c_tinta2  = '#56296B'
+      assign c_tinta3  = '#6E4680'
+      assign c_acento  = '#D42060'
+      assign c_acento2 = '#B01B4E'
+      assign c_tarjeta = '#FFFFFF'
+      assign c_borde   = 'rgba(255,255,255,.90)'
+      assign c_linea   = 'rgba(43,15,51,.12)'
+      assign c_linea2  = 'rgba(43,15,51,.06)'
+      assign c_rev     = '#FFF7FB'
+      assign lav1      = 'rgba(253,217,222,.40)'
+      assign lav2      = 'rgba(198,225,254,.34)'
+      assign sombra    = 'rgba(43,15,51,.26)'
+  endcase
+
+  comment
+    ---- los colores propios pisan la estética ------------------------------
+  endcomment
+  if settings.colores_propios
+    assign c_fondo   = settings.color_fondo
+    assign c_tinta   = settings.color_tinta
+    assign c_acento  = settings.color_acento
+    assign c_acento2 = settings.color_acento
+    assign c_tarjeta = settings.color_tarjeta
+  endif
+
+  comment
+    ---- la fuerza de los lavados ------------------------------------------
+    A 0 el fondo queda liso. Es el ajuste que hay que bajar si algún día las
+    fotos de producto vuelven a pelear con el fondo.
+  endcomment
+  assign lav = settings.lavado_fuerza | default: 100
+
+  comment  ---- forma de los botones ---------------------------------------  endcomment
+  case settings.boton_forma
+    when 'recto'      then assign r_boton = '0px'
+    when 'redondeado' then assign r_boton = '12px'
+    else                   assign r_boton = '999px'
+  endcase
+
+  comment  ---- sombra de las tarjetas -------------------------------------  endcomment
+  case settings.tarjeta_sombra
+    when 'ninguna' then assign s_tarjeta = 'none'
+    when 'marcada' then assign s_tarjeta = '0 4px 10px rgba(0,0,0,.05), 0 30px 60px -26px ' | append: sombra
+    else                assign s_tarjeta = '0 2px 6px rgba(0,0,0,.04), 0 18px 44px -22px ' | append: sombra
+  endcase
+
+  assign escala = settings.escala_texto | default: 100
+  assign aire = settings.aire_seccion | default: 100 | divided_by: 100.0
+-%}
+
+<style>
+  :root {
+    /* --- estética: {{ settings.estetica | default: 'blush' }} --- */
+    --pearl:   {{ c_fondo }};
+    --stock:   {{ c_fondo }};
+    --stock-2: {{ c_fondo2 }};
+    --paper:   {{ c_tarjeta }};
+
+    --ink:     {{ c_tinta }};
+    --ink-2:   {{ c_tinta2 }};
+    --ink-3:   {{ c_tinta3 }};
+    --cream:   {{ c_rev }};
+    --punch:   {{ c_acento }};
+    --punch-2: {{ c_acento2 }};
+    --alerta:  {{ c_acento2 }};
+
+    --surface:       {{ c_tarjeta }};
+    --surface-solid: {{ c_tarjeta }};
+    --borde-vidrio:  {{ c_borde }};
+    --line:          {{ c_linea }};
+    --line-soft:     {{ c_linea2 }};
+
+    --lavado-1: {{ lav1 }};
+    --lavado-2: {{ lav2 }};
+    --lavado-op: {{ lav | divided_by: 100.0 }};
+
+    --shadow-s: 0 1px 2px rgba(0,0,0,.03), 0 4px 14px -8px {{ sombra }};
+    --shadow-m: {{ s_tarjeta }};
+    --shadow-l: 0 4px 10px rgba(0,0,0,.05), 0 40px 90px -40px {{ sombra }};
+
+    --maxw: {{ settings.ancho_max | default: 1360 }}px;
+    --gutter: clamp(1.25rem, 4vw, {{ settings.canalon | default: 48 }}px);
+    --aire: {{ aire }};
+
+    --r-md: {{ settings.imagen_radio | default: 24 | at_most: 18 }}px;
+    --r-lg: {{ settings.imagen_radio | default: 24 }}px;
+    --r-xl: {{ settings.tarjeta_radio | default: 32 }}px;
+    --r-pill: {{ r_boton }};
+
+    --marco-ratio: {{ settings.imagen_ratio | default: '1/1' }};
+    --img-encaje: {{ settings.imagen_encaje | default: 'contain' }};
+
+    {%- unless settings.fuentes_marca -%}
+      {%- assign f_tit = settings.fuente_titulos -%}
+      {%- assign f_txt = settings.fuente_texto -%}
+      --font-d: {{ f_tit.family }}, {{ f_tit.fallback_families }};
+      --font-b: {{ f_txt.family }}, {{ f_txt.fallback_families }};
+    {%- endunless -%}
+  }
+
+  {%- if escala != 100 -%}
+    html { font-size: {{ escala }}%; }
+  {%- endif -%}
+
+  {%- unless settings.fuentes_marca -%}
+    {%- assign f_tit = settings.fuente_titulos -%}
+    {%- assign f_txt = settings.fuente_texto -%}
+    {{ f_tit | font_face: font_display: 'swap' }}
+    {{ f_txt | font_face: font_display: 'swap' }}
+    {{ f_tit | font_modify: 'weight', 'bolder' | font_face: font_display: 'swap' }}
+    {{ f_txt | font_modify: 'weight', 'bolder' | font_face: font_display: 'swap' }}
+  {%- endunless -%}
+
+  {%- if settings.boton_versalitas -%}
+    .btn { text-transform: uppercase; letter-spacing: .08em; font-size: .82rem; }
+  {%- endif -%}
+
+  {%- comment -%}
+    El fondo de la tarjeta: por defecto UNO solo para todas. El tinte por
+    fragancia se enciende aparte, y entonces cada tarjeta usa su `--campo`.
+  {%- endcomment -%}
+  {%- if settings.tarjeta_fondo != 'tinte' -%}
+    .tarjeta__marco,
+    .pdp .pdp__visor,
+    .dlinea__foto,
+    .bundle__foto { background: var(--stock-2); }
+  {%- endif -%}
+</style>

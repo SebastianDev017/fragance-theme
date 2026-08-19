@@ -102,7 +102,7 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
   border-radius: var(--r-xl);
   /* vidrio esmerilado: el degradado del body se ve por debajo */
   background: var(--surface);
-  border: 1px solid rgba(255,255,255,.9);
+  border: 1px solid var(--borde-vidrio, rgba(255,255,255,.9));
   backdrop-filter: blur(14px) saturate(130%);
   box-shadow: var(--shadow-m);
   transition: transform .4s var(--ease), box-shadow .4s var(--ease);
@@ -128,9 +128,10 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
   inset: 0;
   width: 100%;
   height: 100%;
-  /* `contain` y no `cover`: el frasco y su caja se ven ENTEROS, nunca
-     recortados, que es justo lo que hay que poder juzgar aquí. */
-  object-fit: contain;
+  /* Por defecto `contain`: el frasco y su caja se ven ENTEROS, que es justo
+     lo que hay que poder juzgar. El comerciante puede pedir `cover` desde los
+     ajustes si algún día sube fotos ya recortadas al cuadro. */
+  object-fit: var(--img-encaje, contain);
   padding: clamp(1rem, 2.4vw, 1.8rem);
   opacity: 0;
   transition: opacity .3s var(--ease), transform .5s var(--ease);
@@ -267,7 +268,11 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
   display: flex;
   gap: clamp(1rem, 2vw, 1.75rem);
   margin: 0;
-  padding: .5rem clamp(.5rem, 1vw, .875rem);
+  /* La «línea negra» bajo cada tarjeta era su propia SOMBRA cortada en seco
+     por el `overflow: hidden` de la pista. La sombra baja unos 40 px y el
+     recorte la partía por una recta. Con sitio de sobra arriba y abajo cabe
+     entera y se desvanece como debe. */
+  padding: 1.4rem clamp(.5rem, 1vw, .875rem) 3.2rem;
   list-style: none;
 }
 .marquesina__item { width: clamp(15rem, 21vw, 19.5rem); flex: none; display: flex; }
@@ -303,6 +308,34 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
 .marquesina--rejilla .marquesina__item { width: auto; }
 @media (max-width: 1000px) { .marquesina--rejilla .marquesina__grupo { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px)  { .marquesina--rejilla .marquesina__grupo { grid-template-columns: 1fr; } }
+
+/* Las flechas del carrusel. Van dentro de la zona desvanecida por la máscara
+   a propósito: ahí no tapan ninguna tarjeta entera. */
+.marq__flecha {
+  position: absolute;
+  z-index: 4;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border: 1px solid rgba(255,255,255,.9);
+  border-radius: var(--r-pill);
+  background: rgba(255,255,255,.82);
+  backdrop-filter: blur(12px) saturate(140%);
+  box-shadow: var(--shadow-s);
+  color: var(--ink);
+  cursor: pointer;
+  transition: background var(--t), color var(--t), transform var(--t);
+}
+.marq__flecha--prev { left: clamp(.5rem, 1.6vw, 1.2rem); }
+.marq__flecha--next { right: clamp(.5rem, 1.6vw, 1.2rem); }
+.marq__flecha:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
+.marq__flecha:active { transform: translateY(-50%) scale(.94); }
+.marq__flecha[hidden] { display: none; }
+@media (max-width: 560px) { .marq__flecha { width: 40px; height: 40px; } }
 
 /* La línea que desarma la objeción, justo debajo del botón. */
 .portada__seguro {

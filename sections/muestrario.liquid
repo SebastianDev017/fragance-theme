@@ -17,6 +17,11 @@
 
   La segunda copia va `aria-hidden` y fuera del orden de tabulación: para un
   lector de pantalla el catálogo aparece UNA vez.
+
+  Las flechas empujan la pista a mano sin apagar el bucle: se toca el
+  `animation-delay`, que es lo que decide EN QUÉ PUNTO de la vuelta va la
+  animación. Así, al soltar, sigue corriendo desde donde quedó en vez de dar
+  un salto de vuelta al principio.
 {%- endcomment -%}
 
 {%- liquid
@@ -119,7 +124,7 @@
     <div class="marquesina{% if section.settings.disposicion == 'rejilla' %} marquesina--rejilla{% endif %}"
       style="--marq-dur: {{ dur }}s;"
       aria-label="{{ 'general.accesibilidad.carrusel_portada' | t }}">
-      <div class="marquesina__pista">
+      <div class="marquesina__pista" data-marq-pista>
         {%- for copia in (1..2) -%}
           <ul class="marquesina__grupo" role="list" {% unless forloop.first %}aria-hidden="true"{% endunless %}>
             {%- for vuelta in (1..repetir) -%}
@@ -135,6 +140,20 @@
           </ul>
         {%- endfor -%}
       </div>
+
+      {%- comment -%}
+        Las flechas son ayuda, no el único camino: la pista corre sola y el
+        catálogo entero está a un clic en el botón de arriba. Por eso van
+        `aria-hidden` para el lector de pantalla, que ya tiene la lista.
+      {%- endcomment -%}
+      <button class="marq__flecha marq__flecha--prev" type="button"
+        data-marq-paso="-1" aria-label="{{ 'general.accesibilidad.anterior' | t }}">
+        {% render 'icono', tipo: 'izquierda', tam: 18, grosor: 2 %}
+      </button>
+      <button class="marq__flecha marq__flecha--next" type="button"
+        data-marq-paso="1" aria-label="{{ 'general.accesibilidad.siguiente' | t }}">
+        {% render 'icono', tipo: 'derecha', tam: 18, grosor: 2 %}
+      </button>
     </div>
   {%- else -%}
     <div class="rejilla" style="--cols: 4;">

@@ -31,6 +31,12 @@
   </style>
 
   <link rel="stylesheet" href="{{ 'dropscents.css' | asset_url }}">
+
+  {%- comment -%}
+    Los ajustes del tema, traducidos a tokens. Va DESPUÉS de la hoja: pisa los
+    valores por defecto sin pelearse por especificidad.
+  {%- endcomment -%}
+  {% render 'tokens' %}
   <script>
     /* Los textos que escribe el JavaScript (avisos del chat, precios que
        cambian al elegir presentación) tienen que salir traducidos igual que

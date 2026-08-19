@@ -18,6 +18,7 @@ import './mundo.css';        /* la capa del mundo: va LA ÚLTIMA */
 import { FRAGANCIAS, ENVIO_AFUERA, dol, desde, foto } from './data.js';
 import { iniciar, $, $$ } from './ui.js';
 import { conectarCarrito, conectarAtcFija } from './carrito.js';
+import { conectarMarquesina } from './marquesina.js';
 
 const c = (usd) => Math.round(usd * 100);   // Liquid entrega céntimos
 
@@ -58,3 +59,4 @@ $('[data-hero-price]').textContent = dol(desde);
 iniciar();
 conectarCarrito();
 conectarAtcFija();
+conectarMarquesina();
