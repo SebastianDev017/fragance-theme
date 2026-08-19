@@ -951,3 +951,47 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
   color: var(--ink-2);
 }
 .pdp__entrega svg { color: var(--punch); flex: none; }
+
+/* ---------------------------------------------------------------------------
+   13. la barra de compra fija (sólo móvil)
+
+   En un teléfono la ficha es larga y el botón se queda arriba: justo cuando
+   alguien termina de leer la resta y decide, el botón ya no está en pantalla.
+   Aparece al perder de vista el botón real, y lleva el precio al lado para
+   que decidir no exija recordar la cifra.
+   --------------------------------------------------------------------------- */
+.atc-fija {
+  position: fixed;
+  z-index: 45;
+  left: .7rem;
+  right: .7rem;
+  bottom: .7rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .9rem;
+  padding: .6rem .6rem .6rem 1.1rem;
+  border-radius: var(--r-pill);
+  background: rgba(255,255,255,.86);
+  border: 1px solid rgba(255,255,255,.9);
+  backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: var(--shadow-l);
+  transform: translateY(140%);
+  transition: transform .38s var(--ease);
+}
+.atc-fija[hidden] { display: flex; }          /* la mueve el transform, no el display */
+.atc-fija.is-on { transform: none; }
+.atc-fija__nombre {
+  font-family: var(--font-d);
+  font-weight: 600;
+  font-size: .92rem;
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 42vw;
+}
+.atc-fija__precio { font-size: .84rem; color: var(--ink-2); font-variant-numeric: tabular-nums lining-nums; }
+.atc-fija__b { padding: .8rem 1.4rem; min-height: 46px; font-size: .9rem; }
+
+@media (min-width: 900px) { .atc-fija { display: none !important; } }

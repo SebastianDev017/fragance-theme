@@ -200,3 +200,20 @@ async function cambiar(linea, cantidad) {
     $('[data-carrito-drawer]')?.classList.remove('is-ocupado');
   }
 }
+
+/* ---------------------------------------------------------------------------
+   la barra de compra fija de la ficha
+
+   Aparece cuando el botón real sale de la pantalla y se esconde cuando vuelve.
+   Con IntersectionObserver, que no cuesta un listener de scroll por fotograma.
+   --------------------------------------------------------------------------- */
+export function conectarAtcFija() {
+  const barra = $('[data-atc-fija]');
+  const real = $('.pdp__atc');
+  if (!barra || !real) return;
+
+  const io = new IntersectionObserver(([e]) => {
+    barra.classList.toggle('is-on', !e.isIntersecting);
+  }, { rootMargin: '0px 0px -8px 0px' });
+  io.observe(real);
+}

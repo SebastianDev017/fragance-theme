@@ -106,6 +106,27 @@
     </div>
   </div>
 
+  {%- comment -%}
+    La barra fija de móvil. En un teléfono la ficha es larga y el botón se
+    queda arriba: cuando alguien termina de leer la resta y decide, el botón
+    ya no está en pantalla. Esta barra lo devuelve, con el precio al lado para
+    que la decisión no exija recordar la cifra.
+
+    No duplica el formulario —eso mandaría dos productos al carrito—: es un
+    botón que reenvía el formulario real de arriba.
+  {%- endcomment -%}
+  {%- if p.available -%}
+    <div class="atc-fija" data-atc-fija hidden>
+      <div class="atc-fija__txt">
+        <p class="atc-fija__nombre">{{ p.title }}</p>
+        <p class="atc-fija__precio" data-pdp-precio>{{ v.price | money }}</p>
+      </div>
+      <button class="btn btn--ink atc-fija__b" type="submit" form="form-producto" name="add">
+        {{ 'productos.anadir' | t }}
+      </button>
+    </div>
+  {%- endif -%}
+
   <div class="pdp__riel">
     {%- if p.vendor != blank -%}
       <p class="pdp__marca-riel">{{ p.vendor }}</p>

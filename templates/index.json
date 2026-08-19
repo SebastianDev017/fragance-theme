@@ -21,6 +21,51 @@
         "cta2_chat": true
       }
     },
+    "cinta": {
+      "type": "ticker",
+      "settings": {
+        "estilo": "tinta",
+        "tamano": 26,
+        "velocidad": 4,
+        "separador": "gota"
+      },
+      "blocks": {
+        "b1": {
+          "type": "frase",
+          "settings": {
+            "texto": "Decants desde 5 ml",
+            "icono": "gota"
+          }
+        },
+        "b2": {
+          "type": "frase",
+          "settings": {
+            "texto": "Envíos a toda Venezuela",
+            "icono": "camion"
+          }
+        },
+        "b3": {
+          "type": "frase",
+          "settings": {
+            "texto": "100% originales",
+            "icono": "escudo"
+          }
+        },
+        "b4": {
+          "type": "frase",
+          "settings": {
+            "texto": "Te descontamos el decant del frasco",
+            "destacado": true
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ]
+    },
     "ritual": {
       "type": "ritual",
       "blocks": {
@@ -127,51 +172,6 @@
         "ancla": "cuenta"
       }
     },
-    "cinta": {
-      "type": "ticker",
-      "settings": {
-        "estilo": "tinta",
-        "tamano": 26,
-        "velocidad": 4,
-        "separador": "gota"
-      },
-      "blocks": {
-        "b1": {
-          "type": "frase",
-          "settings": {
-            "texto": "Decants desde 5 ml",
-            "icono": "gota"
-          }
-        },
-        "b2": {
-          "type": "frase",
-          "settings": {
-            "texto": "Envíos a toda Venezuela",
-            "icono": "camion"
-          }
-        },
-        "b3": {
-          "type": "frase",
-          "settings": {
-            "texto": "100% originales",
-            "icono": "escudo"
-          }
-        },
-        "b4": {
-          "type": "frase",
-          "settings": {
-            "texto": "Te descontamos el decant del frasco",
-            "destacado": true
-          }
-        }
-      },
-      "block_order": [
-        "b1",
-        "b2",
-        "b3",
-        "b4"
-      ]
-    },
     "claro": {
       "type": "hablemos-claro",
       "blocks": {
@@ -250,9 +250,9 @@
   },
   "order": [
     "muestrario",
+    "cinta",
     "ritual",
     "cuenta",
-    "cinta",
     "claro",
     "cierre"
   ]
