@@ -1001,3 +1001,14 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
 .atc-fija__b { padding: .8rem 1.4rem; min-height: 46px; font-size: .9rem; }
 
 @media (min-width: 900px) { .atc-fija { display: none !important; } }
+
+/* El motivo de un rechazo de Shopify (normalmente: no quedan unidades). */
+.dcart__aviso {
+  margin: 0;
+  padding: .8rem 1.35rem;
+  background: color-mix(in srgb, var(--punch) 12%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--punch) 22%, transparent);
+  color: var(--punch-2);
+  font-size: .84rem;
+  font-weight: 600;
+}

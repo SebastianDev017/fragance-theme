@@ -45,6 +45,34 @@ async function repintar() {
   sincronizarContador();
 }
 
+/** Enseña lo que Shopify contestó cuando dijo que no.
+ *
+ *  Pulsar «+» y que no pase nada es la peor respuesta posible: el cliente no
+ *  sabe si falló la red, si el botón está roto o si no quedan unidades. Y el
+ *  motivo real —«ya tienes todas las que quedan»— es escasez de la buena:
+ *  cierta, comprobable y dicha por Shopify, no inventada por el tema. */
+function avisar(texto) {
+  const panel = $('[data-carrito-drawer] .drawer__panel');
+  if (!panel || !texto) return;
+  $('[data-cart-aviso]')?.remove();
+  const p = document.createElement('p');
+  p.className = 'dcart__aviso';
+  p.setAttribute('data-cart-aviso', '');
+  p.setAttribute('role', 'status');
+  p.textContent = texto;
+  panel.querySelector('.dcart__top')?.after(p);
+}
+
+/** Saca el motivo del cuerpo de una respuesta de error de Shopify. */
+async function motivo(res) {
+  try {
+    const d = await res.json();
+    return d.description || d.message || null;
+  } catch {
+    return null;
+  }
+}
+
 /** El número del icono del header vive fuera del cajón. */
 function sincronizarContador() {
   const dentro = $('[data-carrito-drawer] [data-cart-count]');
@@ -135,9 +163,14 @@ export function conectarCarrito() {
       });
 
       if (!res.ok) {
-        /* Sin drama: si Shopify rechaza (sin stock, por ejemplo) se deja que
-           el navegador haga el envío normal y muestre su propio error. */
-        form.submit();
+        /* Lo más común aquí es que no queden unidades. Se abre el cajón con
+           el motivo puesto en vez de recargar la página a una pantalla de
+           error de Shopify. */
+        const texto = await motivo(res);
+        await repintar();
+        abrirCarrito();
+        if (texto) avisar(texto);
+        else form.submit();
         return;
       }
 
@@ -195,7 +228,11 @@ async function cambiar(linea, cantidad) {
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify({ line: linea, quantity: cantidad }),
     });
-    if (res.ok) await repintar();
+    const texto = res.ok ? null : await motivo(res);
+    /* Se repinta pase lo que pase: si Shopify no aceptó el cambio, el número
+       del input tiene que volver al valor verdadero. */
+    await repintar();
+    if (texto) avisar(texto);
   } finally {
     $('[data-carrito-drawer]')?.classList.remove('is-ocupado');
   }
