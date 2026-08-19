@@ -112,6 +112,15 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
 /* El marco interior: el tinte de la fragancia, con el frasco flotando */
 .tarjeta__marco {
   position: relative;
+  /* `isolation: isolate` (abajo) abre un contexto de apilamiento NUEVO, así
+     que el `z-index: 3` de las flechas de la galería sólo vale DENTRO de este
+     marco. Fuera, el marco pinta como si no tuviera z-index, y el enlace que
+     cubre la tarjeta entera (`.tarjeta__nombre a::after`, z-index 2) le queda
+     encima: las flechas se veían, pero el clic lo recibía el enlace y en vez
+     de cambiar de foto se iba a la ficha. El marco tiene que subir por encima
+     de ese enlace; la foto sigue llevando al producto porque tiene el suyo
+     propio (`.tarjeta__enlace-foto`). */
+  z-index: 3;
   /* La proporcion la elige el comerciante en el editor. Sin esto el ajuste
      `ratio` de cuatro secciones no hacia nada. */
   aspect-ratio: var(--marco-ratio, 1 / 1);
@@ -488,7 +497,19 @@ a { text-underline-offset: .22em; text-decoration-thickness: from-font; }
   background: var(--campo, var(--stock-2));
   isolation: isolate;
 }
+/* La foto DESTACADA es el frasco recortado sobre fondo blanco: le va el aire
+   alrededor y el `multiply` que lo funde con el tinte.
+
+   Las demás no son eso. Son fotos de estudio y de caja, con su propio fondo y
+   su propio encuadre: el mismo acolchado las encoge hasta dejarlas en un
+   sello en mitad del marco, y el `multiply` les ensucia el fondo contra el
+   tinte. Van sin acolchado y sin mezcla — enteras (`contain`) y ocupando el
+   marco. */
 .pdp .pdp__img {
+  padding: 0;
+  mix-blend-mode: normal;
+}
+.pdp .pdp__img--destacada {
   padding: clamp(1.6rem, 4vw, 3.2rem);
   mix-blend-mode: multiply;   /* mismo motivo que en la tarjeta */
 }

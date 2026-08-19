@@ -753,6 +753,38 @@
 }
 .pdp__img.is-on { opacity: 1; visibility: visible; transition: opacity .35s var(--ease); }
 
+/* Las flechas del visor. Mismo vidrio y misma forma que las del carrusel: en
+   una misma página, dos botones que hacen lo mismo tienen que ser el mismo
+   botón. Sólo aparecen al pasar por encima en escritorio; en táctil se quedan
+   puestas, porque ahí no hay hover que las descubra. */
+.pdp__nav {
+  position: absolute;
+  z-index: 4;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid rgba(255,255,255,.9);
+  border-radius: var(--r-pill);
+  background: rgba(255,255,255,.82);
+  backdrop-filter: blur(12px) saturate(140%);
+  box-shadow: var(--shadow-s);
+  color: var(--ink);
+  cursor: pointer;
+  opacity: 0;
+  transition: background var(--t), color var(--t), opacity var(--t), transform var(--t);
+}
+.pdp__visor:hover .pdp__nav,
+.pdp__nav:focus-visible { opacity: 1; }
+@media (hover: none) { .pdp__nav { opacity: 1; } }
+.pdp__nav--prev { left: clamp(.6rem, 1.6vw, 1.1rem); }
+.pdp__nav--next { right: clamp(.6rem, 1.6vw, 1.1rem); }
+.pdp__nav:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
+.pdp__nav:active { transform: translateY(-50%) scale(.94); }
+
 .pdp__miniaturas { display: flex; gap: .55rem; margin: .8rem 0 0; padding: 0; list-style: none; overflow-x: auto; scrollbar-width: none; }
 .pdp__miniaturas::-webkit-scrollbar { display: none; }
 .pdp__mini {

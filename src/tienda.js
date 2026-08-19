@@ -319,6 +319,16 @@ export function conectarProducto(raiz = document) {
 
   minis.forEach((m) => m.addEventListener('click', () => verFoto(Number(m.dataset.pdpMini))));
 
+  /* Las flechas dan la vuelta al llegar al final: en una galería de cinco
+     fotos, toparse con un botón muerto es peor que volver a la primera. */
+  $$('[data-pdp-paso]', pdp).forEach((boton) => {
+    boton.addEventListener('click', () => {
+      const actual = fotos.findIndex((f) => f.classList.contains('is-on'));
+      const n = actual < 0 ? 0 : actual;
+      verFoto((n + Number(boton.dataset.pdpPaso) + fotos.length) % fotos.length);
+    });
+  });
+
   /* El precio grande y la foto siguen a la presentación marcada. Sin esto la
      página seguiría funcionando (el radio ya lleva su precio al lado), pero
      el número de arriba se quedaría mintiendo. */

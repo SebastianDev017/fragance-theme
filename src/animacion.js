@@ -102,24 +102,51 @@ const pistas = new Set();
 /** Monta o desmonta el arrastre según si la tira tiene de verdad recorrido.
  *  Se vuelve a preguntar al cambiar el ancho: un carrusel de tres tarjetas
  *  desborda en una ventana estrecha y no desborda en una ancha, y un `grab`
- *  sobre algo que no se mueve promete lo que no hay. */
+ *  sobre algo que no se mueve promete lo que no hay.
+ *
+ *  OJO con `Draggable` de tipo `scrollLeft`: para poder arrastrar el scroll
+ *  de un contenedor, GSAP le ENVUELVE el contenido en un `<div>` propio. Aquí
+ *  la pista es un `<ul>` en `display: flex` y sus `<li>` llevan el ancho de
+ *  la tarjeta en `flex-basis`; con un `<div>` en medio dejan de ser hijos del
+ *  flex, pierden el ancho y el carrusel entero colapsa en UNA tarjeta del
+ *  tamaño de la pantalla. Y de paso se rompe la lista para el lector.
+ *
+ *  Por eso se arrastra un elemento SUELTO —que nunca entra en el documento— y
+ *  su posición se copia al `scrollLeft` de la pista. La inercia sigue siendo
+ *  la de GSAP y el DOM no se toca.
+ */
 function revisarTira(pista) {
   const puede = pista.scrollWidth - pista.clientWidth >= 40;
   const ya = arrastres.get(pista);
 
   if (puede && !ya) {
-    const [instancia] = Draggable.create(pista, {
-      type: 'scrollLeft',
+    const tirador = document.createElement('div');
+    const tope = () => Math.max(pista.scrollWidth - pista.clientWidth, 0);
+    const copiar = function copiar() { pista.scrollLeft = -this.x; };
+
+    const [instancia] = Draggable.create(tirador, {
+      type: 'x',
+      trigger: pista,
       inertia: true,
       dragClickables: true,
+      allowNativeTouchScrolling: true,
       cursor: 'grab',
       activeCursor: 'grabbing',
-      onPress() { pista.dataset.arrastrado = '0'; },
+      onPress() {
+        gsap.set(tirador, { x: -pista.scrollLeft });
+        this.update();
+        /* Los límites se recalculan en cada toque: entre uno y otro pueden
+           haber cambiado el ancho de la ventana o el número de tarjetas. */
+        this.applyBounds({ minX: -tope(), maxX: 0 });
+        pista.dataset.arrastrado = '0';
+      },
       onDrag() {
+        copiar.call(this);
         pista.dataset.arrastrado = String(
           Math.max(Number(pista.dataset.arrastrado || 0), Math.abs(this.deltaX))
         );
       },
+      onThrowUpdate() { copiar.call(this); },
     });
     arrastres.set(pista, instancia);
   } else if (!puede && ya) {

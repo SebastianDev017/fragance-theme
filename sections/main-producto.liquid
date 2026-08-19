@@ -68,8 +68,13 @@
     <div class="pdp__media">
       {%- if p.images.size > 0 -%}
         <div class="pdp__visor">
+          {%- comment -%}
+            La primera foto se marca aparte: es el frasco recortado sobre
+            blanco, y es la única que quiere aire alrededor y fundirse con el
+            tinte. Las demás son fotos con su propio fondo y ocupan el marco.
+          {%- endcomment -%}
           {%- for imagen in p.images -%}
-            <img class="pdp__img{% if forloop.first %} is-on{% endif %}" data-i="{{ forloop.index0 }}"
+            <img class="pdp__img{% if forloop.first %} is-on pdp__img--destacada{% endif %}" data-i="{{ forloop.index0 }}"
               src="{{ imagen | image_url: width: 1200 }}"
               srcset="{{ imagen | image_url: width: 600 }} 600w,
                       {{ imagen | image_url: width: 900 }} 900w,
@@ -80,6 +85,23 @@
               {% if forloop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
               decoding="async">
           {%- endfor -%}
+
+          {%- comment -%}
+            Las flechas del visor. Las miniaturas de debajo siguen siendo el
+            camino directo —se ve a cuál se va antes de pulsar—; esto es para
+            pasar de una a otra sin apuntar, que es como se mira una galería.
+            Sin más de una foto no hay nada entre lo que pasar.
+          {%- endcomment -%}
+          {%- if p.images.size > 1 -%}
+            <button class="pdp__nav pdp__nav--prev" type="button" data-pdp-paso="-1"
+              aria-label="{{ 'general.accesibilidad.imagen_anterior' | t }}">
+              {% render 'icono', tipo: 'izquierda', tam: 18, grosor: 2 %}
+            </button>
+            <button class="pdp__nav pdp__nav--next" type="button" data-pdp-paso="1"
+              aria-label="{{ 'general.accesibilidad.imagen_siguiente' | t }}">
+              {% render 'icono', tipo: 'derecha', tam: 18, grosor: 2 %}
+            </button>
+          {%- endif -%}
         </div>
 
         {%- if p.images.size > 1 -%}
