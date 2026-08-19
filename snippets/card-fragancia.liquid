@@ -20,7 +20,9 @@
 
   Parámetros opcionales:
     ratio  → proporción del marco de la foto ('1/1', '4/5'…). Lo eligen las
-             secciones de catálogo desde el editor.
+             secciones de catálogo desde el editor. Si NO se pasa, manda el
+             ajuste global del tema; por eso no se escribe un valor por
+             defecto inline: eso pisaría el ajuste siempre.
     indice → posición en la rejilla; alimenta el escalonado de la entrada
     clon   → 2 en la copia del carrusel: la saca del orden de tabulación y la
              esconde del lector de pantalla, para que el catálogo aparezca UNA
@@ -56,7 +58,6 @@
   assign n_img = imagenes.size
   assign nivel = nivel | default: 3
   assign indice = indice | default: 0
-  assign ratio = ratio | default: '1/1'
   assign es_clon = false
   if clon and clon > 1
     assign es_clon = true
@@ -74,7 +75,7 @@
 <article class="tarjeta{% unless producto.available %} tarjeta--agotada{% endunless %}"
   {% unless clon %}data-reveal-card{% endunless %}
   {% if es_clon %}aria-hidden="true"{% endif %}
-  style="--campo: {{ campo[0] }}; --i: {{ indice }}; --marco-ratio: {{ ratio }};">
+  style="--campo: {{ campo[0] }}; --i: {{ indice }};{% if ratio != blank %} --marco-ratio: {{ ratio }};{% endif %}">
 
   <div class="tarjeta__marco{% if n_img > 1 %} tarjeta__marco--galeria{% endif %}"
     {% if n_img > 1 %}data-galeria data-total="{{ n_img }}"{% endif %}>
