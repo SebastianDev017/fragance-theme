@@ -250,14 +250,30 @@ function conectarMovimiento() {
     });
   }
 
-  /* estantería: entran por lotes, como una repisa que se va llenando */
+  /* estantería: entran por lotes, como una repisa que se va llenando.
+
+     `fromTo` y no `from`, y `once`. Con `from`, GSAP toma el estado ACTUAL
+     como destino; si el lote se vuelve a disparar a mitad de la entrada —y se
+     dispara, porque cualquier `ScrollTrigger.refresh()` (las fuentes al
+     cargar, SplitText al repartir líneas) lo provoca— el nuevo tween guarda
+     como destino un estado intermedio y la tarjeta se queda ahí para siempre:
+     53 px más abajo y al 97 %, desalineada con sus vecinas.
+
+     `clearProps: 'transform'` es la otra mitad del arreglo: GSAP deja un
+     `transform` en el atributo `style`, y un estilo inline gana a la regla
+     `.tarjeta:hover { transform: translateY(-6px) }`. Sin limpiarlo, las
+     tarjetas dejan de levantarse al pasar por encima en cuanto entran. */
   if ($('[data-reveal-card]')) {
     ScrollTrigger.batch('[data-reveal-card]', {
       start: 'top 92%',
-      onEnter: (batch) => gsap.from(batch, {
-        opacity: 0, y: 46, scale: 0.97,
-        duration: 0.85, ease: 'expo.out', stagger: 0.07, overwrite: true,
-      }),
+      once: true,
+      onEnter: (batch) => gsap.fromTo(batch,
+        { opacity: 0, y: 46, scale: 0.97 },
+        {
+          opacity: 1, y: 0, scale: 1,
+          duration: 0.85, ease: 'expo.out', stagger: 0.07,
+          overwrite: 'auto', clearProps: 'transform',
+        }),
     });
   }
 

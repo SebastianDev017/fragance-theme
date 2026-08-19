@@ -6037,15 +6037,21 @@ function yg() {
     scrollTrigger: { trigger: ".picker", start: "top 90%" }
   })), Ri("[data-reveal-card]") && ct.batch("[data-reveal-card]", {
     start: "top 92%",
-    onEnter: (s) => Nt.from(s, {
-      opacity: 0,
-      y: 46,
-      scale: 0.97,
-      duration: 0.85,
-      ease: "expo.out",
-      stagger: 0.07,
-      overwrite: !0
-    })
+    once: !0,
+    onEnter: (s) => Nt.fromTo(
+      s,
+      { opacity: 0, y: 46, scale: 0.97 },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.85,
+        ease: "expo.out",
+        stagger: 0.07,
+        overwrite: "auto",
+        clearProps: "transform"
+      }
+    )
   }), On(".qa__item").forEach((s, t) => {
     Nt.from(s, {
       opacity: 0,
